@@ -1,7 +1,7 @@
 //#include "CPU.h"
 #include "Parser.h"
 
-int main()
+int main(int argc, char* argv[])
 {
     //parser object
     //read config file...the Parser object will have instance variables that are populated.
