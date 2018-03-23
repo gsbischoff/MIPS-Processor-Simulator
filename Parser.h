@@ -1,3 +1,5 @@
+#ifndef PARSER_H
+#define PARSER_H
 
 #include <iostream>
 #include <fstream>
@@ -19,3 +21,4 @@ class Parser
 		std::string print_memory_contents;
 		std::string output_file;
 };
+#endif
