@@ -1,24 +1,20 @@
-#include <iostream>
-#include <fstream>
-#include <cstring>
-#include <cstdlib>
+#include "Parser.h"
 
 using namespace std;
+Parser::Parser(string filename)
+{
+	read_config_file(filename);
+}
 
-int main(int argc, char const *argv[])
+Parser::~Parser()
+{
+}
+
+void Parser::read_config_file(string filename)
 {
 	ifstream input;
-	string filename = "test.txt";
-
+	
 	input.open(filename.c_str());
-
-	string program_input;
-	string memory_contents_input;
-	string register_file_input;
-	string output_mode;
-	string debug_mode;
-	string print_memory_contents;
-	string output_file;
 
 	if(input.bad())
 	{
@@ -76,20 +72,7 @@ int main(int argc, char const *argv[])
 				}
 			}
 
-			//printf("Read in [   %s   =   %s   ]\n", parameter, value);
-
 			free(buf);
 		}
 	}
-
-
-	printf("%s\n", program_input.c_str());
-	printf("%s\n", memory_contents_input.c_str());
-	printf("%s\n", register_file_input.c_str());
-	printf("%s\n", output_mode.c_str());
-	printf("%s\n", debug_mode.c_str());
-	printf("%s\n", print_memory_contents.c_str());
-	printf("%s\n", output_file.c_str());
-
-	return 0;
 }

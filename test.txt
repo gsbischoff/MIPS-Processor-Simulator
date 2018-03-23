@@ -2,6 +2,9 @@ program_input=hello
 memory_contents_input=thinggg
 
 debug_mode=boo
-# a
-# aa
-aaa=doot
+
+register_file_input=zaza
+output_mode=hoodledoodle
+
+print_memory_contents=poodle
+output_file=outtt
