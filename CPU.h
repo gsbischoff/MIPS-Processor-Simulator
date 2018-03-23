@@ -20,11 +20,11 @@ class CPU
         ALU alu2;
         ALU alu3;
 
-        Multiplexor multiplex1;
-        Multiplexor multiplex2;
-        Multiplexor multiplex3;
-        Multiplexor multiplex4;
-        Multiplexor multiplex5;
+        Multiplex multiplex1;
+        Multiplex multiplex2;
+        Multiplex multiplex3;
+        Multiplex multiplex4;
+        Multiplex multiplex5;
 
         ControlUnit control_unit;
         ALUControlUnit alu_control_unit;
