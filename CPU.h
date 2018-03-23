@@ -11,10 +11,10 @@ class CPU
 
     public:
 
-        int[] register_file;
         int PC;
         std::vector<int> instruction_memory;
         std::vector<int> data_memory;
+        int[] register_file;
 
         ALU alu1;
         ALU alu2;
@@ -32,8 +32,8 @@ class CPU
         CPU(std::vector<int> inst, std::vector<int> data, int[] reg);
         ~CPU();
 
-        void shift_left(int a);
-        void sign_extend(int a);
+        int shift_left(int a);
+        int sign_extend(int a);
 
 }
 #endif
