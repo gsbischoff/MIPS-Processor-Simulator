@@ -8,7 +8,8 @@ ALU::ALU()
     in_a = 0;
     in_b = 0;
     control = 0;
-
+//needs to take an opcode
+    //adding does not necassarily just add
 }
 
 void ALU::print_out()
@@ -19,14 +20,14 @@ void ALU::print_out()
 //set the output variable to the sum of A + B
 void ALU::add()
 {
-    this.result = in_a + in_b;
+    result = in_a + in_b;
     if (result == 0)
         zero_flag = true;
 }
 
 void ALU::subtract()
 {
-    this.result = in_a - in_b;
+    result = in_a - in_b;
     if(result == 0)
         zero_flag = true;
 }
