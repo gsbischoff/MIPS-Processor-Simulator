@@ -16,11 +16,13 @@ class ALU
         ~ALU();
 
         void print_out();
-        void add(int a, int b);
-        void subtract(int a, int b);
-        bool and(int a, int b);
-        bool or(int a, int b);
-        int slt(int a, int b);
+        void add();
+        void subtract();
+        bool and();
+        bool or();
+        int  slt();
+        void div();
+        void mult();
 
 
 }
