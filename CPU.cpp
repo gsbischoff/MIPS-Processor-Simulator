@@ -22,6 +22,23 @@ CPU::CPU(std::vector<int> inst, std::vector<int> data, int[] reg)
     alu_control_unit = new ALUControlUnit();
 }
 
+CPU::~CPU()
+{
+    delete alu1;
+    delete alu2;
+    delete alu3;
+
+    delete multiplex1;
+    delete multiplex2;
+    delete multiplex3;
+    delete multiplex4;
+    delete multiplex5;
+
+    delete control_unit;
+
+    delete alu_control_unit;
+}
+
 int CPU::shift_left(int a)
 {
     return a << 2;
