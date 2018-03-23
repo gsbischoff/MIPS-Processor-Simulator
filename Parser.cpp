@@ -22,7 +22,7 @@ int main(int argc, char const *argv[])
 
 	if(input.bad())
 	{
-		printf("Got \"bad\"\n");
+		printf("Got \"bad\" input\n");
 	}
 	else
 	{
@@ -34,6 +34,9 @@ int main(int argc, char const *argv[])
 			lineNum++;
 
 			if(strlen(line.c_str()) == 0)
+				continue;
+
+			if((char) *(line.c_str()) == '#')
 				continue;
 
 			char *buf = strdup(line.c_str());

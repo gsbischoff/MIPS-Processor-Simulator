@@ -2,4 +2,6 @@ program_input=hello
 memory_contents_input=thinggg
 
 debug_mode=boo
+# a
+# aa
 aaa=doot
