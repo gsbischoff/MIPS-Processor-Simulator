@@ -1,10 +1,7 @@
 #ifndef PARSER_H
 #define PARSER_H
 
-#include <iostream>
-#include <fstream>
-#include <cstring>
-#include <cstdlib>
+#include "stdHeader.h"
 
 class Parser
 {
