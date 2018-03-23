@@ -25,5 +25,5 @@ class ALU
         void mult();
 
 
-}
+};
 #endif
