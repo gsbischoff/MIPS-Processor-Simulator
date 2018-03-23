@@ -5,7 +5,7 @@ int main(int argc, char* argv[])
 {
     //parser object
     //read config file...the Parser object will have instance variables that are populated.
-    Parser p = new Parser(argv[1]);
+    Parser p = Parser(argv[1]);
 
     //retrieving the config file input given by Parser object
 
