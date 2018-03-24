@@ -13,7 +13,7 @@ Parser::~Parser()
 void Parser::read_config_file(string filename)
 {
 	ifstream input;
-	
+
 	input.open(filename.c_str());
 
 	if(input.bad())

@@ -34,8 +34,6 @@ class CPU
 
         int shift_left(int a);
         int sign_extend(int a);
-        void read_reg_file(std::string fileName);
-        void read_mem_file(std::string fileName);
 
 };
 #endif
