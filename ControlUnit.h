@@ -9,6 +9,7 @@ class ControlUnit
         int RegDst;
         int RegWrite;
         int ALUSrc;
+        int ALUOp;
         int PCSrc;
         int MemRead;
         int MemWrite;
