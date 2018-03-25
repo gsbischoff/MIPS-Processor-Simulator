@@ -41,7 +41,15 @@ CPU::~CPU()
 
 void CPU::execute(std::string instruction)
 {
-    control_unit.set_datapath(instruction);
+
+    //EXTRACT THE OPCODE TO THEN SET DATA PATH. The control unit only needs opcode (bits 31-26) to properly set entire datapath.
+    std::string opcode;
+    control_unit.set_datapath(opcode);
+
+
+
+
+
 }
 
 int CPU::shift_left(int a)
