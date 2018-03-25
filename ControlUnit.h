@@ -13,6 +13,7 @@ class ControlUnit
         int MemRead;
         int MemWrite;
         int MemToReg;
+        int Branch;
 
         ControlUnit();
         ~ControlUnit();
