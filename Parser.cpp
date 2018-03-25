@@ -64,6 +64,8 @@ void Parser::read_config_file(string filename)
 					print_memory_contents = value;
 				else if (!strcmp(parameter, "output_file"))
 					output_file = value;
+				else if (!strcmp(parameter, "write_to_file"))
+					write_to_file = value;
 				else
 				{
 					printf("Malformed input on line %d!\n", lineNum);

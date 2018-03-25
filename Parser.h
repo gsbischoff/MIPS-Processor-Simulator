@@ -17,5 +17,6 @@ class Parser
 		std::string debug_mode;
 		std::string print_memory_contents;
 		std::string output_file;
+		std::string write_to_file;
 };
 #endif

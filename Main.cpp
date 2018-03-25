@@ -1,4 +1,4 @@
-#include "CPU.h"
+//#include "CPU.h"
 #include "Parser.h"
 
 int main(int argc, char* argv[])
@@ -16,19 +16,21 @@ int main(int argc, char* argv[])
     std::string debug_mode = p.debug_mode;
     std::string print_memory_contents = p.print_memory_contents;
     std::string output_file = p.output_file;
+    std::string write_to_file = p.write_to_file;
 
     //CPU object instantiated. takes the return values of our ** read file methods ** (TODO Implement these)
-    CPU cpu = CPU(read_inst_file(program_input), read_mem_file(memory_contents_input), read_reg_file(register_file_input));
+    //CPU cpu = CPU(read_inst_file(program_input), read_mem_file(memory_contents_input), read_reg_file(register_file_input));
 
 
     //test that we got the config files
-    std::cout << program_input << std::endl;
-    std::cout << memory_contents_input << std::endl;
-    std::cout << register_file_input << std::endl;
-    std::cout << output_mode << std::endl;
-    std::cout << debug_mode << std::endl;
-    std::cout << print_memory_contents << std::endl;
-    std::cout << output_file << std::endl;
+    std::cout << "Input File: " << program_input << std::endl;
+    std::cout << "Memory Contents File: " << memory_contents_input << std::endl;
+    std::cout << "Register File: " << register_file_input << std::endl;
+    std::cout << "Output Mode: " << output_mode << std::endl;
+    std::cout << "Debug Mode: " << debug_mode << std::endl;
+    std::cout << "Print Memory Contents: " << print_memory_contents << std::endl;
+    std::cout << "Output File: " << output_file << std::endl;
+    std::cout << "Write to File: " << write_to_file << std::endl;
 
 }
 
