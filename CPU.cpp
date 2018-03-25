@@ -39,6 +39,11 @@ CPU::~CPU()
     delete alu_control_unit;
 }
 
+void CPU::execute(std::string instruction)
+{
+    control_unit.set_datapath(instruction);
+}
+
 int CPU::shift_left(int a)
 {
     return a << 2;

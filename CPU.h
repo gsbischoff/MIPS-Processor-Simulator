@@ -34,6 +34,7 @@ class CPU
 
         int shift_left(int a);
         int sign_extend(int a);
+        void execute(std::string instruction);
 
 };
 #endif
