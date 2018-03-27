@@ -32,9 +32,10 @@ class CPU
         CPU(std::vector<int> inst, std::vector<int> data, int[] reg);
         ~CPU();
 
-        int shift_left(int a);
-        int sign_extend(int a);
-        void execute(std::string instruction);
+        int shift_left(int a);                  //shifts the input left two bits
+        int sign_extend(int a);                 //sign extends to 32 bits the input
+        void execute(std::string instruction);  //takes a string MIPS instruction as input and executes it. will give
+                                                //opcode to the ALU
 
 };
 #endif
