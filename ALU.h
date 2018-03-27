@@ -15,12 +15,12 @@ class ALU
         ALU()
         ~ALU();
 
-        void print_out();
-        void add();
-        void subtract();
-        bool and();
-        bool or();
-        int  slt();
+        void print_out();           //print the instance variable values
+        void add();                 //add the two values on the input lines. set result variable.
+        void subtract();            //subtract the two values on the input lines. set result variable
+        bool and();                 //logical and of the two inputs
+        bool or();                  //logical or of the two input lines
+        int  slt();                 //set a flag if in_a < in_b
         void div();
         void mult();
 
