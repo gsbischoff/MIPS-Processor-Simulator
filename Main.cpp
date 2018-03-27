@@ -26,8 +26,8 @@ int main(int argc, char* argv[])
     *   Perhaps for each line in the instruction file..execute instruction. So CPU needs an "execute instruction"
     *   method.  WHich would call control_unit.set_datapath().
     *
-    *   for(int i=0; i<cpu.instruction_memory.size(); i++)
-    *       cpu.execute(cpu.intruction_memory.get(i));
+    *   while(cpu.PC != exit)
+    *       cpu.execute(cpu.PC);
     *
     */
 

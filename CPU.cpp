@@ -46,7 +46,7 @@ void CPU::execute(std::string instruction)
     std::string opcode;
     control_unit.set_datapath(opcode);
 
-
+    //increment PC
 
 
 
