@@ -26,9 +26,14 @@ int main(int argc, char* argv[])
     *   Perhaps for each line in the instruction file..execute instruction. So CPU needs an "execute instruction"
     *   method.  WHich would call control_unit.set_datapath().
     *
-    *   while(cpu.PC != exit)
-    *       cpu.execute(cpu.PC);
-    *
+    *   if(output_mode = "batch")
+    *   {
+    *       while(cpu.PC != exit)
+    *           cpu.execute(cpu.PC);
+    *   }
+    *   else{
+    *       //make it single step...
+    *   }
     */
 
     //test that we got the config files
