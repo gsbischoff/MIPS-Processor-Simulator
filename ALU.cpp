@@ -18,21 +18,33 @@ void ALU::print_out()
 }
 
 //set the output variable to the sum of A + B
-void ALU::add()
+void ALU::execute()
 {
-    result = in_a + in_b;
-    if (result == 0)
-        zero_flag = true;
-}
+    if(control == 0)
+    {
+        //AND
+    }
+    else if(control == 1)
+    {
+        //OR
+    }
 
-void ALU::subtract()
-{
-    result = in_a - in_b;
-    if(result == 0)
-        zero_flag = true;
-}
+    else if(control == 2)  //add
+    {
+        result = in_a + in_b;
+        if (result == 0)
+            zero_flag = true;
+    }
+    else if(control == 6)  //subtract
+    {
+        result = in_a - in_b;
+        if(result == 0)
+            zero_flag = true;
+    }
+    else
+    {
+        //SET ON LESS THAN
+    }
 
-bool ALU::or()
-{
-    return false;
+
 }
