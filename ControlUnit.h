@@ -18,6 +18,7 @@ class ControlUnit
         ControlUnit();
         ~ControlUnit();
 
+        void print_out()                       //print out all the values in the unit
         void set_datapath(std::string opcode); //update all the instance variables to set the data path... will be called once per instruction.
 };
 #endif
