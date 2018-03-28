@@ -7,13 +7,14 @@ class Parser
 {
 	public:
 
-        std::vector<int> instruction_memory;    // instructions in their machine code form.
-        std::vector<std::string> string_instructions;   //instructions in string format.
+        std::vector<int> instruction_memory;    		   // instructions in their machine code form.
+        std::vector<std::string> string_instructions;      //instructions in string format.
+
 		Parser(std::string filename);
 		~Parser();
-		void read_config_file(std::string filename);
 
-        void translate_to_machine(std::string filename);                //translate string instructions to machine code. from lab 5
+		void read_config_file(std::string filename);
+        void translate_to_machine(std::string filename);   //translate string instructions to machine code. from lab 5
 
 		std::string program_input;
 		std::string memory_contents_input;
