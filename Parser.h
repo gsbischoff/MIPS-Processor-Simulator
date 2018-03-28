@@ -10,6 +10,7 @@ class Parser
 		~Parser();
 		void read_config_file(std::string filename);
 
+		void print_out();
 		std::string program_input;
 		std::string memory_contents_input;
 		std::string register_file_input;
