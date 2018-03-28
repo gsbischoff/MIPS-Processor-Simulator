@@ -21,9 +21,6 @@ class ALU
         bool and();                 //logical and of the two inputs
         bool or();                  //logical or of the two input lines
         int  slt();                 //set a flag if in_a < in_b
-        void div();
-        void mult();
-
 
 };
 #endif
