@@ -9,7 +9,7 @@ class Multiplex
         int output;
         int in_a;
         int in_b;
-        int selectorBit;
+        int selector_bit;
 
         Multiplex()
         ~Multiplex();
