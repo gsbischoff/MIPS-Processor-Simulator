@@ -32,6 +32,7 @@ class CPU
         CPU(std::vector<int> inst, std::vector<int> data, int[] reg);
         ~CPU();
 
+        void print_out()                        //prints out all of the values on the CPU components
         int shift_left(int a);                  //shifts the input left two bits
         int sign_extend(int a);                 //sign extends to 32 bits the input
         void execute(std::string instruction);  //takes a string MIPS instruction as input and executes it. will give
