@@ -39,6 +39,10 @@ CPU::~CPU()
     delete alu_control_unit;
 }
 
+void CPU::print_out(){
+    
+}
+
 void CPU::execute(std::string instruction)
 {
 
