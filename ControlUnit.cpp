@@ -1,5 +1,6 @@
 #include "ControlUnit.h"
 #include <string>
+#include <iostream>
 
 ControlUnit::ControlUnit()
 {
@@ -102,7 +103,18 @@ void ControlUnit::set_datapath(std::string opcode)
   }
   */
   
+}
 
-
-
+void ControlUnit::print_out()
+{
+  std::cout << "RegDst: " << RegDst << std::endl;
+  std::cout << "ALUSrc: " << ALUSrc << std::endl;
+  std::cout << "MemToReg: " << MemToReg << std::endl;
+  std::cout << "RegWrite: " << RegWrite << std::endl;
+  std::cout << "MemRead: " << MemRead << std::endl;
+  std::cout << "MemWrite: " << MemWrite << std::endl;
+  std::cout << "Branch: " << Branch << std::endl;
+  std::cout << "ALUOp1: " << ALUOp1 << std::endl;
+  std::cout << "ALUOp0: " << ALUOp0 << std::endl;
+  std::cout << "Jump: " << Jump << std::endl;
 }
