@@ -70,7 +70,7 @@ void ControlUnit::set_datapath(std::string opcode)
     Branch = 0;
     ALUOp1 = 0;
     ALUOp0 = 1;
-    
+
   }
   //else it is a BEQ
   else
@@ -102,11 +102,14 @@ void ControlUnit::set_datapath(std::string opcode)
     Jump = 0;
   }
   */
-  
+
 }
 
 void ControlUnit::print_out()
 {
+  std::cout << " -------------- " << std::endl;
+  std::cout << "| Control Unit |" << std::endl;
+  std::cout << " -------------- " << std::endl;
   std::cout << "RegDst: " << RegDst << std::endl;
   std::cout << "ALUSrc: " << ALUSrc << std::endl;
   std::cout << "MemToReg: " << MemToReg << std::endl;
