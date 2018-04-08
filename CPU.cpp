@@ -40,7 +40,7 @@ CPU::~CPU()
 }
 
 void CPU::print_out(){
-    
+    //printout everything
 }
 
 void CPU::execute(std::string instruction)
