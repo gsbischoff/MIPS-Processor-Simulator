@@ -11,7 +11,7 @@ class Multiplex
         int in_b;
         int selector_bit;
 
-        Multiplex()
+        Multiplex();
         ~Multiplex();
 
         void print_out();                 //print out the values in the multiplexor
