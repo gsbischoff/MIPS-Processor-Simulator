@@ -9,6 +9,12 @@ Parser::Parser(string filename)
 Parser::~Parser()
 {
 }
+/*
+u32
+Parser::parse_line(string line)
+{
+	return(0);
+}*/
 
 void Parser::read_source(string filename)
 {
@@ -29,27 +35,54 @@ void Parser::read_source(string filename)
 		{
 			lineNum++;
 
+			int size = line.size();
+
 			// Ignore empty lines
-			if(line.size() == 0)	
+			if(size == 0)	
 				continue;
 
 			char *buf = strdup(line.c_str());
 
-			if((value = strtok(line_c,"#")) == NULL)
+			for(int i = 0; buf[i] == ' ' || buf[i] == '\t' || i < size; ++i)
+				
+			// cut off any comments
+			for(int i = 0; i < size; ++i)
+				if(buf[i] == '#')
+					buf[i] = '\0';
+
+			int cutLen = strlen(buf);
+
+			if(cutLen == 0)
+				continue;
+
+			bool isSpacedout = true;
+
+			for(int i = 0; i < cutLen; ++i)
+				isSpacedout &= (buf[i] == ' ');
+
+			if(isSpacedout)
+				continue; 
+			
+			char *bufStart = buf;
+/*
+			if((buf = strtok(buf,"#")) == NULL)
 			{
 				printf("Malformed input on line %d!\n", lineNum);
-				free(buf);
+				free(bufStart);
 				break;
 			}
 			else
-			{
+			{*/
+				if(strlen(buf) == 0)
+					continue;
+
 				string instr = buf;
-				string_instructions.emplace_back(instr);
-				printf("Got line: %s\n", buf);
-				free(buf);
+				string_instructions.push_back(instr);
+				printf("\'%s\'\n", bufStart);
+				free(bufStart);
 
 				continue;
-			}
+			//}
 		}
 	}
 }
