@@ -42,16 +42,13 @@ CPU::~CPU()
 }
 
 void CPU::print_out(){
-<<<<<<< HEAD
-    //printout everything
-=======
 
     //print out ALUs
     alu1.print_out();
     alu2.print_out();
     alu3.print_out();
 
-    //print out Multiplexors
+    //print out Multiplexers
     multiplex1.print_out();
     multiplex2.print_out();
     multiplex3.print_out();
@@ -64,7 +61,6 @@ void CPU::print_out(){
     //print out ALU control unit
     alu_control_unit.print_out();
 
->>>>>>> e19a4236b0fd8b90126916a63f2de8b4372ce349
 }
 
 void CPU::execute(std::string instruction)
