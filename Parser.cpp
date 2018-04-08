@@ -10,6 +10,50 @@ Parser::~Parser()
 {
 }
 
+void Parser::read_source(string filename)
+{
+	ifstream input;
+
+	input.open(filename.c_str());
+
+	if(input.bad())
+	{
+		printf("Could not open file \"%s\"!\n", filename.c_str());
+	}
+	else
+	{
+		string line;
+		int lineNum = 0;
+
+		while(getline(input, line))
+		{
+			lineNum++;
+
+			// Ignore empty lines
+			if(line.size() == 0)	
+				continue;
+
+			char *buf = strdup(line.c_str());
+
+			if((value = strtok(line_c,"#")) == NULL)
+			{
+				printf("Malformed input on line %d!\n", lineNum);
+				free(buf);
+				break;
+			}
+			else
+			{
+				string instr = buf;
+				string_instructions.emplace_back(instr);
+				printf("Got line: %s\n", buf);
+				free(buf);
+
+				continue;
+			}
+		}
+	}
+}
+
 void Parser::read_config_file(string filename)
 {
 	ifstream input;
@@ -18,7 +62,7 @@ void Parser::read_config_file(string filename)
 
 	if(input.bad())
 	{
-		printf("Got \"bad\" input\n");
+		printf("Could not open file \"%s\"!\n", filename.c_str());
 	}
 	else
 	{
