@@ -18,7 +18,7 @@ class CPU
         std::vector<std::string> string_instructions;
         std::vector<int> instruction_memory;
         std::vector<int> data_memory;
-        int[] register_file;
+        int register_file[32];
 
         ALU alu1;
         ALU alu2;
@@ -33,7 +33,7 @@ class CPU
         ControlUnit control_unit;
         ALUControlUnit alu_control_unit;
 
-        CPU(std::vector<int> inst, std::vector<int> data, int[] reg);
+        CPU(std::vector<int> inst, std::vector<int> data, int reg[]);
         ~CPU();
 
         void print_out();                       //prints out all of the values on the CPU components
