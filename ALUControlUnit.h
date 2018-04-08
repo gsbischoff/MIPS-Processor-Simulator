@@ -8,12 +8,12 @@ class ALUControlUnit
 
         int control_out;    //4-bit signal that directly contrls the ALU, one of the 4-bit combinations in table p. 259
         int func_field_in;  //function field of the instruction
-        int ALU_op_in;
+        int ALU_op_in;      //from main control unit
 
         ALUControlUnit();
         ~ALUControlUnit();
 
-        void print_out()            //print out all contents of the unit.
+        void print_out();            //print out all contents of the unit.
         void set_control_out();     //sets the control output data line.
 
 };

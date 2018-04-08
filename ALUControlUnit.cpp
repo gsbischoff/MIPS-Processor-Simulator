@@ -1,4 +1,5 @@
 #include "ALUControlUnit.h"
+#include <iostream>
 
 ALUControlUnit::ALUControlUnit()
 {
@@ -34,7 +35,14 @@ void ALUControlUnit::set_control_out()
             control_out = 7;    //set on less than, 0111
     }
 }
+void ALUControlUnit::print_out()
+{
+  std::cout << " ----------------" << std::endl;
+  std::cout << "| ALUControlUnit |" << std::endl;
+  std::cout << " ----------------" << std::endl;
+  std::cout << "Output: " << control_out << std::endl;
+  std::cout << "Function Field: " << func_field_in << std::endl;
+  std::cout << "ALU Operation Line: " << ALU_op_in << std::endl;
 
-void print_out(){
-    
+
 }
