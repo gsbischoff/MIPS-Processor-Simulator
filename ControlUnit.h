@@ -1,5 +1,6 @@
 #ifndef __CONTROLUNIT_H__
 #define __CONTROLUNIT_H__
+#include <string>
 
 class ControlUnit
 {
@@ -9,15 +10,18 @@ class ControlUnit
         int RegDst;
         int RegWrite;
         int ALUSrc;
-        int ALUOp;
+        int ALUOp0;
+        int ALUOp1;
         int MemRead;
         int MemWrite;
         int MemToReg;
         int Branch;
+        int Jump;
 
         ControlUnit();
         ~ControlUnit();
 
+        void print_out();                      //print out all the values in the unit
         void set_datapath(std::string opcode); //update all the instance variables to set the data path... will be called once per instruction.
 };
 #endif

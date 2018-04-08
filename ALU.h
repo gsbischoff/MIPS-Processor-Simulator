@@ -15,12 +15,8 @@ class ALU
         ALU()
         ~ALU();
 
+        void execute();             //looks at control line and decides whether to add, subtract, AND, OR, or SLT based on the input lines.
         void print_out();           //print the instance variable values
-        void add();                 //add the two values on the input lines. set result variable.
-        void subtract();            //subtract the two values on the input lines. set result variable
-        int and();                 //logical and of the two inputs
-        int or();                  //logical or of the two input lines
-        int  slt();                 //set a flag if in_a < in_b
 
 };
 #endif

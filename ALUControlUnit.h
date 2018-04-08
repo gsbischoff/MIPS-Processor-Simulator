@@ -13,9 +13,8 @@ class ALUControlUnit
         ALUControlUnit();
         ~ALUControlUnit();
 
+        void print_out()            //print out all contents of the unit.
         void set_control_out();     //sets the control output data line.
-
-
 
 };
 #endif

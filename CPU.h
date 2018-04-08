@@ -12,6 +12,7 @@ class CPU
     public:
 
         int PC;
+        std::vector<std::string> string_instructions;
         std::vector<int> instruction_memory;
         std::vector<int> data_memory;
         int[] register_file;
@@ -35,8 +36,7 @@ class CPU
         void print_out()                        //prints out all of the values on the CPU components
         int shift_left(int a);                  //shifts the input left two bits
         int sign_extend(int a);                 //sign extends to 32 bits the input
-        void execute(std::string instruction);  //takes a string MIPS instruction as input and executes it. will give
-                                                //opcode to the ALU
+        void execute(int PC);                   //takes the PC and exectues the corresponding instruction stored in that memory
 
 };
 #endif
