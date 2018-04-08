@@ -5,5 +5,6 @@
 #include <fstream>
 #include <cstring>
 #include <cstdlib>
+#include <stdint.h>
 
 #endif
