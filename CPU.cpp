@@ -55,7 +55,7 @@ void CPU::print_out(){
     alu2.print_out();
     alu3.print_out();
 
-    //print out Multiplexors
+    //print out Multiplexers
     multiplex1.print_out();
     multiplex2.print_out();
     multiplex3.print_out();

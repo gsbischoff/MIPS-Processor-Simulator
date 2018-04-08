@@ -35,7 +35,6 @@ void ALUControlUnit::set_control_out()
             control_out = 7;    //set on less than, 0111
     }
 }
-
 void ALUControlUnit::print_out()
 {
   std::cout << " ----------------" << std::endl;

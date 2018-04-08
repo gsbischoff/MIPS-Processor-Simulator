@@ -14,7 +14,7 @@ ALU::ALU()
 
 void ALU::print_out()
 {
-
+    //print out everything
 }
 
 //set the output variable to the sum of A + B
