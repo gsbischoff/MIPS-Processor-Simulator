@@ -1,5 +1,7 @@
 #include "ALU.h"
+#include "CPU.h"
 #include "Multiplex.h"
+#include "ControlUnit.h"
 
 CPU::CPU(std::vector<int> inst, std::vector<int> data, int[] reg)
 {
@@ -11,11 +13,11 @@ CPU::CPU(std::vector<int> inst, std::vector<int> data, int[] reg)
     alu2 = new ALU();
     alu3 = new ALU();
 
-    multiplex1 = new Multiplexor();
-    multiplex2 = new Multiplexor();
-    multiplex3 = new Multiplexor();
-    multiplex4 = new Multiplexor();
-    multiplex5 = new Multiplexor();
+    multiplex1 = new Multiplex();
+    multiplex2 = new Multiplex();
+    multiplex3 = new Multiplex();
+    multiplex4 = new Multiplex();
+    multiplex5 = new Multiplex();
 
     control_unit = new ControlUnit();
 
