@@ -31,21 +31,7 @@ CPU::CPU(std::vector<int> inst, std::vector<int> data, int reg[])
 
 CPU::~CPU()
 {
-    /*
-    delete alu1;
-    delete alu2;
-    delete alu3;
 
-    delete multiplex1;
-    delete multiplex2;
-    delete multiplex3;
-    delete multiplex4;
-    delete multiplex5;
-
-    delete control_unit;
-
-    delete alu_control_unit;
-    */
 }
 
 void CPU::print_out(){
@@ -76,7 +62,31 @@ void CPU::execute(int PC)
 
     //EXTRACT THE OPCODE TO THEN SET DATA PATH. The control unit only needs opcode (bits 31-26) to properly set entire datapath.
     std::string opcode;
+
+    //set Control UNit datapath lines
     control_unit.set_datapath(opcode);
+
+    //set alu control unit lines
+    alu_control_unit.ALU_op_in = control_unit.ALUOp0 + control_unit.ALUOp1;
+    alu_control_unit.func_field_in = 1; // This needs to get the integer representation of the instruction's function field ****
+    alu_control_unit.set_control_out();
+
+    //set up multiplex1
+    multiplex1.set_selector(control_unit.RegDst);
+    multiplex1.in_a = 1;        //this atctually gets Instruction [20-16]
+    multiplex1.in_b = 2;        //this atctually gets Instruction [15-11]
+    multiplex1.set_output();
+
+    //set up multiplex2
+    multiplex1.set_selector(control_unit.RegDst);
+    multiplex1.in_a = 1;        //this atctually gets Instruction [20-16]
+    multiplex1.in_b = 2;        //this atctually gets Instruction [15-11]
+    multiplex1.set_output();
+
+
+
+
+
 
     //increment PC
 
