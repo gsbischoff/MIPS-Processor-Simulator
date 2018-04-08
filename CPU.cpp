@@ -78,14 +78,22 @@ void CPU::execute(int PC)
     multiplex1.set_output();
 
     //set up multiplex2
-    multiplex1.set_selector(control_unit.RegDst);
-    multiplex1.in_a = 1;        //this atctually gets Instruction [20-16]
-    multiplex1.in_b = 2;        //this atctually gets Instruction [15-11]
-    multiplex1.set_output();
+    multiplex2.set_selector(control_unit.ALUSrc);
+    multiplex2.in_a = 1;        //this atctually gets Read data 2 from register file
+    multiplex2.in_b = 2;        //this atctually gets Sign Extended Instruction [5-0]
+    multiplex2.set_output();
 
+    //set up multiplex3
+    multiplex3.set_selector(control_unit.MemToReg);
+    multiplex3.in_a = 1;        //this atctually gets Data Memory Read-Data
+    multiplex3.in_b = 2;        //this atctually gets main ALU result
+    multiplex3.set_output();
 
-
-
+    //set up multiplex4
+    multiplex4.set_selector(1); //this actually gets the result of ANDing the Zero flag of main ALU and Branch line from control unit
+    multiplex4.in_a = 1;        //this actually gets ... look at the picture
+    multiplex4.in_b = 2;        //this actually gets ... look at the picture
+    multiplex4.set_output();
 
 
     //increment PC
