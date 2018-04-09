@@ -37,52 +37,40 @@ void Parser::read_source(string filename)
 
 			int size = line.size();
 
-			// Ignore empty lines
-			if(size == 0)	
-				continue;
-
 			char *buf = strdup(line.c_str());
+			char *buf_s = buf; 	// Actual string start so we can free
 
-			for(int i = 0; buf[i] == ' ' || buf[i] == '\t' || i < size; ++i)
-				
-			// cut off any comments
+			// Cut off any comments
 			for(int i = 0; i < size; ++i)
 				if(buf[i] == '#')
 					buf[i] = '\0';
 
-			int cutLen = strlen(buf);
+			// Strip any leading whitespace
+			while(buf[0] != '\0' && (buf[0] == ' ' || buf[0] == '\t'))
+				buf++;
 
-			if(cutLen == 0)
-				continue;
+			int end = strlen(buf) - 1;
 
-			bool isSpacedout = true;
+			// If nothing remains, ignore the line
+			if(end < 0)
+				continue;	
 
-			for(int i = 0; i < cutLen; ++i)
-				isSpacedout &= (buf[i] == ' ');
-
-			if(isSpacedout)
-				continue; 
-			
-			char *bufStart = buf;
-/*
-			if((buf = strtok(buf,"#")) == NULL)
+			// Strip any trailing whitespace
+			while(end != 0 && buf[end] != '\0' 
+					&& (buf[end] == ' ' || buf[end] == '\t'))
 			{
-				printf("Malformed input on line %d!\n", lineNum);
-				free(bufStart);
-				break;
+				buf[end] = '\0';
+				end--;
 			}
-			else
-			{*/
-				if(strlen(buf) == 0)
-					continue;
+			
+			// Store the line in the instruction vector
+			string instr = buf;
+			string_instructions.push_back(instr);
 
-				string instr = buf;
-				string_instructions.push_back(instr);
-				printf("\'%s\'\n", bufStart);
-				free(bufStart);
+			printf("\'%s\'\n", buf);
 
-				continue;
-			//}
+			// Free all of the allocated memory from the original start
+			free(buf_s);
 		}
 	}
 }
