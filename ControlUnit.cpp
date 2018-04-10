@@ -12,10 +12,10 @@ ControlUnit::~ControlUnit()
 
 }
 
-void ControlUnit::set_datapath(std::string opcode)
+void ControlUnit::set_datapath(int opcode)
 {
   //if it is an R-Type
-  if(opcode == "00000")
+  if(opcode == 0)
   {
     RegDst = 1;
     ALUSrc = 0;
@@ -29,7 +29,7 @@ void ControlUnit::set_datapath(std::string opcode)
     Jump = 0;
   }
   //else if is it LW ?
-  else if(opcode == "100011")
+  else if(opcode == 35)
   {
     RegDst = 0;
     ALUSrc = 1;
@@ -43,7 +43,7 @@ void ControlUnit::set_datapath(std::string opcode)
     Jump = 0;
   }
   //else if is it SW ?
-  else if(opcode == "101011")
+  else if(opcode == 43)
   {
     RegDst = 0;
     ALUSrc = 1;
@@ -57,7 +57,7 @@ void ControlUnit::set_datapath(std::string opcode)
     Jump = 0;
   }
   //Need to implement J - TYPE ** NOT SURE ON THIS ONE **
-  else if("000010")
+  else if(opcode == 2)
   {
     Jump = 1;
 
