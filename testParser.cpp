@@ -7,12 +7,15 @@ main(int argc, char **argv)
 
 	if(argc == 2)
 	{
-		filename = argv[1];
+		//filename = 
 		printf("Reading config ...\n");
 		Parser parser = Parser("test.txt");
 
-		printf("Reading source ...\n");
-		parser.read_source(filename);
+		parser.register_file_input = argv[1];
+		printf("Reading reg file ...\n");
+		parser.read_register_file();
+
+		//parser.register_file_input = argv[1];
 
 		printf("Source read!\n");
 	}	

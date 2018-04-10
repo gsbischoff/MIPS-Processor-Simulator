@@ -9,22 +9,55 @@ Parser::Parser(string filename)
 Parser::~Parser()
 {
 }
-/*
-u32
-Parser::parse_line(string line)
-{
-	return(0);
-}*/
 
-void Parser::read_source(string filename)
+std::string stripLine(string line)
+{
+	int size = line.size();
+
+	char *buf = strdup(line.c_str());
+	char *buf_s = buf; 	// Actual string start so we can free
+
+	// Cut off any comments
+	for(int i = 0; i < size; ++i)
+		if(buf[i] == '#')
+			buf[i] = '\0';
+
+	// Strip any leading whitespace
+	while(buf[0] != '\0' && (buf[0] == ' ' || buf[0] == '\t'))
+		buf++;
+
+	int end = strlen(buf) - 1;
+
+	// If nothing remains, ignore the line
+	if(end < 0)
+		return "";
+
+	// Strip any trailing whitespace
+	while(end != 0 && buf[end] != '\0' 
+			&& (buf[end] == ' ' || buf[end] == '\t'))
+	{
+		buf[end] = '\0';
+		end--;
+	}
+	
+	// Store the line
+	string temp = buf;
+
+	// Free all of the allocated memory from the original start
+	free(buf_s);
+
+	return temp;
+}
+
+void Parser::read_register_file()
 {
 	ifstream input;
 
-	input.open(filename.c_str());
+	input.open(register_file_input.c_str());
 
 	if(input.bad())
 	{
-		printf("Could not open file \"%s\"!\n", filename.c_str());
+		printf("Could not open file \"%s\"!\n", register_file_input.c_str());
 	}
 	else
 	{
@@ -35,42 +68,123 @@ void Parser::read_source(string filename)
 		{
 			lineNum++;
 
-			int size = line.size();
+			string str = stripLine(line);
 
-			char *buf = strdup(line.c_str());
-			char *buf_s = buf; 	// Actual string start so we can free
+			if(str.size() == 0)
+				continue;
 
-			// Cut off any comments
-			for(int i = 0; i < size; ++i)
-				if(buf[i] == '#')
-					buf[i] = '\0';
+			char *buf = strdup(str.c_str());
+			char *buf_s = buf;
 
-			// Strip any leading whitespace
-			while(buf[0] != '\0' && (buf[0] == ' ' || buf[0] == '\t'))
-				buf++;
+			char *reg;
+			char *value;
 
-			int end = strlen(buf) - 1;
+			reg = strtok(buf, ":");
 
-			// If nothing remains, ignore the line
-			if(end < 0)
-				continue;	
-
-			// Strip any trailing whitespace
-			while(end != 0 && buf[end] != '\0' 
-					&& (buf[end] == ' ' || buf[end] == '\t'))
+			if((value = strtok(NULL,":")) == NULL)
 			{
-				buf[end] = '\0';
-				end--;
+				printf("Malformed input on line %d!\n", lineNum);
+				free(buf_s);
+				break;
 			}
+			else
+			{
+				// take chars and convert each into its int value
+				// decimal for register number and hex for the value
+				u32 r = std::strtoul(reg, NULL, 10);
+				u32 val = std::strtoul(value, NULL, 16);
+
+				printf("Val on line %d:%x\n", r, val);
+
+				// Ignore invalid-valued registers
+				if(r > 31)
+					continue;
+
+				register_file[r] = val;
+			}
+
+			free(buf_s);
+		}
+	}
+}
+
+void Parser::read_memory_contents()
+{
+	ifstream input;
+
+	input.open(memory_contents_input.c_str());
+
+	if(input.bad())
+	{
+		printf("Could not open file \"%s\"!\n", memory_contents_input.c_str());
+	}
+	else
+	{
+		string line;
+		int lineNum = 0;
+
+		while(getline(input, line))
+		{
+			lineNum++;
+
+			string str = stripLine(line);
+
+			if(str.size() == 0)
+				continue;
+
+			char *buf = strdup(str.c_str());
+			char *buf_s = buf;
+
+			char *offset;
+			char *value;
+
+			offset = strtok(buf, ":");
+
+			if((value = strtok(NULL,":")) == NULL)
+			{
+				printf("Malformed input on line %d!\n", lineNum);
+				free(buf_s);
+				break;
+			}
+			else
+			{
+				// take chars and convert each hex digit to its corresponding bits
+				u32 val = std::strtoul(value, NULL, 16);
+
+				instruction_memory.push_back(val);
+			}
+
+			free(buf_s);
+		}
+	}
+}
+
+void Parser::read_program() //string filename)
+{
+	ifstream input;
+
+	input.open(program_input.c_str());
+
+	if(input.bad())
+	{
+		printf("Could not open file \"%s\"!\n", program_input.c_str());
+	}
+	else
+	{
+		string line;
+		int lineNum = 0;
+
+		while(getline(input, line))
+		{
+			lineNum++;
+
+			string str = stripLine(line);
+
+			if(str.size() == 0)
+				continue;
 			
 			// Store the line in the instruction vector
-			string instr = buf;
-			string_instructions.push_back(instr);
-
-			printf("\'%s\'\n", buf);
-
-			// Free all of the allocated memory from the original start
-			free(buf_s);
+			string_instructions.push_back(str);
 		}
 	}
 }
@@ -94,13 +208,13 @@ void Parser::read_config_file(string filename)
 		{
 			lineNum++;
 
-			if(strlen(line.c_str()) == 0)
+			string str = stripLine(line);
+
+			if(str.size() == 0)
 				continue;
 
-			if((char) *(line.c_str()) == '#')
-				continue;
-
-			char *buf = strdup(line.c_str());
+			char *buf = strdup(str.c_str());
+			char *buf_s = buf;
 
 			char *parameter;
 			char *value;
@@ -110,7 +224,7 @@ void Parser::read_config_file(string filename)
 			if((value = strtok(NULL,"=")) == NULL)
 			{
 				printf("Malformed input on line %d!\n", lineNum);
-				free(buf);
+				free(buf_s);
 				break;
 			}
 			else
@@ -134,12 +248,12 @@ void Parser::read_config_file(string filename)
 				else
 				{
 					printf("Malformed input on line %d!\n", lineNum);
-					free(buf);
+					free(buf_s);
 					break;
 				}
 			}
 
-			free(buf);
+			free(buf_s);
 		}
 	}
 }
