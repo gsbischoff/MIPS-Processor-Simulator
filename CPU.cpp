@@ -59,23 +59,36 @@ void CPU::print_out(){
 void CPU::execute(int PC)
 {
     //get instruction from memory
-
+    int instruction;
 
     //EXTRACT THE OPCODE TO THEN SET DATA PATH. The control unit only needs opcode (bits 31-26) to properly set entire datapath.
-    int opcode;
+    //Then shift opcode right 26 bits
+    int opcode = instruction & MASK_31_26;
+    opcode = opcode >> 26;
 
     //set Control UNit datapath lines
     control_unit.set_datapath(opcode);
 
+    //** Properly grab bits of instruction **/
+    int r1 = instruction & MASK_25_21;              //Instruction [25-21] for register 1
+    r1 >> 21;
+    int r2 = instruction & MASK_20_16;              //Instruction [20-16] for register 2
+    r2 >> 16;
+    int mux1_b = instruction & MASK_15_11;          //Instruction [20-16] for B input of mux1
+    mux1_b >> 11;
+    int func_field = instruction & MASK_5_0;        //integer representation of the instruction's function field..  for ALU control Unit ****
+    int inst_25_0 = instruction & MASK_25_0;
+
+
     //set alu control unit lines
     alu_control_unit.ALU_op_in = control_unit.ALUOp0 + control_unit.ALUOp1;
-    alu_control_unit.func_field_in = 1; // This needs to get the integer representation of the instruction's function field ****
+    alu_control_unit.func_field_in = func_field;
     alu_control_unit.set_control_out();
 
     //set up multiplex1
     multiplex1.set_selector(control_unit.RegDst);
-    multiplex1.in_a = 1;        //this atctually gets Instruction [20-16]
-    multiplex1.in_b = 2;        //this atctually gets Instruction [15-11]
+    multiplex1.in_a = r2;        /
+    multiplex1.in_b = mux1_b;        //this atctually gets Instruction [15-11]
     multiplex1.set_output();
 
     //set up multiplex2
