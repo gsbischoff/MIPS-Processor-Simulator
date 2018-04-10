@@ -14,6 +14,7 @@ class Parser
 		~Parser();
 
 		void read_config_file(std::string filename);
+		void read_source(std::string filename);
         void translate_to_machine(std::string filename);   //translate string instructions to machine code. from lab 5
 
 		std::string program_input;

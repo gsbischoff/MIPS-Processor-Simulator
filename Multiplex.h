@@ -14,7 +14,7 @@ class Multiplex
         Multiplex();
         ~Multiplex();
 
-        void print_out();                 //print out the values in the multiplexor
+        void print_out();                  //print out the values in the multiplexor
         void set_output();                 //sets the output line
         void set_selector(int selector);   //sets selector bit based on the control line
 

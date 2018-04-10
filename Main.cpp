@@ -66,39 +66,3 @@ std::vector<int> read_inst_file(std::string filename)
 }
 */
 
-/*
-//method to read the register file...it will return a vector so that we can directly put it into the CPU constructor.
-int[] read_reg_file(std::string filename)
-{
-    ifstream input;
-    int[] reg_vals;
-
-    input.open(filename.c_str());
-
-    if(input.bad())
-    {
-        printf("Got \"bad\" input\n");
-    }
-    else
-    {
-        string line;
-        int lineNum = 0;
-
-        while(getline(input, line))
-        {
-            lineNum++;
-
-            if(strlen(line.c_str()) == 0)
-                continue;
-
-            if((char) *(line.c_str()) == '#')
-                continue;
-
-        }
-
-    }
-
-    return reg_vals;
-}
-
-*/
