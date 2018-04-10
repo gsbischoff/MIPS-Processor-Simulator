@@ -3,7 +3,7 @@
 #include "Multiplex.h"
 #include "ControlUnit.h"
 
-CPU::CPU(std::vector<int> inst, std::vector<int> data, int reg[])
+CPU::CPU(std::vector<u32> inst, std::vector<int> data, int reg[])
 {
     instruction_memory = inst;
     data_memory = data;
@@ -60,8 +60,9 @@ void CPU::execute(int PC)
 {
     //get instruction from memory
 
+
     //EXTRACT THE OPCODE TO THEN SET DATA PATH. The control unit only needs opcode (bits 31-26) to properly set entire datapath.
-    std::string opcode;
+    int opcode;
 
     //set Control UNit datapath lines
     control_unit.set_datapath(opcode);
