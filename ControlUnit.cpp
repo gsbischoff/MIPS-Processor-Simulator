@@ -15,11 +15,7 @@ ControlUnit::~ControlUnit()
 void ControlUnit::set_datapath(int opcode)
 {
   //if it is an R-Type
-<<<<<<< HEAD
-  if(opcode == 0)   //000000
-=======
   if(opcode == 0)
->>>>>>> 774c4de4734b8aaad031aa99953b39c9444ed33f
   {
     RegDst = 1;
     ALUSrc = 0;
@@ -33,11 +29,7 @@ void ControlUnit::set_datapath(int opcode)
     Jump = 0;
   }
   //else if is it LW ?
-<<<<<<< HEAD
-  else if(opcode == 35) //"100011"
-=======
   else if(opcode == 35)
->>>>>>> 774c4de4734b8aaad031aa99953b39c9444ed33f
   {
     RegDst = 0;
     ALUSrc = 1;
@@ -51,11 +43,7 @@ void ControlUnit::set_datapath(int opcode)
     Jump = 0;
   }
   //else if is it SW ?
-<<<<<<< HEAD
-  else if(opcode == 43) //"101011"
-=======
   else if(opcode == 43)
->>>>>>> 774c4de4734b8aaad031aa99953b39c9444ed33f
   {
     RegDst = 0;
     ALUSrc = 1;
