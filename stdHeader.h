@@ -24,5 +24,6 @@
 #define MASK_15_0 0x0000FFFF
 #define MASK_5_0 0x0000003F
 #define MASK_31_28 0xF0000000
+#define MASK_25_0 0x03FFFFFF
 
 #endif
