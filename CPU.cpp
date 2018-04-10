@@ -110,5 +110,10 @@ int CPU::shift_left(int a)
 
 int CPU::sign_extend(int a)
 {
-    return static_cast<int32_t>(a);
+//    return static_cast<int32_t>(a);
 }
+
+vector<int> CPU::instruction_convert()
+{
+}
+
