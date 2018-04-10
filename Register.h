@@ -11,6 +11,9 @@ class Register
         int reg1;
         int reg2;
 
+        int write_reg;
+        int write_data;
+
         int result;
         int in_a;
         int in_b;
