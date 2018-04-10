@@ -9,6 +9,12 @@ Parser::Parser(string filename)
 Parser::~Parser()
 {
 }
+/*
+u32
+Parser::parse_line(string line)
+{
+	return(0);
+}*/
 
 void Parser::read_source(string filename)
 {
@@ -29,27 +35,42 @@ void Parser::read_source(string filename)
 		{
 			lineNum++;
 
-			// Ignore empty lines
-			if(line.size() == 0)	
-				continue;
+			int size = line.size();
 
 			char *buf = strdup(line.c_str());
+			char *buf_s = buf; 	// Actual string start so we can free
 
-			if((value = strtok(line_c,"#")) == NULL)
-			{
-				printf("Malformed input on line %d!\n", lineNum);
-				free(buf);
-				break;
-			}
-			else
-			{
-				string instr = buf;
-				string_instructions.emplace_back(instr);
-				printf("Got line: %s\n", buf);
-				free(buf);
+			// Cut off any comments
+			for(int i = 0; i < size; ++i)
+				if(buf[i] == '#')
+					buf[i] = '\0';
 
-				continue;
+			// Strip any leading whitespace
+			while(buf[0] != '\0' && (buf[0] == ' ' || buf[0] == '\t'))
+				buf++;
+
+			int end = strlen(buf) - 1;
+
+			// If nothing remains, ignore the line
+			if(end < 0)
+				continue;	
+
+			// Strip any trailing whitespace
+			while(end != 0 && buf[end] != '\0' 
+					&& (buf[end] == ' ' || buf[end] == '\t'))
+			{
+				buf[end] = '\0';
+				end--;
 			}
+			
+			// Store the line in the instruction vector
+			string instr = buf;
+			string_instructions.push_back(instr);
+
+			printf("\'%s\'\n", buf);
+
+			// Free all of the allocated memory from the original start
+			free(buf_s);
 		}
 	}
 }
