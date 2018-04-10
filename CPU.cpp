@@ -73,7 +73,7 @@ void CPU::print_out(){
 void CPU::execute(int PC)
 {
     //get instruction from memory
-
+    
     //EXTRACT THE OPCODE TO THEN SET DATA PATH. The control unit only needs opcode (bits 31-26) to properly set entire datapath.
     std::string opcode;
     control_unit.set_datapath(opcode);
@@ -91,5 +91,10 @@ int CPU::shift_left(int a)
 
 int CPU::sign_extend(int a)
 {
-    return static_cast<int32_t>(a);
+//    return static_cast<int32_t>(a);
 }
+
+vector<int> CPU::instruction_convert()
+{
+}
+
