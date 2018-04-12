@@ -23,10 +23,12 @@ void ALU::execute()
     if(control == 0)
     {
         //AND
+        result = in_a & in_b;
     }
     else if(control == 1)
     {
         //OR
+        result = in_a | in_b;
     }
 
     else if(control == 2)  //add

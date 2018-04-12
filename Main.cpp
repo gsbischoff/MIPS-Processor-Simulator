@@ -21,15 +21,14 @@ int main(int argc, char* argv[])
     //CPU object instantiated. takes the return values of our ** read file methods ** (TODO Implement these)
     //CPU cpu = CPU(read_inst_file(program_input), read_mem_file(memory_contents_input), read_reg_file(register_file_input));
 
-    /** What is our roadmap from here??
+    /**
     *
-    *   Perhaps for each line in the instruction file..execute instruction. So CPU needs an "execute instruction"
-    *   method.  WHich would call control_unit.set_datapath().
     *
     *   if(output_mode = "batch")
     *   {
     *       while(cpu.PC != exit)
     *           cpu.execute(cpu.PC);
+    *
     *   }
     *   else{
     *       //make it single step...

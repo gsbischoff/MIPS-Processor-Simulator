@@ -23,6 +23,7 @@ class Register
         ~Register();
 
         void write();
+        void print_out();
 
 };
 #endif
