@@ -10,6 +10,34 @@ Parser::~Parser()
 {
 }
 
+enum Opcode
+{
+	ADD,
+	SUB,
+	ADDI,
+	SLT,
+	LW,
+	SW,
+	BEQ,
+	J,
+	UNDEF
+};
+
+
+
+bool match_case(char *a, char *b)
+{
+	int a_len = strlen(a);
+
+	bool result = true;
+
+	for(int i = 0; i < a_len; ++i)
+		result &= (a[i] - b[i] == 0 
+				|| a[i] - b[i] == ('a' - 'A'));
+
+	return result;
+}
+
 // -----
 //  translate_to_machine
 //	  Translates each of the MIPS instruction lines in
@@ -17,6 +45,8 @@ Parser::~Parser()
 //	  		into 32-bit machine code
 void Parser::translate_to_machine()
 {
+	u32 instruction;
+
 	// Take a line
 	std::string line = string_instructions[1];
 
@@ -40,11 +70,52 @@ void Parser::translate_to_machine()
 	*/
 	// Get Opcode
 	char *opcode = strtok(buf, " ");
+	char *fields = strtok(NULL, " ");
 
+	Opcode op = UNDEF;
+
+	if(match_case("add", opcode))	op = ADD;
+	if(match_case("sub", opcode))	op = SUB;
+	if(match_case("addi", opcode))	op = ADDI;
+	if(match_case("slt", opcode))	op = SLT;
+	if(match_case("lw", opcode))	op = LW;
+	if(match_case("sw", opcode))	op = SW;
+	if(match_case("beq", opcode))	op = BEQ;
+	if(match_case("j", opcode))		op = J;
+
+	switch(op)
+	{
+		case ADD:
+			handle_RType(fields);
+			break;
+		case SUB:
+			handle_RType(fields);
+			break;
+		case ADDI:
+			handle_IType(fields);
+			break;
+		case SLT:
+			handle_RType(fields);
+			break;
+		case LW:
+			handle_IType(fields);
+			break;
+		case SW:
+			handle_IType(fields);
+			break;
+		case BEQ:
+			handle_IType(fields);
+			break;
+		case J:
+			handle_JType(fields);
+			break;
+		default:
+			return(0);
+	}
 	
 
 
-	char *fields = strtok(NULL, " ");
+
 	
 
 	free(buf_s);	
