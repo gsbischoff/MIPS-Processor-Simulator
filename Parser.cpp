@@ -3,9 +3,9 @@
 using namespace std;
 
 // -----
-//  get_register
-//	  Reads a decimal value from a string if a '$' is present, meaning it
-//		is a register. Otherwise, reads as hex and sets a flag
+//  Parser
+//	  Constructs a Parser instance based on a specific input file
+//		and reads in the files named in the config file
 Parser::Parser(std::string filename)
 {
 	read_config_file(filename);
@@ -39,7 +39,6 @@ enum Opcode
 //		is a register. Otherwise, reads as hex and sets a flag
 u32 get_register(char *f)
 {
-	//printf("get_register(%s)\n", f);
 	for(int i = 0; i < strlen(f); ++i)
 		if(f[i] == '$')
 			return strtoul(f + 1, NULL, 10);
@@ -55,9 +54,6 @@ u32 get_register(char *f)
 //	  between the Opcode and func fields of a MIPS instruction
 u32 handle_RType(char *fields)
 {
-	// Have comma-seperated registers
-	char *buf_s = fields;
-
 	char *rd, *rs, *rt;
 	int rd_n = 0, rs_n, rt_n, sh_n = 0;
 
@@ -129,8 +125,6 @@ u32 handle_IType(char *fields)
 	}
 	else	// $rt, imm($rs) -> $rt
 	{
-		char *temp;
-
 		if((imm = strtok(NULL, ",()")) == NULL)	// imm($rs) -> imm
 			return(0);
 
