@@ -15,7 +15,6 @@ ControlUnit::~ControlUnit()
 void ControlUnit::set_datapath(int opcode)
 {
   //if it is an R-Type
-
   if(opcode == 0) 
   {
     RegDst = 1;
@@ -30,7 +29,6 @@ void ControlUnit::set_datapath(int opcode)
     Jump = 0;
   }
   //else if is it LW ?
-
   else if(opcode == 35)
   {
     RegDst = 0;
@@ -45,7 +43,6 @@ void ControlUnit::set_datapath(int opcode)
     Jump = 0;
   }
   //else if is it SW ?
-
   else if(opcode == 43)
   {
     RegDst = 0;
