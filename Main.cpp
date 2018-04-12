@@ -47,21 +47,3 @@ int main(int argc, char* argv[])
 
 }
 
-/*
-std::vector<int> read_mem_file(std::string filename)
-{
-    std::vector<int> memory;
-
-    return memory;
-}
-*/
-
-/*
-std::vector<int> read_inst_file(std::string filename)
-{
-    std::vector<int> instructions;
-
-    return instructions;
-}
-*/
-

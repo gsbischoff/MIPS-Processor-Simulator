@@ -7,14 +7,24 @@ Register::Register(std::vector<s32> reg)
 
 Register::~Register() {}
 
+
+
+void Register::write()
+{
+  registers[write_register] = write_data;
+}
+
+
+
+
 void Register::print_out()
 {
   std::cout << " -------------- " << std::endl;
   std::cout << "| Register File |" << std::endl;
   std::cout << " -------------- " << std::endl;
-  //std::cout << "Input A: " << in_a << std::endl;
-  //std::cout << "Input B: " << in_b << std::endl;
-  //std::cout << "Selector: " << selectorBit << std::endl;
-  //std::cout << "Output: " << output << std::endl;
+  std::cout << "Register 1: " << reg1 << std::endl;
+  std::cout << "Register 2: " << reg1 << std::endl;
+  std::cout << "Write Register: " << write_reg << std::endl;
+  std::cout << "Write Data: " << write_data << std::endl;
 
 }

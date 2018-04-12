@@ -119,6 +119,7 @@ void CPU::execute(int PC)
     reg_file.reg1 = reg_file.registers.get(r1);         //read data 1
     reg_file.reg2 = reg_file.registers.get(r2);         //read data 2
     reg_file.write_reg = multiplex1.output;             //write register set
+    reg_file.control_write = control_unit.RegWrite;     //RegWrite
 
     //set up multiplex2
     multiplex2.set_selector(control_unit.ALUSrc);
@@ -165,8 +166,11 @@ void CPU::execute(int PC)
     multiplex3.in_a = data_memory.read_data;        //gets Data Memory Read-Data
     multiplex3.in_b = alu1.result;                  //gets main ALU result
     multiplex3.set_output();
-    reg_file.write_data = multiplex3.output;
 
+    //handle Write Back if Necassary
+    reg_file.write_data = multiplex3.output;
+    if(reg_file.control_write == 1)
+        reg_file.write();
 
     //increment PC
     PC = multiplex5.output;

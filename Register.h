@@ -14,10 +14,7 @@ class Register
         int write_reg;
         int write_data;
 
-        int result;
-        int in_a;
-        int in_b;
-        int control;
+        int control_write;
 
         Register(std::vector<s32> reg);
         ~Register();
