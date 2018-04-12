@@ -10,30 +10,140 @@ Parser::~Parser()
 {
 }
 
+// 6 bit opcode field and 6 bit func field set
 enum Opcode
 {
-	ADD,
-	SUB,
-	ADDI,
-	SLT,
-	LW,
-	SW,
-	BEQ,
-	J,
-	UNDEF
+	UNDEF = 0,
+	ADD = 	(0x00 << 26) | (32),
+	SUB = 	(0x00 << 26) | (34),
+	ADDI = 	(0x08 << 26) | (0),
+	SLT = 	(0x02 << 26) | (42),
+	LW = 	(0x23 << 26) | (0),
+	SW = 	(0x2b << 26) | (0),
+	BEQ =	(0x04 << 26) | (0),
+	J = 	(0x02 << 26) | (0)
 };
 
-
-
-bool match_case(char *a, char *b)
+u32 get_register(char *f)
 {
+	for(int i = 0; i < strlen(f); ++i)
+		if(f[i] == '$')
+			return strtoul(f + 1, NULL, 10);
+
+	return strtoul(f, NULL, 16) | 0x80000000;
+}
+
+u32 handle_RType(char *fields)
+{
+	// Have comma-seperated registers
+	char *buf_s = fields;
+
+	char *rd, *rs, *rt;
+	int rd_n, rs_n, rt_n, sh_n;
+
+	// All R-Type instructions we are handling will have 3 register fields
+	if((rd = strtok(fields, ",")) == NULL)
+		return(0);
+
+		printf("rd: %s\n", rd);
+
+	if((rs = strtok(NULL, ",")) == NULL)
+		return(0);
+
+		printf("rs: %s\n", rs);
+
+	if((rt = strtok(NULL, ",")) == NULL)
+		return(0);
+
+		printf("rt: %s\n", rt);
+	
+	
+	u32 t = get_register(rd);
+
+	if(t >> 31)
+		sh_n = t & 0x7FFFFFFF;
+	else
+		rd_n = t;
+		
+	rs_n = get_register(rs);
+	rt_n = get_register(rt);
+
+	return (rs_n << 21)
+		 | (rt_n << 16)
+		 | (rd_n << 11)
+		 | (sh_n <<  6);
+}
+u32 handle_IType(char *fields)
+{
+	char *rs, *rt, *imm;
+	bool offset = true;
+
+	int rs_n, rt_n, imm_n;
+
+	// Check if we have the immediate field 2nd (true) or 3rd (false)
+	int commas = 0;
+	for(int i = 0; i < strlen(fields); ++i)
+		if(fields[i] == ',')
+			commas++;
+
+	if(commas == 2)
+		offset = false;
+
+	if((rt = strtok(fields, ",")) == NULL)
+		return(0);
+
+	rt_n = get_register(rt);
+
+	if(!offset)	// $rt, $rs, imm	
+	{
+		if((rs = strtok(NULL, ",")) == NULL)
+			return(0);
+
+		if((imm = strtok(NULL, ",")) == NULL)
+			return(0);
+
+		rs_n = get_register(rs);
+
+		imm_n = strtoul(imm, NULL, 16);
+	}
+	else	// $rt, imm($rs) -> $rt
+	{
+		char *temp;
+
+		if((imm = strtok(NULL, ",()")) == NULL)	// imm($rs) -> imm
+			return(0);
+
+		if((rs = strtok(NULL, ",()")) == NULL)	// $rs) -> $rs
+			return(0);
+
+		rs_n = get_register(rs);
+
+		imm_n = strtoul(imm, NULL, 16);		
+	}
+	
+	return (rs_n << 21)
+		 | (rt_n << 16)
+		 | (imm_n);
+}
+
+u32 handle_JType(char *fields)
+{
+	// Fill last 26 bits with value
+	return 0x03FFFFFF & strtoul(fields, NULL, 16);
+}
+
+
+bool match_case(const char *a, char *b)
+{
+	printf("Words \'%s\' \'%s\'\n", a, b);
 	int a_len = strlen(a);
 
 	bool result = true;
 
 	for(int i = 0; i < a_len; ++i)
 		result &= (a[i] - b[i] == 0 
-				|| a[i] - b[i] == ('a' - 'A'));
+				|| a[i] - b[i] == ('a' - 'A')
+				|| a[i] - b[i] == ('A' - 'a'));
 
 	return result;
 }
@@ -86,31 +196,40 @@ void Parser::translate_to_machine()
 	switch(op)
 	{
 		case ADD:
-			handle_RType(fields);
+			instruction |= ADD;
+			instruction |= handle_RType(fields);
 			break;
 		case SUB:
-			handle_RType(fields);
+			instruction |= SUB;
+			instruction |= handle_RType(fields);
 			break;
 		case ADDI:
-			handle_IType(fields);
+			instruction |= ADDI;
+			instruction |= handle_IType(fields);
 			break;
 		case SLT:
-			handle_RType(fields);
+			instruction |= SLT;
+			instruction |= handle_RType(fields);
 			break;
 		case LW:
-			handle_IType(fields);
+			instruction |= LW;
+			instruction |= handle_IType(fields);
 			break;
 		case SW:
-			handle_IType(fields);
+			instruction |= SW;
+			instruction |= handle_IType(fields);
 			break;
 		case BEQ:
-			handle_IType(fields);
+			instruction |= BEQ;
+			instruction |= handle_IType(fields);
 			break;
 		case J:
-			handle_JType(fields);
+			instruction |= J;
+			instruction |= handle_JType(fields);
 			break;
 		default:
-			return(0);
+			free(buf_s);
+			return;
 	}
 	
 
