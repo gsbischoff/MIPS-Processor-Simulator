@@ -6,7 +6,8 @@
 class Parser
 {
 	public:
-		std::vector<u32> register_file;
+		//std::vector<u32> register_file;
+		u32 register_file[32];
         std::vector<u32> instruction_memory;    		   // instructions in their machine code form.
         std::vector<std::string> string_instructions;      // instructions in string format.
 

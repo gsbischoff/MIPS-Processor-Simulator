@@ -10,6 +10,46 @@ Parser::~Parser()
 {
 }
 
+// -----
+//  translate_to_machine
+//	  Translates each of the MIPS instruction lines in
+// 	  the instruction vector field string_instructions
+//	  		into 32-bit machine code
+void Parser::translate_to_machine()
+{
+	// Take a line
+	std::string line = string_instructions[1];
+
+	char *buf = strdup(line.c_str());
+	char *buf_s = buf; 	// Actual string start so we can free
+
+	// Replace tabs with spaces to make parsing easier
+	for(int i = 0; i < strlen(buf); ++i)
+		if(buf[i] == '\t')
+			buf[i] = ' ';
+
+	/*
+		ADD
+		SUB
+		ADDI
+		SLT
+		LW
+		SW
+		BEQ
+		J
+	*/
+	// Get Opcode
+	char *opcode = strtok(buf, " ");
+
+	
+
+
+	char *fields = strtok(NULL, " ");
+	
+
+	free(buf_s);	
+}
+
 std::string stripLine(string line)
 {
 	int size = line.size();
