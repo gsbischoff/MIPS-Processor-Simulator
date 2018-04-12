@@ -30,7 +30,7 @@ u32 get_register(char *f)
 		if(f[i] == '$')
 			return strtoul(f + 1, NULL, 10);
 
-	return strtoul(f, NULL, 16);
+	return strtoul(f, NULL, 16) | 0x80000000;
 }
 
 u32 handle_RType(char *fields)
@@ -39,25 +39,39 @@ u32 handle_RType(char *fields)
 	char *buf_s = fields;
 
 	char *rd, *rs, *rt;
-	int rd_n, rs_n, rt_n;
-
-	// Check if we have the immediate field 2nd (true) or 3rd (false)
-	int commas = 0;
-	for(int i = 0; i < strlen(fields); ++i)
-		if(fields[i] == ',')
-			commas++;
+	int rd_n, rs_n, rt_n, sh_n;
 
 	// All R-Type instructions we are handling will have 3 register fields
 	if((rd = strtok(fields, ",")) == NULL)
 		return(0);
 
+		printf("rd: %s\n", rd);
+
 	if((rs = strtok(NULL, ",")) == NULL)
 		return(0);
+
+		printf("rs: %s\n", rs);
 
 	if((rt = strtok(NULL, ",")) == NULL)
 		return(0);
 
+		printf("rt: %s\n", rt);
 	
+	
+	u32 t = get_register(rd);
+
+	if(t >> 31)
+		sh_n = t & 0x7FFFFFFF;
+	else
+		rd_n = t;
+		
+	rs_n = get_register(rs);
+	rt_n = get_register(rt);
+
+	return (rs_n << 21)
+		 | (rt_n << 16)
+		 | (rd_n << 11)
+		 | (sh_n <<  6);
 }
 u32 handle_IType(char *fields)
 {
