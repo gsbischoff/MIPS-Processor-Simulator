@@ -16,7 +16,10 @@ main(int argc, char **argv)
 		parser.read_register_file();
 
 		//parser.register_file_input = argv[1];
-
+		char c[20] = "$1, $2, 0xf";
+		char d[20] = "$1, 0xf($2)";
+		u32 h = handle_IType(d);
+		printf("ITYPE: %x\n", h);
 
 		printf("Source read!\n");
 	}	

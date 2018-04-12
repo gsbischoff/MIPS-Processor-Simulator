@@ -31,5 +31,9 @@ class Parser
 		std::string write_to_file;
 };
 
+bool match_case(const char *a, char *b);
+u32 handle_RType(char *fields);
+u32 handle_IType(char *fields);
+u32 handle_JType(char *fields);
 
 #endif
