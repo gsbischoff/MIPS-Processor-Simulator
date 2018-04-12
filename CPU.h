@@ -18,7 +18,8 @@ class CPU
         std::vector<std::string> string_instructions;
         std::vector<u32> instruction_memory;
         std::vector<int> data_memory;
-        int register_file[32];
+
+        Register register_file;
 
         ALU alu1;
         ALU alu2;
@@ -40,7 +41,7 @@ class CPU
         int shift_left(int a);                  //shifts the input left two bits
         int sign_extend(int a);                 //sign extends to 32 bits the input
         void execute(int PC);                   //takes the PC and exectues the corresponding instruction stored in that memory
-	vector<int> instruction_convert();		//Takes the instruction memory vector and converts it to a binary vector	
+	vector<int> instruction_convert();		//Takes the instruction memory vector and converts it to a binary vector
 
 };
 #endif
