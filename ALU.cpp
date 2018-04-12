@@ -1,5 +1,6 @@
 //ALU constructor
 #include "ALU.h"
+#include "stdHeader.h"
 
 ALU::ALU()
 {

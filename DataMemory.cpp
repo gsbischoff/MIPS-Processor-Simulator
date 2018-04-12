@@ -1,4 +1,5 @@
-#include <"DataMemory.h">
+#include "DataMemory.h"
+#include "stdHeader.h"
 
 DataMemory::DataMemory(std::vector<int> data_m)
 {
@@ -6,16 +7,23 @@ DataMemory::DataMemory(std::vector<int> data_m)
 }
 
 DataMemory::~DataMemory() {}
+DataMemory::DataMemory() {}
 
 void DataMemory::print_out()
 {
   std::cout << " ------------- " << std::endl;
   std::cout << "| Data Memory |" << std::endl;
   std::cout << " ------------- " << std::endl;
-  //std::cout << "Input A: " << in_a << std::endl;
-  //std::cout << "Input B: " << in_b << std::endl;
-  //std::cout << "Selector: " << selectorBit << std::endl;
-  //std::cout << "Output: " << output << std::endl;
+  std::cout << "Address: " << address << std::endl;
+  std::cout << "Read Data: " << read_data << std::endl;
+  std::cout << "Write Data: " << write_data << std::endl;
+  std::cout << "Control Line - MemRead: " << control_read << std::endl;
+  std::cout << "Control Line - MemWrite: " << control_write << std::endl;
+  std::cout << "Memory Contents..." << std::endl;
+  for(int i; i < data.size(); i++)
+  {
+    std::cout << "0x" << std::hex << data.at(i) << std::endl;
+  }
 
 }
 

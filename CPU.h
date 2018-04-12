@@ -3,11 +3,11 @@
 
 #include "ALU.h"
 #include "Multiplex.h"
+#include "Register.h"
 #include "ControlUnit.h"
 #include "ALUControlUnit.h"
-
-#include <string>
-#include <vector>
+#include "DataMemory.h"
+#include "stdHeader.h"
 
 class CPU
 {
@@ -15,9 +15,11 @@ class CPU
     public:
 
         int PC;
+
         std::vector<std::string> string_instructions;
         std::vector<u32> instruction_memory;
-        std::vector<int> data_memory;
+
+        DataMemory data_memory;
 
         Register reg_file;
 

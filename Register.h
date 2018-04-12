@@ -1,6 +1,8 @@
 #ifndef __REGISTER_H__
 #define __REGISTER_H__
 
+#include "stdHeader.h"
+
 class Register
 {
 
@@ -16,6 +18,7 @@ class Register
 
         int control_write;
 
+        Register();
         Register(std::vector<s32> reg);
         ~Register();
 

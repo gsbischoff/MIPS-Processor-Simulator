@@ -3,6 +3,7 @@
 #include "Multiplex.h"
 #include "ControlUnit.h"
 #include "Register.h"
+#include "DataMemory.h"
 #include "stdHeader.h"
 
 CPU::CPU(std::vector<u32> inst, std::vector<int> data_m, std::vector<s32> reg)
@@ -101,7 +102,7 @@ void CPU::execute(int PC)
     s32 inst_15_0_s_e = sign_extend(inst_15_0);     //sign extended version
 
     //shift left inst_25_0 and concatenate PC + 4 [31-28] to front
-    inst_25_0 << 2;
+    inst_25_0 = inst_25_0 << 2;
     int jump_address = PC_4_31_28 | inst_25_0;
 
     //set alu control unit lines
@@ -116,8 +117,8 @@ void CPU::execute(int PC)
     multiplex1.set_output();
 
     //set up Register file
-    reg_file.reg1 = reg_file.registers.get(r1);         //read data 1
-    reg_file.reg2 = reg_file.registers.get(r2);         //read data 2
+    reg_file.reg1 = reg_file.registers.at(r1);         //read data 1
+    reg_file.reg2 = reg_file.registers.at(r2);         //read data 2
     reg_file.write_reg = multiplex1.output;             //write register set
     reg_file.control_write = control_unit.RegWrite;     //RegWrite
 
@@ -130,7 +131,7 @@ void CPU::execute(int PC)
     //set up ALU
     alu1.control = alu_control_unit.control_out;
     alu1.in_a = reg_file.reg1;
-    alu1.in_b = mux2.output;
+    alu1.in_b = multiplex2.output;
     alu1.execute();
 
     //set up ALU 2
@@ -156,9 +157,9 @@ void CPU::execute(int PC)
 
     //set up data memory
     data_memory.control_write = control_unit.MemWrite;
-    data_memory.control_read = control_unti.MemRead;
-    data_memory.address = alu.result;
-    data_memory.write_data = reg_file.r2;
+    data_memory.control_read = control_unit.MemRead;
+    data_memory.address = alu1.result;
+    data_memory.write_data = reg_file.reg2;
     data_memory.execute();
 
     //set up multiplex3
@@ -186,5 +187,7 @@ s32 CPU::sign_extend(int a)
 
 std::vector<int> CPU::instruction_convert()
 {
+    std::vector<int> v;
+    return v;
 }
 

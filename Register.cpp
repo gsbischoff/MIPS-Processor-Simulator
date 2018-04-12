@@ -1,4 +1,5 @@
-#include <"Register.h">
+#include "Register.h"
+#include "stdHeader.h"
 
 Register::Register(std::vector<s32> reg)
 {
@@ -6,12 +7,13 @@ Register::Register(std::vector<s32> reg)
 }
 
 Register::~Register() {}
+Register::Register() {}
 
 
 
 void Register::write()
 {
-  registers[write_register] = write_data;
+  registers[write_reg] = write_data;
 }
 
 
@@ -26,5 +28,10 @@ void Register::print_out()
   std::cout << "Register 2: " << reg1 << std::endl;
   std::cout << "Write Register: " << write_reg << std::endl;
   std::cout << "Write Data: " << write_data << std::endl;
+  std::cout << "Register Contents..." << std::endl;
+  for(int i; i < 32; i++)
+  {
+    std::cout << i << ": 0x" << std::hex << registers.at(i) << std::endl;
+  }
 
 }
