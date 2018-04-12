@@ -9,6 +9,10 @@ using namespace std;
 Parser::Parser(std::string filename)
 {
 	read_config_file(filename);
+
+	read_memory_contents();
+	read_register_file();
+	read_program();
 }
 
 Parser::~Parser()
@@ -35,6 +39,7 @@ enum Opcode
 //		is a register. Otherwise, reads as hex and sets a flag
 u32 get_register(char *f)
 {
+	//printf("get_register(%s)\n", f);
 	for(int i = 0; i < strlen(f); ++i)
 		if(f[i] == '$')
 			return strtoul(f + 1, NULL, 10);
@@ -54,24 +59,17 @@ u32 handle_RType(char *fields)
 	char *buf_s = fields;
 
 	char *rd, *rs, *rt;
-	int rd_n, rs_n, rt_n, sh_n;
+	int rd_n = 0, rs_n, rt_n, sh_n = 0;
 
 	// All R-Type instructions we are handling will have 3 register fields
-	if((rd = strtok(fields, ",")) == NULL)
+	if((rd = strtok(fields, ", ")) == NULL)
 		return(0);
 
-		printf("rd: %s\n", rd);
-
-	if((rs = strtok(NULL, ",")) == NULL)
+	if((rs = strtok(NULL, ", ")) == NULL)
 		return(0);
 
-		printf("rs: %s\n", rs);
-
-	if((rt = strtok(NULL, ",")) == NULL)
-		return(0);
-
-		printf("rt: %s\n", rt);
-	
+	if((rt = strtok(NULL, ", ")) == NULL)
+		return(0);	
 	
 	u32 t = get_register(rd);
 
@@ -102,6 +100,7 @@ u32 handle_IType(char *fields)
 
 	// Check if we have the immediate field 2nd (true) or 3rd (false)
 	int commas = 0;
+
 	for(int i = 0; i < strlen(fields); ++i)
 		if(fields[i] == ',')
 			commas++;
@@ -109,17 +108,17 @@ u32 handle_IType(char *fields)
 	if(commas == 2)
 		offset = false;
 
-	if((rt = strtok(fields, ",")) == NULL)
+	if((rt = strtok(fields, ", ")) == NULL)
 		return(0);
 
 	rt_n = get_register(rt);
 
 	if(!offset)	// $rt, $rs, imm	
 	{
-		if((rs = strtok(NULL, ",")) == NULL)
+		if((rs = strtok(NULL, ", ")) == NULL)
 			return(0);
 
-		if((imm = strtok(NULL, ",")) == NULL)
+		if((imm = strtok(NULL, ", ")) == NULL)
 			return(0);
 
 		rs_n = get_register(rs);
@@ -142,7 +141,7 @@ u32 handle_IType(char *fields)
 
 		// The offset field in LW, and SW instructions is represented in
 		// decimal, and may be either positive or negative
-		imm_n = strtol(imm, NULL, 10);		
+		imm_n = strtol(imm, NULL, 10);	
 	}
 	
 	return (rs_n << 21)
@@ -183,6 +182,7 @@ bool match_case(const char *a, char *b)
 //	  		into 32-bit machine code
 u32 Parser::translate_to_machine(std::string line)
 {
+	// std::cout << line << std::endl;
 	u32 instruction;
 
 	// Take a line
@@ -206,7 +206,7 @@ u32 Parser::translate_to_machine(std::string line)
 	*/
 	// Get Opcode
 	char *opcode = strtok(buf, " ");
-	char *fields = strtok(NULL, " ");
+	char *fields = strtok(NULL, "");	// Don't null the next delimiter
 
 	Opcode op = UNDEF;
 
@@ -256,10 +256,14 @@ u32 Parser::translate_to_machine(std::string line)
 			break;
 		default:
 			free(buf_s);
-			return;
+			return(0);
 	}
 	
-	free(buf_s);	
+	free(buf_s);
+
+	//printf("Got: 0x%08X\n\n", instruction);
+
+	return instruction;	
 }
 
 // -----
@@ -354,7 +358,7 @@ void Parser::read_register_file()
 				u32 r = std::strtoul(reg, NULL, 10);
 				u32 val = std::strtoul(value, NULL, 16);
 
-				printf("Val on line %d:%x\n", r, val);
+				// printf("Val on line %d:%x\n", r, val);
 
 				// Ignore invalid-valued registers
 				if(r > 31)
