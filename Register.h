@@ -19,11 +19,10 @@ class Register
         int in_b;
         int control;
 
-        ALU();
-        ~ALU();
+        Register(std::vector<s32> reg);
+        ~Register();
 
-        void execute();             //looks at control line and decides whether to add, subtract, AND, OR, or SLT based on the input lines.
-        void print_out();           //print the instance variable values
+        void write();
 
 };
 #endif

@@ -2,6 +2,8 @@
 #include "CPU.h"
 #include "Multiplex.h"
 #include "ControlUnit.h"
+#include "Register.h"
+#include "stdHeader.h"
 
 CPU::CPU(std::vector<u32> inst, std::vector<int> data, std::vector<s32> reg)
 {
@@ -128,7 +130,7 @@ int CPU::sign_extend(int a)
 //    return static_cast<int32_t>(a);
 }
 
-vector<int> CPU::instruction_convert()
+std::vector<int> CPU::instruction_convert()
 {
 }
 
