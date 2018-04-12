@@ -1,7 +1,12 @@
 #include "Parser.h"
 
 using namespace std;
-Parser::Parser(string filename)
+
+// -----
+//  get_register
+//	  Reads a decimal value from a string if a '$' is present, meaning it
+//		is a register. Otherwise, reads as hex and sets a flag
+Parser::Parser(std::string filename)
 {
 	read_config_file(filename);
 }
@@ -24,15 +29,25 @@ enum Opcode
 	J = 	(0x02 << 26) | (0)
 };
 
+// -----
+//  get_register
+//	  Reads a decimal value from a string if a '$' is present, meaning it
+//		is a register. Otherwise, reads as hex and sets a flag
 u32 get_register(char *f)
 {
 	for(int i = 0; i < strlen(f); ++i)
 		if(f[i] == '$')
 			return strtoul(f + 1, NULL, 10);
 
+	// Set a flag in MSB for a value returned that did not contain
+	// a '$' -- meaning the value is actually a shift amount
 	return strtoul(f, NULL, 16) | 0x80000000;
 }
 
+// -----
+//  handle_RType
+//	  Returns the three 5-bit registers and the shift amount
+//	  between the Opcode and func fields of a MIPS instruction
 u32 handle_RType(char *fields)
 {
 	// Have comma-seperated registers
@@ -73,6 +88,11 @@ u32 handle_RType(char *fields)
 		 | (rd_n << 11)
 		 | (sh_n <<  6);
 }
+
+// -----
+//  handle_IType
+//	  Returns the two, 5-bit register values in proper order and
+//	  	the 16-bit immediate field; all in a 32-bit word
 u32 handle_IType(char *fields)
 {
 	char *rs, *rt, *imm;
@@ -104,7 +124,9 @@ u32 handle_IType(char *fields)
 
 		rs_n = get_register(rs);
 
-		imm_n = strtoul(imm, NULL, 16);
+		// The offset (immediate) value in ADDI can be expressed either
+		// in hexadecimal or decimal
+		imm_n = strtol(imm, NULL, 0);
 	}
 	else	// $rt, imm($rs) -> $rt
 	{
@@ -118,7 +140,9 @@ u32 handle_IType(char *fields)
 
 		rs_n = get_register(rs);
 
-		imm_n = strtoul(imm, NULL, 16);		
+		// The offset field in LW, and SW instructions is represented in
+		// decimal, and may be either positive or negative
+		imm_n = strtol(imm, NULL, 10);		
 	}
 	
 	return (rs_n << 21)
@@ -126,16 +150,20 @@ u32 handle_IType(char *fields)
 		 | (imm_n);
 }
 
+// -----
+//  handle_JType
+//	  Returns the formatted 26-bit address field of a J-Type MIPS instruction
 u32 handle_JType(char *fields)
 {
 	// Fill last 26 bits with value
 	return 0x03FFFFFF & strtoul(fields, NULL, 16);
 }
 
-
+// -----
+//  match_case
+//	  Returns whether two words are equal to eachother, case insensitive
 bool match_case(const char *a, char *b)
 {
-	printf("Words \'%s\' \'%s\'\n", a, b);
 	int a_len = strlen(a);
 
 	bool result = true;
@@ -153,13 +181,11 @@ bool match_case(const char *a, char *b)
 //	  Translates each of the MIPS instruction lines in
 // 	  the instruction vector field string_instructions
 //	  		into 32-bit machine code
-void Parser::translate_to_machine()
+u32 Parser::translate_to_machine(std::string line)
 {
 	u32 instruction;
 
 	// Take a line
-	std::string line = string_instructions[1];
-
 	char *buf = strdup(line.c_str());
 	char *buf_s = buf; 	// Actual string start so we can free
 
@@ -193,6 +219,7 @@ void Parser::translate_to_machine()
 	if(match_case("beq", opcode))	op = BEQ;
 	if(match_case("j", opcode))		op = J;
 
+	// Handle the fields we'd read in differently based upon the type of instruction
 	switch(op)
 	{
 		case ADD:
@@ -232,19 +259,18 @@ void Parser::translate_to_machine()
 			return;
 	}
 	
-
-
-
-	
-
 	free(buf_s);	
 }
 
-std::string stripLine(string line)
+// -----
+//  stripLine
+//	  Strips comments and any trailing or leading
+//	  	whitespace from an input line
+std::string stripLine(std::string line)
 {
 	int size = line.size();
 
-	char *buf = strdup(line.c_str());
+	char *buf = strdup(line.c_str());	// Duplicated const char *
 	char *buf_s = buf; 	// Actual string start so we can free
 
 	// Cut off any comments
@@ -271,7 +297,7 @@ std::string stripLine(string line)
 	}
 	
 	// Store the line
-	string temp = buf;
+	std::string temp = buf;
 
 	// Free all of the allocated memory from the original start
 	free(buf_s);
@@ -279,6 +305,10 @@ std::string stripLine(string line)
 	return temp;
 }
 
+// -----
+//  Parser::read_register_file
+//	  Reads in and parses lines from the register file input
+//		containing <register:value> pairs
 void Parser::read_register_file()
 {
 	ifstream input;
@@ -291,14 +321,14 @@ void Parser::read_register_file()
 	}
 	else
 	{
-		string line;
+		std::string line;
 		int lineNum = 0;
 
 		while(getline(input, line))
 		{
 			lineNum++;
 
-			string str = stripLine(line);
+			std::string str = stripLine(line);
 
 			if(str.size() == 0)
 				continue;
@@ -319,7 +349,7 @@ void Parser::read_register_file()
 			}
 			else
 			{
-				// take chars and convert each into its int value
+				// Take chars and convert each into its int value;
 				// decimal for register number and hex for the value
 				u32 r = std::strtoul(reg, NULL, 10);
 				u32 val = std::strtoul(value, NULL, 16);
@@ -338,6 +368,10 @@ void Parser::read_register_file()
 	}
 }
 
+// -----
+//  Parser::read_memory_contents
+//	  Reads in and parses lines from the initial memory contents
+//		file containing <address:value> pairs
 void Parser::read_memory_contents()
 {
 	ifstream input;
@@ -350,14 +384,14 @@ void Parser::read_memory_contents()
 	}
 	else
 	{
-		string line;
+		std::string line;
 		int lineNum = 0;
 
 		while(getline(input, line))
 		{
 			lineNum++;
 
-			string str = stripLine(line);
+			std::string str = stripLine(line);
 
 			if(str.size() == 0)
 				continue;
@@ -365,10 +399,10 @@ void Parser::read_memory_contents()
 			char *buf = strdup(str.c_str());
 			char *buf_s = buf;
 
-			char *offset;
+			char *address;
 			char *value;
 
-			offset = strtok(buf, ":");
+			address = strtok(buf, ":");
 
 			if((value = strtok(NULL,":")) == NULL)
 			{
@@ -378,10 +412,11 @@ void Parser::read_memory_contents()
 			}
 			else
 			{
-				// take chars and convert each hex digit to its corresponding bits
+				// Take string and convert it into a hexadecimal number
 				u32 val = std::strtoul(value, NULL, 16);
 
-				instruction_memory.push_back(val);
+				// TODO: make easily-mapped to offset values
+				memory_module.push_back(val);
 			}
 
 			free(buf_s);
@@ -389,7 +424,11 @@ void Parser::read_memory_contents()
 	}
 }
 
-void Parser::read_program() //string filename)
+// -----
+//  Parser::read_program
+//	  Reads in and parses lines from the input program file
+//		and stores them in the member vector field
+void Parser::read_program()
 {
 	ifstream input;
 
@@ -401,25 +440,34 @@ void Parser::read_program() //string filename)
 	}
 	else
 	{
-		string line;
+		std::string line;
 		int lineNum = 0;
 
 		while(getline(input, line))
 		{
 			lineNum++;
 
-			string str = stripLine(line);
+			std::string str = stripLine(line);
 
 			if(str.size() == 0)
 				continue;
 			
 			// Store the line in the instruction vector
 			string_instructions.push_back(str);
+
+			// Convert the line to machine code and store
+			u32 instruction = translate_to_machine(str);
+
+			instruction_memory.push_back(instruction);
 		}
 	}
 }
 
-void Parser::read_config_file(string filename)
+// -----
+//  Parser::read_config_file
+//	  Reads in and parses lines from the input configuration
+//		file and assigns the values to Parser's fields
+void Parser::read_config_file(std::string filename)
 {
 	ifstream input;
 
@@ -431,14 +479,14 @@ void Parser::read_config_file(string filename)
 	}
 	else
 	{
-		string line;
+		std::string line;
 		int lineNum = 0;
 
 		while(getline(input, line))
 		{
 			lineNum++;
 
-			string str = stripLine(line);
+			std::string str = stripLine(line);
 
 			if(str.size() == 0)
 				continue;

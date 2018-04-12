@@ -6,6 +6,7 @@
 #include <cstring>
 #include <cstdlib>
 #include <stdint.h>
+#include <string>
 #include <vector>
 
 #define u32 uint32_t
