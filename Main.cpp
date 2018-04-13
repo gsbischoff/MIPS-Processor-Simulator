@@ -21,15 +21,14 @@ int main(int argc, char* argv[])
     //CPU object instantiated. takes the return values of our ** read file methods ** (TODO Implement these)
     //CPU cpu = CPU(read_inst_file(program_input), read_mem_file(memory_contents_input), read_reg_file(register_file_input));
 
-    /** What is our roadmap from here??
+    /**
     *
-    *   Perhaps for each line in the instruction file..execute instruction. So CPU needs an "execute instruction"
-    *   method.  WHich would call control_unit.set_datapath().
     *
     *   if(output_mode = "batch")
     *   {
     *       while(cpu.PC != exit)
     *           cpu.execute(cpu.PC);
+    *
     *   }
     *   else{
     *       //make it single step...
@@ -47,22 +46,4 @@ int main(int argc, char* argv[])
     std::cout << "Write to File: " << write_to_file << std::endl;
 
 }
-
-/*
-std::vector<int> read_mem_file(std::string filename)
-{
-    std::vector<int> memory;
-
-    return memory;
-}
-*/
-
-/*
-std::vector<int> read_inst_file(std::string filename)
-{
-    std::vector<int> instructions;
-
-    return instructions;
-}
-*/
 

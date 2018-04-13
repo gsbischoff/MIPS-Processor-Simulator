@@ -1,6 +1,8 @@
 #ifndef __REGISTER_H__
 #define __REGISTER_H__
 
+#include "stdHeader.h"
+
 class Register
 {
 
@@ -14,16 +16,14 @@ class Register
         int write_reg;
         int write_data;
 
-        int result;
-        int in_a;
-        int in_b;
-        int control;
+        int control_write;
 
-        ALU();
-        ~ALU();
+        Register();
+        Register(std::vector<s32> reg);
+        ~Register();
 
-        void execute();             //looks at control line and decides whether to add, subtract, AND, OR, or SLT based on the input lines.
-        void print_out();           //print the instance variable values
+        void write();
+        void print_out();
 
 };
 #endif

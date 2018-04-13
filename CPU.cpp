@@ -2,11 +2,17 @@
 #include "CPU.h"
 #include "Multiplex.h"
 #include "ControlUnit.h"
+#include "Register.h"
+#include "DataMemory.h"
+#include "stdHeader.h"
 
-CPU::CPU(std::vector<u32> inst, std::vector<int> data, std::vector<s32> reg)
+CPU::CPU(std::vector<u32> inst, std::vector<int> data_m, std::vector<s32> reg)
 {
+    PC = 0x400004;
+
     instruction_memory = inst;
-    data_memory = data;
+
+    data_memory = DataMemory(data_m);
 
     reg_file = Register(reg);
 
@@ -33,9 +39,9 @@ CPU::~CPU()
 void CPU::print_out(){
 
     //print out ALUs
-    alu1.print_out();
-    alu2.print_out();
-    alu3.print_out();
+    alu1.print_out();       //main one
+    alu2.print_out();       //branch
+    alu3.print_out();       //add only for PC
 
     //print out Multiplexers
     multiplex1.print_out();
@@ -56,6 +62,17 @@ void CPU::execute(int PC)
 {
     //get instruction from memory
     int instruction;
+
+
+
+
+
+    //increment PC
+    alu3.in_a = PC;
+    alu3.in_b = 4;
+    alu3.control = 2;
+    alu3.execute();
+
 
     //EXTRACT THE OPCODE TO THEN SET DATA PATH. The control unit only needs opcode (bits 31-26) to properly set entire datapath.
     //Then shift opcode right 26 bits
@@ -79,9 +96,14 @@ void CPU::execute(int PC)
     int inst_25_0 = instruction & MASK_25_0;        //Instruction [25-0] needed for jumps
     inst_25_0 = inst_25_0 << 2;
 
+    int PC_4_31_28 = alu3.result & MASK_31_28;        //get high order 4 bits from ALU 3 result
+
     int inst_15_0 = instruction & MASK_15_0;        //Instruction [15-0] needed for sign extend
-    //NEED TO SIGN EXTEND THIS
-    //inst_15_0 = inst_15_0.sign_extend();
+    s32 inst_15_0_s_e = sign_extend(inst_15_0);     //sign extended version
+
+    //shift left inst_25_0 and concatenate PC + 4 [31-28] to front
+    inst_25_0 = inst_25_0 << 2;
+    int jump_address = PC_4_31_28 | inst_25_0;
 
     //set alu control unit lines
     alu_control_unit.ALU_op_in = control_unit.ALUOp0 + control_unit.ALUOp1;
@@ -95,40 +117,77 @@ void CPU::execute(int PC)
     multiplex1.set_output();
 
     //set up Register file
-    reg_file.reg1 = reg_file.registers.get(r1);         //read data 1
-    reg_file.reg2 = reg_file.registers.get(r2);         //read data 2
+    reg_file.reg1 = reg_file.registers.at(r1);         //read data 1
+    reg_file.reg2 = reg_file.registers.at(r2);         //read data 2
+    reg_file.write_reg = multiplex1.output;             //write register set
+    reg_file.control_write = control_unit.RegWrite;     //RegWrite
 
     //set up multiplex2
     multiplex2.set_selector(control_unit.ALUSrc);
-    multiplex2.in_a = 1;        //this atctually gets Read data 2 from register file
-    multiplex2.in_b = 2;        //this atctually gets Sign Extended Instruction [5-0]
+    multiplex2.in_a = reg_file.reg2;                    //gets Read data 2 from register file
+    multiplex2.in_b = inst_15_0_s_e;                    //gets Sign Extended Instruction [15-0]
     multiplex2.set_output();
+
+    //set up ALU
+    alu1.control = alu_control_unit.control_out;
+    alu1.in_a = reg_file.reg1;
+    alu1.in_b = multiplex2.output;
+    alu1.execute();
+
+    //set up ALU 2
+    alu2.control = 2;
+    alu2.in_a = alu3.result;
+    alu2.in_b = inst_15_0_s_e << 2;
+    alu2.execute();
+
+    //set up Mulitplexor 4
+    multiplex4.in_a = alu3.result;
+    multiplex4.in_b = alu2.result;
+    if(control_unit.Branch && alu1.zero_flag)
+        multiplex4.set_selector(1);
+    else
+        multiplex4.set_selector(0);
+    multiplex4.set_output();
+
+    //set up multiplex 5
+    multiplex5.in_a = jump_address;
+    multiplex5.in_b = multiplex4.output;
+    multiplex5.set_selector(control_unit.Jump);
+    multiplex5.set_output();
+
+    //set up data memory
+    data_memory.control_write = control_unit.MemWrite;
+    data_memory.control_read = control_unit.MemRead;
+    data_memory.address = alu1.result;
+    data_memory.write_data = reg_file.reg2;
+    data_memory.execute();
 
     //set up multiplex3
     multiplex3.set_selector(control_unit.MemToReg);
-    multiplex3.in_a = 1;        //this atctually gets Data Memory Read-Data
-    multiplex3.in_b = 2;        //this atctually gets main ALU result
+    multiplex3.in_a = data_memory.read_data;        //gets Data Memory Read-Data
+    multiplex3.in_b = alu1.result;                  //gets main ALU result
     multiplex3.set_output();
 
-    //set up multiplex4
-    multiplex4.set_selector(1); //this actually gets the result of ANDing the Zero flag of main ALU and Branch line from control unit
-    multiplex4.in_a = 1;        //this actually gets ... look at the picture
-    multiplex4.in_b = 2;        //this actually gets ... look at the picture
-    multiplex4.set_output();
-
+    //handle Write Back if Necassary
+    reg_file.write_data = multiplex3.output;
+    if(reg_file.control_write == 1)
+        reg_file.write();
 
     //increment PC
-
+    PC = multiplex5.output;
 
 
 }
 
-int CPU::sign_extend(int a)
+s32 CPU::sign_extend(int a)
 {
-//    return static_cast<int32_t>(a);
+    s32 sign_extended = a;
+    return sign_extended;
 }
 
-vector<int> CPU::instruction_convert()
+std::vector<int> CPU::instruction_convert()
 {
+    std::vector<int> v;
+    return v;
 }
 
