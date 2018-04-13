@@ -3,7 +3,12 @@
 
 Register::Register(std::vector<u32> reg)
 {
+  reg1 = 0;
+  reg2 = 0;
   registers = reg;
+  write_reg = 0;
+  write_data = 0;
+  control_write = 0;
 }
 
 Register::~Register() {}

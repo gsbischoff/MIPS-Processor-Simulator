@@ -68,11 +68,10 @@ void CPU::print_out(){
 void CPU::execute(int PC)
 {
     //get instruction from memory
-    u32 instruction;
-    int temp = PC-0x400004;
+    u32 instruction = 0;
+    s32 temp = PC-0x400000;
     temp = temp >> 2;
     instruction = instruction_memory[temp];
-    std::cout << "INSTRUCTION: " << std::hex << instruction << std::endl;
 
     //increment PC
     alu3.in_a = PC;
@@ -85,7 +84,7 @@ void CPU::execute(int PC)
     //Then shift opcode right 26 bits
     int opcode = instruction & MASK_31_26;
     opcode = opcode >> 26;
-
+    std::cout << "OPCODE: " << opcode << std::endl;
     //set Control UNit datapath lines
     control_unit.set_datapath(opcode);
 
@@ -113,19 +112,19 @@ void CPU::execute(int PC)
     int jump_address = PC_4_31_28 | inst_25_0;
 
     //set alu control unit lines
-    alu_control_unit.ALU_op_in = control_unit.ALUOp0 + control_unit.ALUOp1;
+    alu_control_unit.ALU_op_in = control_unit.ALUOp0 | (control_unit.ALUOp1 << 1);
     alu_control_unit.func_field_in = func_field;
     alu_control_unit.set_control_out();
 
     //set up multiplex1
-    std::cout << "THIS IS THE CONTROL UNIT SELCTOR:::" << control_unit.RegDst<<std::endl;
+    //std::cout << "THIS IS THE CONTROL UNIT SELCTOR:::" << control_unit.RegDst<<std::endl;
     multiplex1.set_selector(control_unit.RegDst);
     multiplex1.in_a = r2;
-    std::cout << "THIS IS MUX1 A:::" << multiplex1.in_a <<std::endl;
+    //std::cout << "THIS IS MUX1 A:::" << multiplex1.in_a <<std::endl;
     multiplex1.in_b = mux1_b;        //this atctually gets Instruction [15-11]
-    std::cout << "THIS IS MUX1 B:::" << multiplex1.in_b <<std::endl;
+    //std::cout << "THIS IS MUX1 B:::" << multiplex1.in_b <<std::endl;
     multiplex1.set_output();
-    std::cout << "THIS IS MUX1 output:::" << multiplex1.output <<std::endl;
+    //std::cout << "THIS IS MUX1 output:::" << multiplex1.output <<std::endl;
 
     //set up Register file
     reg_file.reg1 = reg_file.registers.at(r1);         //read data 1
@@ -140,10 +139,14 @@ void CPU::execute(int PC)
     multiplex2.set_output();
 
     //set up ALU
+    std::cout << "ALU CONTROL LINE: " << alu_control_unit.control_out << std::endl;
     alu1.control = alu_control_unit.control_out;
     alu1.in_a = reg_file.reg1;
+    std::cout << "ALU A:" << alu1.in_a << std::endl;
     alu1.in_b = multiplex2.output;
+    std::cout << "ALU B:" << alu1.in_b << std::endl;
     alu1.execute();
+    std::cout << "RESULT: " << std::hex << alu1.result << std::endl;
 
     //set up ALU 2
     alu2.control = 2;

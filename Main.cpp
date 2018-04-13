@@ -21,7 +21,7 @@ int main(int argc, char* argv[])
     //CPU object instantiated. takes the return values of our ** read file methods ** (TODO Implement these)
     CPU cpu = CPU(p.instruction_memory, p.memory_module, p.register_file);
 
-    //std::cout << std::hex << p.instruction_memory[0] << std::endl;
+    std::cout << std::hex << cpu.instruction_memory[0] << std::endl;
     u32 ans = p.translate_to_machine("add $1, $2, $3");
     std::cout << "Expected: " << std::hex << ans << std::endl;
     cpu.execute(cpu.PC);
