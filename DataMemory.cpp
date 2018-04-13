@@ -34,10 +34,13 @@ void DataMemory::execute()
         //this is a data read
         //retrieve data at this->address
         //set it to this->read_data
+        read_data = data[address];
+
     }
     else if(control_write == 1)
     {
         //this is a data write
         //write the data at this->address with this->write_data
+        data[address] = write_data;
     }
 }

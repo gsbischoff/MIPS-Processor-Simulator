@@ -10,9 +10,9 @@ class DataMemory
 
         std::map<u32, u32> data;
 
-        int address;
-        int write_data;
-        int read_data;
+        u32 address;
+        u32 write_data;
+        u32 read_data;
 
         int control_read;
         int control_write;

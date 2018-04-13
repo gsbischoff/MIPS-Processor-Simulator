@@ -83,7 +83,7 @@ void CPU::execute(int PC)
     //EXTRACT THE OPCODE TO THEN SET DATA PATH. The control unit only needs opcode (bits 31-26) to properly set entire datapath.
     //Then shift opcode right 26 bits
     int opcode = instruction & MASK_31_26;
-    opcode = opcode >> 26;
+    opcode = (opcode >> 26) & 0x3f;
     std::cout << "OPCODE: " << opcode << std::endl;
     //set Control UNit datapath lines
     control_unit.set_datapath(opcode);
@@ -140,14 +140,14 @@ void CPU::execute(int PC)
     multiplex2.set_output();
 
     //set up ALU
-    std::cout << "ALU CONTROL LINE: " << alu_control_unit.control_out << std::endl;
+    //std::cout << "ALU CONTROL LINE: " << alu_control_unit.control_out << std::endl;
     alu1.control = alu_control_unit.control_out;
     alu1.in_a = reg_file.reg1;
-    std::cout << "ALU A:" << alu1.in_a << std::endl;
+    //std::cout << "ALU A:" << alu1.in_a << std::endl;
     alu1.in_b = multiplex2.output;
-    std::cout << "ALU B:" << alu1.in_b << std::endl;
+    //std::cout << "ALU B:" << alu1.in_b << std::endl;
     alu1.execute();
-    std::cout << "RESULT: " << std::hex << alu1.result << std::endl;
+    //std::cout << "RESULT: " << std::hex << alu1.result << std::endl;
 
     //set up ALU 2
     alu2.control = 2;
@@ -155,33 +155,40 @@ void CPU::execute(int PC)
     alu2.in_b = inst_15_0_s_e << 2;
     alu2.execute();
 
-    //set up Mulitplexor 4
-    multiplex4.in_a = alu3.result;
-    multiplex4.in_b = alu2.result;
+    //set up Mulitplexor 5
+    multiplex5.in_a = alu3.result;
+    multiplex5.in_b = alu2.result;
     if(control_unit.Branch && alu1.zero_flag)
-        multiplex4.set_selector(1);
+        multiplex5.set_selector(1);
     else
-        multiplex4.set_selector(0);
-    multiplex4.set_output();
-
-    //set up multiplex 5
-    multiplex5.in_a = jump_address;
-    multiplex5.in_b = multiplex4.output;
-    multiplex5.set_selector(control_unit.Jump);
+        multiplex5.set_selector(0);
     multiplex5.set_output();
 
+    //set up multiplex 4
+    multiplex4.in_a = multiplex5.output;
+    multiplex4.in_b = jump_address;
+    multiplex4.set_selector(control_unit.Jump);
+    multiplex4.set_output();
+
     //set up data memory
-    data_memory.control_write = control_unit.MemWrite;
-    data_memory.control_read = control_unit.MemRead;
-    data_memory.address = alu1.result;
-    data_memory.write_data = reg_file.reg2;
-    data_memory.execute();
+    if(opcode == 35 || opcode == 43)         //if this is LW or SW
+    {
+        data_memory.control_write = control_unit.MemWrite;
+        data_memory.control_read = control_unit.MemRead;
+        data_memory.address = alu1.result;
+        data_memory.write_data = reg_file.reg2;
+        data_memory.execute();
+        //std::cout << "read data expected 63322818::::" << data_memory.read_data << std::endl;
+    }
 
     //set up multiplex3
+    //std::cout << "MEMTO REG: " << control_unit.MemToReg << std::endl;
     multiplex3.set_selector(control_unit.MemToReg);
-    multiplex3.in_a = data_memory.read_data;        //gets Data Memory Read-Data
-    multiplex3.in_b = alu1.result;                  //gets main ALU result
+    multiplex3.in_a = alu1.result;                  //gets main ALU result
+    multiplex3.in_b = data_memory.read_data;        //gets Data Memory Read-Data
     multiplex3.set_output();
+    //std::cout << "Expected: 63322818 ::::" << data_memory.data[0x10000004+24] << std::endl;
+    //std::cout << "MUX 3 output: " << multiplex3.output << std::endl;
 
     //handle Write Back if Necassary
     reg_file.write_data = multiplex3.output;
@@ -189,7 +196,7 @@ void CPU::execute(int PC)
         reg_file.write();
 
     //increment PC
-    PC = multiplex5.output;
+    PC = multiplex4.output;
 
 
 }

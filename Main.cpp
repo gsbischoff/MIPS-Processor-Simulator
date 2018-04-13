@@ -23,7 +23,8 @@ int main(int argc, char* argv[])
 
     std::cout << std::hex << cpu.instruction_memory[0] << std::endl;
     cpu.execute(cpu.PC);
-    //cpu.print_out();
+    cpu.print_out();
+
     /**
     *
     *
