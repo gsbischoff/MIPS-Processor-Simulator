@@ -59,15 +59,13 @@ u32 handle_RType(char *fields)
 	char *rd, *rs, *rt;
 	int rd_n = 0, rs_n, rt_n, sh_n = 0;
 
-	//std::cout << "read rd" << std::endl;
-
 	// All R-Type instructions we are handling will have 3 register fields
 	if((rd = strtok(fields, ", ")) == NULL)
 		return(0);
-	//std::cout << "read rs" << std::endl;
+
 	if((rs = strtok(NULL, ", ")) == NULL)
 		return(0);
-	//std::cout << "read rt" << std::endl;
+
 	if((rt = strtok(NULL, ", ")) == NULL)
 		return(0);
 
@@ -180,7 +178,6 @@ bool match_case(const char *a, char *b)
 //	  		into 32-bit machine code
 u32 Parser::translate_to_machine(std::string line)
 {
-	// std::cout << line << std::endl;
 	u32 instruction = 0;
 
 	// Take a line
@@ -258,8 +255,6 @@ u32 Parser::translate_to_machine(std::string line)
 	}
 
 	free(buf_s);
-
-	//printf("Got: 0x%08X\n\n", instruction);
 
 	return instruction;
 }
@@ -355,8 +350,6 @@ void Parser::read_register_file()
 				// decimal for register number and hex for the value
 				u32 r = std::strtoul(reg, NULL, 10);
 				u32 val = std::strtoul(value, NULL, 16);
-
-				// printf("Val on line %d:%x\n", r, val);
 
 				// Ignore invalid-valued registers
 				if(r > 31)
