@@ -1,13 +1,14 @@
 EXECS = main
 OBJS = Main.o Parser.o ALU.o ALUControlUnit.o CPU.o ControlUnit.o DataMemory.o Multiplex.o Register.o 
 CC = g++
-CCFLAGS = -Wall -Wno-deprecated -Werror=return-type -g
+LD = $(CC)
+CCFLAGS = -Wall -Wno-deprecated -Werror=return-type -std=c++11 -g
 
 all: $(EXECS)
-	$(CC) $(CCFLAGS) $(EXECS) -o all
+	$(LD) $(CCFLAGS) $(OBJS) -o $(EXECS)
 
 main: $(OBJS)
-	$(CC) $(CCFLAGS) $^ -o $@
+	$(LD) $(CCFLAGS) $^ -o $@
 
 %.o: %.cpp *.h
 	$(CC) $(CCFLAGS) -c $<
