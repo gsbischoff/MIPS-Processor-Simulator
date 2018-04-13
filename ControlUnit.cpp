@@ -15,7 +15,7 @@ ControlUnit::~ControlUnit()
 void ControlUnit::set_datapath(int opcode)
 {
   //if it is an R-Type
-  if(opcode == 0) 
+  if(opcode == 0)
   {
     RegDst = 1;
     ALUSrc = 0;
@@ -60,8 +60,7 @@ void ControlUnit::set_datapath(int opcode)
   else if(opcode == 2)
   {
     Jump = 1;
-
-     RegDst = 0;
+    RegDst = 0;
     ALUSrc = 0;
     MemToReg = 0;
     RegWrite = 0;
@@ -71,6 +70,19 @@ void ControlUnit::set_datapath(int opcode)
     ALUOp1 = 0;
     ALUOp0 = 1;
 
+  }
+  else if(opcode == 8) //ADDI
+  {
+    RegDst = 1;
+    ALUSrc = 1;
+    MemToReg = 0;
+    RegWrite = 1;
+    MemRead = 0;
+    MemWrite = 0;
+    Branch = 0;
+    ALUOp1 = 1;
+    ALUOp0 = 0;
+    Jump = 0;
   }
   //else it is a BEQ
   else
@@ -87,21 +99,6 @@ void ControlUnit::set_datapath(int opcode)
     Jump = 0;
   }
 
-  /** Need to implement ADDI  ** NOT SURE ON THIS ONE **
-  else if("001000")
-  {
-    RegDst = 0;
-    ALUSrc = 0;
-    MemToReg = 0;
-    RegWrite = 0;
-    MemRead = 0;
-    MemWrite = 0;
-    Branch = 0;
-    ALUOp1 = 0;
-    ALUOp0 = 1;
-    Jump = 0;
-  }
-  */
 
 }
 
