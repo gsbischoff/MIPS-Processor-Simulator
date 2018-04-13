@@ -5,7 +5,11 @@ using namespace std;
 // -----
 //  Parser
 //	  Constructs a Parser instance based on a specific input file
-//		and reads in the files named in the config file
+//		and reads in the files named in the config file.
+//
+//	PARAMS
+//		filename - a string of the filename of the configuration
+//						file to be used.
 Parser::Parser(std::string filename)
 {
 	read_config_file(filename);
@@ -17,11 +21,15 @@ Parser::Parser(std::string filename)
 	read_program();
 }
 
+// -----
+//  ~Parser
+//	  Destructs a Parser instance.
 Parser::~Parser()
 {
 }
 
-// 6 bit opcode field and 6 bit func field set
+// Define an enumeration of the opcodes that will be
+// 6-bit opcode field and 6-bit func field set
 enum Opcode
 {
 	UNDEF = 0,
@@ -38,7 +46,7 @@ enum Opcode
 // -----
 //  get_register
 //	  Reads a decimal value from a string if a '$' is present, meaning it
-//		is a register. Otherwise, reads as hex and sets a flag
+//		is a register. Otherwise, reads as hex and sets a flag.
 u32 get_register(char *f)
 {
 	for(int i = 0; i < strlen(f); ++i)
@@ -52,8 +60,8 @@ u32 get_register(char *f)
 
 // -----
 //  handle_RType
-//	  Returns the three 5-bit registers and the shift amount
-//	  between the Opcode and func fields of a MIPS instruction
+//	  Returns the three 5-bit registers and the shift amount between
+//			the Opcode and func fields of a MIPS instruction.
 u32 handle_RType(char *fields)
 {
 	char *rd, *rs, *rt;
@@ -71,6 +79,7 @@ u32 handle_RType(char *fields)
 
 	u32 t = get_register(rd);
 
+	// Determine whether the 'this is a shift amount' flag is set or not
 	if(t >> 31)
 		sh_n = t & 0x7FFFFFFF;
 	else
@@ -88,7 +97,7 @@ u32 handle_RType(char *fields)
 // -----
 //  handle_IType
 //	  Returns the two, 5-bit register values in proper order and
-//	  	the 16-bit immediate field; all in a 32-bit word
+//	  	the 16-bit immediate field; all in a 32-bit word.
 u32 handle_IType(char *fields)
 {
 	char *rs, *rt, *imm;
@@ -122,7 +131,7 @@ u32 handle_IType(char *fields)
 		rs_n = get_register(rs);
 
 		// The offset (immediate) value in ADDI can be expressed either
-		// in hexadecimal or decimal
+		// in hexadecimal or decimal, strtol with 0 to determine which
 		imm_n = strtol(imm, NULL, 0);
 	}
 	else	// $rt, imm($rs) -> $rt
@@ -147,7 +156,7 @@ u32 handle_IType(char *fields)
 
 // -----
 //  handle_JType
-//	  Returns the formatted 26-bit address field of a J-Type MIPS instruction
+//	  Returns the formatted 26-bit address field of a J-Type MIPS instruction.
 u32 handle_JType(char *fields)
 {
 	// Fill last 26 bits with value
@@ -156,13 +165,22 @@ u32 handle_JType(char *fields)
 
 // -----
 //  match_case
-//	  Returns whether two words are equal to eachother, case insensitive
-bool match_case(const char *a, char *b)
+//	  Returns whether two words are equal to eachother, case insensitive.
+//
+//	PARAMS
+//		a - a null-terminated byte string which we'll check is equal to b
+//		b - a null-terminated byte string which we'll check is equal to a
+//
+//	RETURN
+//		true if the strings are lexicographically, but not integrally, equal
+bool match_case(const char *a, const char *b)
 {
 	int a_len = strlen(a);
 
 	bool result = true;
 
+	// Check if the char values are equal, or 
+	// just the same letter regardless of case
 	for(int i = 0; i < a_len; ++i)
 		result &= (a[i] - b[i] == 0
 				|| a[i] - b[i] == ('a' - 'A')
@@ -175,12 +193,19 @@ bool match_case(const char *a, char *b)
 //  translate_to_machine
 //	  Translates each of the MIPS instruction lines in
 // 	  the instruction vector field string_instructions
-//	  		into 32-bit machine code
+//	  		into 32-bit machine code.
+//
+//	PARAMS
+//		line - an instruction line to convert
+//
+//	RETURN
+//		the MIPS assembly instruction's machine code
+//			representation
 u32 Parser::translate_to_machine(std::string line)
 {
 	u32 instruction = 0;
 
-	// Take a line
+	// Take the line as a null-terminated byte string
 	char *buf = strdup(line.c_str());
 	char *buf_s = buf; 	// Actual string start so we can free
 
@@ -189,17 +214,7 @@ u32 Parser::translate_to_machine(std::string line)
 		if(buf[i] == '\t')
 			buf[i] = ' ';
 
-	/*
-		ADD
-		SUB
-		ADDI
-		SLT
-		LW
-		SW
-		BEQ
-		J
-	*/
-	// Get Opcode
+	// Get the Opcode from the instruction line
 	char *opcode = strtok(buf, " ");
 	char *fields = strtok(NULL, "");	// Don't null the next delimiter
 
@@ -262,7 +277,14 @@ u32 Parser::translate_to_machine(std::string line)
 // -----
 //  stripLine
 //	  Strips comments and any trailing or leading
-//	  	whitespace from an input line
+//	  	whitespace from an input line.
+//
+//	PARAMS
+//		line - an input line to strip
+//
+//	RETURN
+//		a string with no trailing/leading whitespace
+//				or comments
 std::string stripLine(std::string line)
 {
 	int size = line.size();
@@ -305,14 +327,14 @@ std::string stripLine(std::string line)
 // -----
 //  Parser::read_register_file
 //	  Reads in and parses lines from the register file input
-//		containing <register:value> pairs
+//		containing <register:value> pairs.
 void Parser::read_register_file()
 {
 	ifstream input;
 
 	input.open(register_file_input.c_str());
 
-	if(input.bad())
+	if(input.bad() || !input)
 	{
 		printf("Could not open file \"%s\"!\n", register_file_input.c_str());
 	}
@@ -366,14 +388,14 @@ void Parser::read_register_file()
 // -----
 //  Parser::read_memory_contents
 //	  Reads in and parses lines from the initial memory contents
-//		file containing <address:value> pairs
+//		file containing <address:value> pairs.
 void Parser::read_memory_contents()
 {
 	ifstream input;
 
 	input.open(memory_contents_input.c_str());
 
-	if(input.bad())
+	if(input.bad() || !input)
 	{
 		printf("Could not open file \"%s\"!\n", memory_contents_input.c_str());
 	}
@@ -423,14 +445,14 @@ void Parser::read_memory_contents()
 // -----
 //  Parser::read_program
 //	  Reads in and parses lines from the input program file
-//		and stores them in the member vector field
+//		and stores them in the member vector field.
 void Parser::read_program()
 {
 	ifstream input;
 
 	input.open(program_input.c_str());
 
-	if(input.bad())
+	if(input.bad() || !input)
 	{
 		printf("Could not open file \"%s\"!\n", program_input.c_str());
 	}
@@ -462,14 +484,17 @@ void Parser::read_program()
 // -----
 //  Parser::read_config_file
 //	  Reads in and parses lines from the input configuration
-//		file and assigns the values to Parser's fields
+//		file and assigns the values to Parser's fields.
+//
+//	PARAMS
+//		filename - string name of the input config file
 void Parser::read_config_file(std::string filename)
 {
 	ifstream input;
 
 	input.open(filename.c_str());
 
-	if(input.bad())
+	if(input.bad() || !input)
 	{
 		printf("Could not open file \"%s\"!\n", filename.c_str());
 	}
