@@ -1,7 +1,7 @@
 #include "DataMemory.h"
 #include "stdHeader.h"
 
-DataMemory::DataMemory(std::vector<int> data_m)
+DataMemory::DataMemory(std::vector<u32> data_m)
 {
   data = data_m;
 }

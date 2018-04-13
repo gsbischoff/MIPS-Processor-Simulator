@@ -13,6 +13,8 @@ ALU::ALU()
     //adding does not necassarily just add
 }
 
+ALU::~ALU() {}
+
 void ALU::print_out()
 {
     //print out everything
