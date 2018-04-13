@@ -1,5 +1,5 @@
 EXECS = main
-OBJS = Main.o ALU.o ALUControlUnit.o CPU.o ControlUnit.o DataMemory.o Multiplex.o Register.o 
+OBJS = Main.o Parser.o ALU.o ALUControlUnit.o CPU.o ControlUnit.o DataMemory.o Multiplex.o Register.o 
 CC = g++
 CCFLAGS = -Wall -Wno-deprecated -Werror=return-type -g
 
