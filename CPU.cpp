@@ -21,11 +21,11 @@ CPU::CPU(std::vector<u32> inst, std::map<u32, u32> data_m, std::vector<u32> reg)
     alu2 = ALU();
     alu3 = ALU();
 
-    multiplex1 = Multiplex();
-    multiplex2 = Multiplex();
-    multiplex3 = Multiplex();
-    multiplex4 = Multiplex();
-    multiplex5 = Multiplex();
+    multiplex1 = Multiplex(1);
+    multiplex2 = Multiplex(2);
+    multiplex3 = Multiplex(3);
+    multiplex4 = Multiplex(4);
+    multiplex5 = Multiplex(5);
 
     control_unit = ControlUnit();
 

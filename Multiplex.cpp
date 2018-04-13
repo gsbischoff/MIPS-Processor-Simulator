@@ -1,15 +1,14 @@
 #include "Multiplex.h"
 #include "stdHeader.h"
 
-Multiplex::Multiplex()
+Multiplex::Multiplex(int n)
 {
-
+  number = n;
 }
 
-Multiplex::~Multiplex()
-{
+Multiplex::~Multiplex() {}
 
-}
+Multiplex::Multiplex() {}
 
 void Multiplex::set_selector(int s)
 {
@@ -26,9 +25,9 @@ void Multiplex::set_output()
 
 void Multiplex::print_out()
 {
-  std::cout << " -------------- " << std::endl;
-  std::cout << "|   Multiplex  |" << std::endl;
-  std::cout << " -------------- " << std::endl;
+  std::cout << " ------------- " << std::endl;
+  std::cout << "| Multiplex " << number << " |" << std::endl;
+  std::cout << " ------------- " << std::endl;
   std::cout << "Input A: " << in_a << std::endl;
   std::cout << "Input B: " << in_b << std::endl;
   std::cout << "Selector: " << selector_bit << std::endl;
