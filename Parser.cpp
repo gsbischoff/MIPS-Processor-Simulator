@@ -10,6 +10,8 @@ Parser::Parser(std::string filename)
 {
 	read_config_file(filename);
 
+	register_file.resize(32);
+
 	read_memory_contents();
 	read_register_file();
 	read_program();
