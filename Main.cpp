@@ -21,6 +21,11 @@ int main(int argc, char* argv[])
     //CPU object instantiated. takes the return values of our ** read file methods ** (TODO Implement these)
     CPU cpu = CPU(p.instruction_memory, p.memory_module, p.register_file);
 
+    //std::cout << std::hex << p.instruction_memory[0] << std::endl;
+    u32 ans = p.translate_to_machine("add $1, $2, $3");
+    std::cout << "Expected: " << std::hex << ans << std::endl;
+    cpu.execute(cpu.PC);
+    //cpu.print_out();
     /**
     *
     *
@@ -35,7 +40,7 @@ int main(int argc, char* argv[])
     *   }
     */
 
-    //test that we got the config files
+    /*test that we got the config files
     std::cout << "Input File: " << program_input << std::endl;
     std::cout << "Memory Contents File: " << memory_contents_input << std::endl;
     std::cout << "Register File: " << register_file_input << std::endl;
@@ -44,6 +49,8 @@ int main(int argc, char* argv[])
     std::cout << "Print Memory Contents: " << print_memory_contents << std::endl;
     std::cout << "Output File: " << output_file << std::endl;
     std::cout << "Write to File: " << write_to_file << std::endl;
+
+    */
 
 }
 

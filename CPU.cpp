@@ -5,10 +5,11 @@
 #include "Register.h"
 #include "DataMemory.h"
 #include "stdHeader.h"
+#include "Parser.h"
 
-CPU::CPU(std::vector<u32> inst, std::vector<u32> data_m, std::vector<u32> reg)
+CPU::CPU(std::vector<u32> inst, std::map<u32, u32> data_m, std::vector<u32> reg)
 {
-    PC = 0x400004;
+    PC = 0x400000;
 
     instruction_memory = inst;
 
@@ -56,16 +57,22 @@ void CPU::print_out(){
     //print out ALU control unit
     alu_control_unit.print_out();
 
+    //print Registers
+    reg_file.print_out();
+
+    //print data memory
+    data_memory.print_out();
+
 }
 
 void CPU::execute(int PC)
 {
     //get instruction from memory
-    int instruction;
-
-
-
-
+    u32 instruction;
+    int temp = PC-0x400004;
+    temp = temp >> 2;
+    instruction = instruction_memory[temp];
+    std::cout << "INSTRUCTION: " << std::hex << instruction << std::endl;
 
     //increment PC
     alu3.in_a = PC;
@@ -111,10 +118,14 @@ void CPU::execute(int PC)
     alu_control_unit.set_control_out();
 
     //set up multiplex1
+    std::cout << "THIS IS THE CONTROL UNIT SELCTOR:::" << control_unit.RegDst<<std::endl;
     multiplex1.set_selector(control_unit.RegDst);
     multiplex1.in_a = r2;
+    std::cout << "THIS IS MUX1 A:::" << multiplex1.in_a <<std::endl;
     multiplex1.in_b = mux1_b;        //this atctually gets Instruction [15-11]
+    std::cout << "THIS IS MUX1 B:::" << multiplex1.in_b <<std::endl;
     multiplex1.set_output();
+    std::cout << "THIS IS MUX1 output:::" << multiplex1.output <<std::endl;
 
     //set up Register file
     reg_file.reg1 = reg_file.registers.at(r1);         //read data 1

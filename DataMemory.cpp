@@ -1,7 +1,7 @@
 #include "DataMemory.h"
 #include "stdHeader.h"
 
-DataMemory::DataMemory(std::vector<u32> data_m)
+DataMemory::DataMemory(std::map<u32, u32> data_m)
 {
   data = data_m;
 }
@@ -20,9 +20,9 @@ void DataMemory::print_out()
   std::cout << "Control Line - MemRead: " << control_read << std::endl;
   std::cout << "Control Line - MemWrite: " << control_write << std::endl;
   std::cout << "Memory Contents..." << std::endl;
-  for(int i; i < data.size(); i++)
+  for(auto iter = data.begin(); iter != data.end(); ++iter)
   {
-    std::cout << "0x" << std::hex << data.at(i) << std::endl;
+    std::cout << "0x" << std::hex << iter->first << ":" << iter->second << std::endl;
   }
 
 }

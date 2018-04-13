@@ -8,7 +8,7 @@ class DataMemory
 
     public:
 
-        std::vector<u32> data;
+        std::map<u32, u32> data;
 
         int address;
         int write_data;
@@ -18,7 +18,7 @@ class DataMemory
         int control_write;
 
         DataMemory();
-        DataMemory(std::vector<u32> data_m);
+        DataMemory(std::map<u32, u32> data_m);
         ~DataMemory();
 
         void print_out();
