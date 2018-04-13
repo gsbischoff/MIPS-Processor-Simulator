@@ -80,7 +80,7 @@ void ControlUnit::set_datapath(int opcode)
     MemRead = 0;
     MemWrite = 0;
     Branch = 0;
-    ALUOp1 = 1;
+    ALUOp1 = 0;
     ALUOp0 = 0;
     Jump = 0;
   }
