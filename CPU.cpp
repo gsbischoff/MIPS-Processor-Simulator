@@ -116,6 +116,7 @@ void CPU::execute(int PC)
     alu_control_unit.func_field_in = func_field;
     alu_control_unit.set_control_out();
     std::cout << "ALU OP IN: " << alu_control_unit.ALU_op_in << std::endl;
+    std::cout << "ALU CONTROL UNIT OUTPUT: " << alu_control_unit.control_out << std::endl;
     std::cout << "FUNC FIELS: " << alu_control_unit.func_field_in << std::endl;
     //set up multiplex1
     //std::cout << "THIS IS THE CONTROL UNIT SELCTOR:::" << control_unit.RegDst<<std::endl;

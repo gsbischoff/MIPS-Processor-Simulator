@@ -17,7 +17,7 @@ void ALUControlUnit::set_control_out()
     {
         control_out = 2; //add, 0010
     }
-    else if ((ALU_op_in & 0x1) == 1) //ALUop = 01
+    else if ((ALU_op_in & 0x1) == 1) //ALUop = X1
     {
         control_out = 6; //subtract, 0110
     }
