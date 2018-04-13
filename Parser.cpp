@@ -59,13 +59,15 @@ u32 handle_RType(char *fields)
 	char *rd, *rs, *rt;
 	int rd_n = 0, rs_n, rt_n, sh_n = 0;
 
+	//std::cout << "read rd" << std::endl;
+
 	// All R-Type instructions we are handling will have 3 register fields
 	if((rd = strtok(fields, ", ")) == NULL)
 		return(0);
-
+	//std::cout << "read rs" << std::endl;
 	if((rs = strtok(NULL, ", ")) == NULL)
 		return(0);
-
+	//std::cout << "read rt" << std::endl;
 	if((rt = strtok(NULL, ", ")) == NULL)
 		return(0);
 
@@ -179,7 +181,7 @@ bool match_case(const char *a, char *b)
 u32 Parser::translate_to_machine(std::string line)
 {
 	// std::cout << line << std::endl;
-	u32 instruction;
+	u32 instruction = 0;
 
 	// Take a line
 	char *buf = strdup(line.c_str());

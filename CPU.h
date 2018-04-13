@@ -36,7 +36,7 @@ class CPU
         ControlUnit control_unit;
         ALUControlUnit alu_control_unit;
 
-        CPU(std::vector<u32> inst, std::vector<u32> data, std::vector<u32> reg);
+        CPU(std::vector<u32> inst, std::map<u32, u32> data, std::vector<u32> reg);
         ~CPU();
 
         void print_out();                       //prints out all of the values on the CPU components
