@@ -15,7 +15,7 @@ ControlUnit::~ControlUnit()
 void ControlUnit::set_datapath(int opcode)
 {
   //if it is an R-Type
-  if(opcode == 0)
+  if(opcode == 0) 
   {
     RegDst = 1;
     ALUSrc = 0;
