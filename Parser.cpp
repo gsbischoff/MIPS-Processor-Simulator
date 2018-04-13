@@ -10,6 +10,8 @@ Parser::Parser(std::string filename)
 {
 	read_config_file(filename);
 
+	register_file.resize(32);
+
 	read_memory_contents();
 	read_register_file();
 	read_program();
@@ -65,15 +67,15 @@ u32 handle_RType(char *fields)
 		return(0);
 
 	if((rt = strtok(NULL, ", ")) == NULL)
-		return(0);	
-	
+		return(0);
+
 	u32 t = get_register(rd);
 
 	if(t >> 31)
 		sh_n = t & 0x7FFFFFFF;
 	else
 		rd_n = t;
-		
+
 	rs_n = get_register(rs);
 	rt_n = get_register(rt);
 
@@ -109,7 +111,7 @@ u32 handle_IType(char *fields)
 
 	rt_n = get_register(rt);
 
-	if(!offset)	// $rt, $rs, imm	
+	if(!offset)	// $rt, $rs, imm
 	{
 		if((rs = strtok(NULL, ", ")) == NULL)
 			return(0);
@@ -135,9 +137,9 @@ u32 handle_IType(char *fields)
 
 		// The offset field in LW, and SW instructions is represented in
 		// decimal, and may be either positive or negative
-		imm_n = strtol(imm, NULL, 10);	
+		imm_n = strtol(imm, NULL, 10);
 	}
-	
+
 	return (rs_n << 21)
 		 | (rt_n << 16)
 		 | (imm_n);
@@ -162,7 +164,7 @@ bool match_case(const char *a, char *b)
 	bool result = true;
 
 	for(int i = 0; i < a_len; ++i)
-		result &= (a[i] - b[i] == 0 
+		result &= (a[i] - b[i] == 0
 				|| a[i] - b[i] == ('a' - 'A')
 				|| a[i] - b[i] == ('A' - 'a'));
 
@@ -252,12 +254,12 @@ u32 Parser::translate_to_machine(std::string line)
 			free(buf_s);
 			return(0);
 	}
-	
+
 	free(buf_s);
 
 	//printf("Got: 0x%08X\n\n", instruction);
 
-	return instruction;	
+	return instruction;
 }
 
 // -----
@@ -287,13 +289,13 @@ std::string stripLine(std::string line)
 		return "";
 
 	// Strip any trailing whitespace
-	while(end != 0 && buf[end] != '\0' 
+	while(end != 0 && buf[end] != '\0'
 			&& (buf[end] == ' ' || buf[end] == '\t'))
 	{
 		buf[end] = '\0';
 		end--;
 	}
-	
+
 	// Store the line
 	std::string temp = buf;
 
@@ -411,10 +413,11 @@ void Parser::read_memory_contents()
 			else
 			{
 				// Take string and convert it into a hexadecimal number
+				u32 addr = std::strtoul(address, NULL, 16);
 				u32 val = std::strtoul(value, NULL, 16);
 
 				// TODO: make easily-mapped to offset values
-				memory_module.push_back(val);
+				memory_module[addr] = val;  //.push_back(val);
 			}
 
 			free(buf_s);
@@ -449,7 +452,7 @@ void Parser::read_program()
 
 			if(str.size() == 0)
 				continue;
-			
+
 			// Store the line in the instruction vector
 			string_instructions.push_back(str);
 

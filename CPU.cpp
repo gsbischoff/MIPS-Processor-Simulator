@@ -6,7 +6,7 @@
 #include "DataMemory.h"
 #include "stdHeader.h"
 
-CPU::CPU(std::vector<u32> inst, std::vector<int> data_m, std::vector<s32> reg)
+CPU::CPU(std::vector<u32> inst, std::vector<u32> data_m, std::vector<u32> reg)
 {
     PC = 0x400004;
 

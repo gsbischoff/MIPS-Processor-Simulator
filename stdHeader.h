@@ -8,6 +8,7 @@
 #include <stdint.h>
 #include <string>
 #include <vector>
+#include <map>
 
 #define u32 uint32_t
 #define s32 int32_t
