@@ -1,7 +1,7 @@
 #include "Register.h"
 #include "stdHeader.h"
 
-Register::Register(std::vector<s32> reg)
+Register::Register(std::vector<u32> reg)
 {
   registers = reg;
 }

@@ -8,7 +8,7 @@ class Register
 
     public:
 
-        std::vector<s32> registers;
+        std::vector<u32> registers;
 
         int reg1;
         int reg2;
@@ -19,7 +19,7 @@ class Register
         int control_write;
 
         Register();
-        Register(std::vector<s32> reg);
+        Register(std::vector<u32> reg);
         ~Register();
 
         void write();
