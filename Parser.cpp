@@ -413,10 +413,11 @@ void Parser::read_memory_contents()
 			else
 			{
 				// Take string and convert it into a hexadecimal number
+				u32 addr = std::strtoul(address, NULL, 16);
 				u32 val = std::strtoul(value, NULL, 16);
 
 				// TODO: make easily-mapped to offset values
-				memory_module.push_back(val);
+				memory_module[addr] = val;  //.push_back(val);
 			}
 
 			free(buf_s);
