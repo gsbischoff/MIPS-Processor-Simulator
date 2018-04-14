@@ -10,6 +10,15 @@
 #include <vector>
 #include <map>
 
+typedef uint32_t	u32;
+typedef int32_t		s32;
+
+typedef uint16_t	u16;
+typedef int16_t		s16;
+
+typedef uint8_t		u8;
+typedef int8_t		s8;
+/*
 #define u32 uint32_t
 #define s32 int32_t
 
@@ -18,7 +27,7 @@
 
 #define u8 uint8_t
 #define s8 int8_t
-
+*/
 #define MASK_31_26 0xFC000000
 #define MASK_25_21 0x03E00000
 #define MASK_20_16 0x001F0000
