@@ -49,7 +49,7 @@ enum Opcode
 //		is a register. Otherwise, reads as hex and sets a flag.
 u32 get_register(char *f)
 {
-	for(int i = 0; i < strlen(f); ++i)
+	for(unsigned int i = 0; i < strlen(f); ++i)
 		if(f[i] == '$')
 			return strtoul(f + 1, NULL, 10);
 
@@ -108,7 +108,7 @@ u32 handle_IType(char *fields)
 	// Check if we have the immediate field 2nd (true) or 3rd (false)
 	int commas = 0;
 
-	for(int i = 0; i < strlen(fields); ++i)
+	for(unsigned int i = 0; i < strlen(fields); ++i)
 		if(fields[i] == ',')
 			commas++;
 
@@ -210,7 +210,7 @@ u32 Parser::translate_to_machine(std::string line)
 	char *buf_s = buf; 	// Actual string start so we can free
 
 	// Replace tabs with spaces to make parsing easier
-	for(int i = 0; i < strlen(buf); ++i)
+	for(unsigned int i = 0; i < strlen(buf); ++i)
 		if(buf[i] == '\t')
 			buf[i] = ' ';
 
