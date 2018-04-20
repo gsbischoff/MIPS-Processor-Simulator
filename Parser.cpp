@@ -463,7 +463,6 @@ void Parser::read_program()
 
 		while(getline(input, line))
 		{
-			lineNum++;
 
 			std::string str = stripLine(line);
 
@@ -473,11 +472,15 @@ void Parser::read_program()
 			// Store the line in the instruction vector
 			string_instructions.push_back(str);
 
+			lineNum++;
+
 			// Convert the line to machine code and store
 			u32 instruction = translate_to_machine(str);
 
 			instruction_memory.push_back(instruction);
 		}
+		
+		instruction_mem_size = lineNum;
 	}
 }
 

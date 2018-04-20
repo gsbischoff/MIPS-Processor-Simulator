@@ -13,6 +13,8 @@ class Parser
         std::vector<u32> instruction_memory;    		   // instructions in their machine code form.
         std::vector<std::string> string_instructions;      // instructions in string format.
 
+		int instruction_mem_size;
+		
 		Parser(std::string filename);
 		~Parser();
 
