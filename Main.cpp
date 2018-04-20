@@ -27,21 +27,37 @@ int main(int argc, char* argv[])
     cpu.print_out();
     */
 
+   /* std::cout << "instruction mem size: " << p.instruction_mem_size << std::endl;
+    std::cout << std::hex << " PCCCC1:  " << cpu.PC << std::endl;
+    cpu.execute(p.instruction_mem_size);
+    std::cout << std::hex << " PCCCC2:  " << cpu.PC << std::endl;
+    cpu.execute(p.instruction_mem_size);
+    std::cout << std::hex << " PCCCC3:  " << cpu.PC << std::endl;
+    cpu.execute(p.instruction_mem_size);
+    std::cout << std::hex << " PCCCC4:  " << cpu.PC << std::endl;
+*/
     if(output_mode == "batch")
     {
-        while(cpu.execute(cpu.PC, p.instruction_mem_size));
+        while(cpu.execute(p.instruction_mem_size))
+            ;   // nop
+
+        if(debug_mode) cpu.print_out(); //print everything out
+        if(print_memory_contents) cpu.data_memory.print(); //print data memory
     }
     else
     {
         std::cout << "Press a key to begin execution:" << std::endl;
         std::cin.get();
-        while(cpu.execute(cpu.PC, p.instruction_mem_size))
+        while(cpu.execute(p.instruction_mem_size))
         {
+            cpu.print_out();
+            std::cout << "Press enter to continue." << std::endl;
             std::cin.get();
         }
     }
 
-    cpu.print_out();
+
+
 
 
     /*test that we got the config files

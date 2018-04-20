@@ -65,7 +65,7 @@ void CPU::print_out(){
 
 }
 
-int CPU::execute(int PC, int exit)
+int CPU::execute(int exit)
 {
     //get instruction from memory
     u32 instruction = 0;
@@ -73,7 +73,7 @@ int CPU::execute(int PC, int exit)
     temp = temp >> 2;
 
     //if there is no instruction left
-    if(temp > exit)
+    if(temp >= exit)
     {
         return 0;
     }
@@ -93,7 +93,7 @@ int CPU::execute(int PC, int exit)
     //Then shift opcode right 26 bits
     int opcode = instruction & MASK_31_26;
     opcode = (opcode >> 26) & 0x3f;
-    std::cout << "OPCODE: " << opcode << std::endl;
+    //std::cout << "OPCODE: " << opcode << std::endl;
     //set Control UNit datapath lines
     control_unit.set_datapath(opcode);
 
@@ -124,9 +124,9 @@ int CPU::execute(int PC, int exit)
     alu_control_unit.ALU_op_in = control_unit.ALUOp0 | (control_unit.ALUOp1 << 1);
     alu_control_unit.func_field_in = func_field;
     alu_control_unit.set_control_out();
-    std::cout << "ALU OP IN: " << alu_control_unit.ALU_op_in << std::endl;
-    std::cout << "ALU CONTROL UNIT OUTPUT: " << alu_control_unit.control_out << std::endl;
-    std::cout << "FUNC FIELS: " << alu_control_unit.func_field_in << std::endl;
+    //std::cout << "ALU OP IN: " << alu_control_unit.ALU_op_in << std::endl;
+    //std::cout << "ALU CONTROL UNIT OUTPUT: " << alu_control_unit.control_out << std::endl;
+    //std::cout << "FUNC FIELS: " << alu_control_unit.func_field_in << std::endl;
     //set up multiplex1
     //std::cout << "THIS IS THE CONTROL UNIT SELCTOR:::" << control_unit.RegDst<<std::endl;
     multiplex1.set_selector(control_unit.RegDst);
@@ -176,10 +176,11 @@ int CPU::execute(int PC, int exit)
 
     //set up multiplex 4
     multiplex4.in_a = multiplex5.output;
+    std::cout << " MUX 4 IN_A: " << multiplex4.in_a << std::endl;
     multiplex4.in_b = jump_address;
     multiplex4.set_selector(control_unit.Jump);
     multiplex4.set_output();
-
+    std::cout << "Multiplex 4 output: " << multiplex4.output << std::endl;
     //set up data memory
     if(opcode == 35 || opcode == 43)         //if this is LW or SW
     {
@@ -205,8 +206,10 @@ int CPU::execute(int PC, int exit)
     if(reg_file.control_write == 1)
         reg_file.write();
 
+    std::cout << "Multiplex 4 output (on assignment): " << multiplex4.output << std::endl;
     //increment PC
     PC = multiplex4.output;
+
     return 1;
 
 
