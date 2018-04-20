@@ -80,8 +80,6 @@ int CPU::execute(int exit)
 
     instruction = instruction_memory[temp];
 
-
-
     //increment PC
     alu3.in_a = PC;
     alu3.in_b = 4;
@@ -109,7 +107,7 @@ int CPU::execute(int exit)
     int func_field = instruction & MASK_5_0;        //integer representation of the instruction's function field..  for ALU control Unit ****
 
     int inst_25_0 = instruction & MASK_25_0;        //Instruction [25-0] needed for jumps
-    inst_25_0 = inst_25_0 << 2;
+    //inst_25_0 = inst_25_0 << 2;
 
     int PC_4_31_28 = alu3.result & MASK_31_28;        //get high order 4 bits from ALU 3 result
 
@@ -119,6 +117,8 @@ int CPU::execute(int exit)
     //shift left inst_25_0 and concatenate PC + 4 [31-28] to front
     inst_25_0 = inst_25_0 << 2;
     int jump_address = PC_4_31_28 | inst_25_0;
+
+    std::cout << "Jump address:  " << std::hex << jump_address << std::endl;
 
     //set alu control unit lines
     alu_control_unit.ALU_op_in = control_unit.ALUOp0 | (control_unit.ALUOp1 << 1);
