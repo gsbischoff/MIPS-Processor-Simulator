@@ -65,13 +65,22 @@ void CPU::print_out(){
 
 }
 
-void CPU::execute(int PC)
+int CPU::execute(int PC, int exit)
 {
     //get instruction from memory
     u32 instruction = 0;
     s32 temp = PC-0x400000;
     temp = temp >> 2;
+
+    //if there is no instruction left
+    if(temp > exit)
+    {
+        return 0;
+    }
+
     instruction = instruction_memory[temp];
+
+
 
     //increment PC
     alu3.in_a = PC;
@@ -198,6 +207,7 @@ void CPU::execute(int PC)
 
     //increment PC
     PC = multiplex4.output;
+    return 1;
 
 
 }

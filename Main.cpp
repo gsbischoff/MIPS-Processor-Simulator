@@ -20,24 +20,29 @@ int main(int argc, char* argv[])
 
     //CPU object instantiated. takes the return values of our ** read file methods ** (TODO Implement these)
     CPU cpu = CPU(p.instruction_memory, p.memory_module, p.register_file);
+    /*
     std::cout << std::hex << "INSTRUCTION STRAIGHT OUTTA PARS: " << p.translate_to_machine("slt $1, $2, $3") << std::endl;
     std::cout << std::hex << cpu.instruction_memory[0] << std::endl;
     cpu.execute(cpu.PC);
     cpu.print_out();
-
-    /**
-    *
-    *
-    *   if(output_mode = "batch")
-    *   {
-    *       while(cpu.PC != exit)
-    *           cpu.execute(cpu.PC);
-    *
-    *   }
-    *   else{
-    *       //make it single step...
-    *   }
     */
+
+    if(output_mode == "batch")
+    {
+        while(cpu.execute(cpu.PC, p.instruction_mem_size));
+    }
+    else
+    {
+        std::cout << "Press a key to begin execution:" << std::endl;
+        std::cin.get();
+        while(cpu.execute(cpu.PC, p.instruction_mem_size))
+        {
+            std::cin.get();
+        }
+    }
+
+    cpu.print_out();
+
 
     /*test that we got the config files
     std::cout << "Input File: " << program_input << std::endl;
