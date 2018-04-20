@@ -56,6 +56,28 @@ int main(int argc, char* argv[])
         }
     }
 
+	if(write_to_file == "true")	// 100% pwoper booleans
+	{
+		std::ofstream dataMemOutfile;
+		std::ofstream regOutfile;
+
+		dataMemOutfile.open("data_out.memory");
+
+		for(auto iter = cpu.data_memory.data.begin(); iter != cpu.data_memory.data.end(); ++iter)
+		{
+			dataMemOutfile << "0x" << std::hex << iter->first << ":" << iter->second << std::endl;
+		}
+		dataMemOutfile.close();
+
+		regOutfile.open("register_out.memory");
+		for(int i=0; i < 32; i++)
+		{
+			regOutfile << i << ":0x" << std::hex << cpu.reg_file.registers[i] << std::endl;
+
+			//printf("%d: 0x%08x\n", i, registers.at(i));
+		}
+		regOutfile.close();
+	}
 
 
 
