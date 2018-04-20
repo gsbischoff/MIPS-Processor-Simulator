@@ -41,8 +41,8 @@ int main(int argc, char* argv[])
         while(cpu.execute(p.instruction_mem_size))
             ;   // nop
 
-        if(debug_mode) cpu.print_out(); //print everything out
-        if(print_memory_contents) cpu.data_memory.print(); //print data memory
+        if(debug_mode == "true") cpu.print_out(); //print everything out
+        if(print_memory_contents == "true") cpu.data_memory.print_out(); //print data memory
     }
     else
     {
