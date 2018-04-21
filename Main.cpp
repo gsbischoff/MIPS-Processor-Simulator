@@ -20,7 +20,7 @@ int main(int argc, char* argv[])
 
     //CPU object instantiated. takes the return values of our ** read file methods ** (TODO Implement these)
     CPU cpu = CPU(p.instruction_memory, p.memory_module, p.register_file);
-
+    std::cout << std::hex << "INSTRUCTION STRAIGHT OUTTA PARS: " << p.translate_to_machine("slt $1, $2, $3") << std::endl;
     std::cout << std::hex << cpu.instruction_memory[0] << std::endl;
     cpu.execute(cpu.PC);
     cpu.print_out();

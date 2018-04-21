@@ -49,6 +49,7 @@ void ALU::execute()
     else
     {
         //SET ON LESS THAN
+        result = in_a < in_b;
     }
 
 
