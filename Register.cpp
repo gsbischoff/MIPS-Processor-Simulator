@@ -32,7 +32,7 @@ void Register::print_out()
   std::cout << "Register 1: " << reg1 << std::endl;
   std::cout << "Register 2: " << reg2 << std::endl;
   std::cout << "Write Register: " << write_reg << std::endl;
-  std::cout << "Write Data: " << write_data << std::endl;
+  printf("Write Data: 0x%08x\n", write_data);
   std::cout << "Register Contents..." << std::endl;
   for(int i=0; i < 32; i++)
   {

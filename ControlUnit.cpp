@@ -73,7 +73,7 @@ void ControlUnit::set_datapath(int opcode)
   }
   else if(opcode == 8) //ADDI
   {
-    RegDst = 1;
+    RegDst = 0;
     ALUSrc = 1;
     MemToReg = 0;
     RegWrite = 1;

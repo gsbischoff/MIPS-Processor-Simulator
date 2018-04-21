@@ -20,36 +20,54 @@ int main(int argc, char* argv[])
 
     //CPU object instantiated. takes the return values of our ** read file methods ** (TODO Implement these)
     CPU cpu = CPU(p.instruction_memory, p.memory_module, p.register_file);
-    std::cout << std::hex << "INSTRUCTION STRAIGHT OUTTA PARS: " << p.translate_to_machine("slt $1, $2, $3") << std::endl;
-    std::cout << std::hex << cpu.instruction_memory[0] << std::endl;
-    cpu.execute(cpu.PC);
-    cpu.print_out();
 
-    /**
-    *
-    *
-    *   if(output_mode = "batch")
-    *   {
-    *       while(cpu.PC != exit)
-    *           cpu.execute(cpu.PC);
-    *
-    *   }
-    *   else{
-    *       //make it single step...
-    *   }
-    */
+    //execute based on mode specified in input file
+    if(output_mode == "batch")
+    {
+        while(cpu.execute(p.instruction_mem_size))
+            ;   // nop
 
-    /*test that we got the config files
-    std::cout << "Input File: " << program_input << std::endl;
-    std::cout << "Memory Contents File: " << memory_contents_input << std::endl;
-    std::cout << "Register File: " << register_file_input << std::endl;
-    std::cout << "Output Mode: " << output_mode << std::endl;
-    std::cout << "Debug Mode: " << debug_mode << std::endl;
-    std::cout << "Print Memory Contents: " << print_memory_contents << std::endl;
-    std::cout << "Output File: " << output_file << std::endl;
-    std::cout << "Write to File: " << write_to_file << std::endl;
+        if(debug_mode == "true") cpu.print_out(); //print everything out
+        if(print_memory_contents == "true")
+        {
+            cpu.data_memory.print_out(); //print data memory
+            cpu.reg_file.print_out(); //print out register file
+        }
+    }
+    else
+    {
+        std::cout << "Press a key to begin execution:" << std::endl;
+        std::cin.get();
+        while(cpu.execute(p.instruction_mem_size))
+        {
+            cpu.print_out();
+            std::cout << "Press enter to continue." << std::endl;
+            std::cin.get();
+        }
+    }
 
-    */
+    //write to file if specified in input file
+	if(write_to_file == "true")	// 100% pwoper booleans
+	{
+		std::ofstream outfile;
+
+		outfile.open(output_file.c_str());
+
+		if(outfile.is_open())
+        {
+    		for(auto iter = cpu.data_memory.data.begin(); iter != cpu.data_memory.data.end(); ++iter)
+    		{
+    			outfile << "0x" << std::hex << iter->first << ":" << iter->second << std::endl;
+    		}
+
+    		for(int i=0; i < 32; i++)
+    		{
+    			outfile << i;
+    			outfile << ":0x" << std::hex << cpu.reg_file.registers[i] << std::endl;
+    		}
+    		outfile.close();
+        }
+	}
 
 }
 

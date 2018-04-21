@@ -41,8 +41,8 @@ class CPU
 
         void print_out();                       //prints out all of the values on the CPU components
         int shift_left(int a);                  //shifts the input left two bits
-        int sign_extend(int a);                 //sign extends to 32 bits the input
-        void execute(int PC);                   //takes the PC and exectues the corresponding instruction stored in that memory
+        s32 sign_extend(s16 a);                 //sign extends to 32 bits the input
+        int execute(int exit);              //takes the PC and exectues the corresponding instruction stored in that memory
 	    std::vector<int> instruction_convert();		//Takes the instruction memory vector and converts it to a binary vector
 
 };

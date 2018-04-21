@@ -49,7 +49,7 @@ enum Opcode
 //		is a register. Otherwise, reads as hex and sets a flag.
 u32 get_register(char *f)
 {
-	for(int i = 0; i < strlen(f); ++i)
+	for(unsigned int i = 0; i < strlen(f); ++i)
 		if(f[i] == '$')
 			return strtoul(f + 1, NULL, 10);
 
@@ -108,7 +108,7 @@ u32 handle_IType(char *fields)
 	// Check if we have the immediate field 2nd (true) or 3rd (false)
 	int commas = 0;
 
-	for(int i = 0; i < strlen(fields); ++i)
+	for(unsigned int i = 0; i < strlen(fields); ++i)
 		if(fields[i] == ',')
 			commas++;
 
@@ -132,7 +132,7 @@ u32 handle_IType(char *fields)
 
 		// The offset (immediate) value in ADDI can be expressed either
 		// in hexadecimal or decimal, strtol with 0 to determine which
-		imm_n = strtol(imm, NULL, 0);
+		imm_n = (u16) strtol(imm, NULL, 0);
 	}
 	else	// $rt, imm($rs) -> $rt
 	{
@@ -146,7 +146,7 @@ u32 handle_IType(char *fields)
 
 		// The offset field in LW, and SW instructions is represented in
 		// decimal, and may be either positive or negative
-		imm_n = strtol(imm, NULL, 10);
+		imm_n = (u16) strtol(imm, NULL, 10);
 	}
 
 	return (rs_n << 21)
@@ -210,7 +210,7 @@ u32 Parser::translate_to_machine(std::string line)
 	char *buf_s = buf; 	// Actual string start so we can free
 
 	// Replace tabs with spaces to make parsing easier
-	for(int i = 0; i < strlen(buf); ++i)
+	for(unsigned int i = 0; i < strlen(buf); ++i)
 		if(buf[i] == '\t')
 			buf[i] = ' ';
 
@@ -463,7 +463,6 @@ void Parser::read_program()
 
 		while(getline(input, line))
 		{
-			lineNum++;
 
 			std::string str = stripLine(line);
 
@@ -473,11 +472,15 @@ void Parser::read_program()
 			// Store the line in the instruction vector
 			string_instructions.push_back(str);
 
+			lineNum++;
+
 			// Convert the line to machine code and store
 			u32 instruction = translate_to_machine(str);
 
 			instruction_memory.push_back(instruction);
 		}
+		
+		instruction_mem_size = lineNum;
 	}
 }
 

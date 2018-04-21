@@ -2,22 +2,31 @@
 #include "ALU.h"
 #include "stdHeader.h"
 
-ALU::ALU()
+ALU::ALU(int n)
 {
     zero_flag = false;
     result = 0;
     in_a = 0;
     in_b = 0;
     control = 0;
-//needs to take an opcode
-    //adding does not necassarily just add
+    number = n;
 }
+
+ALU::ALU() {}
 
 ALU::~ALU() {}
 
 void ALU::print_out()
 {
     //print out everything
+    std::cout << " ------------- " << std::endl;
+    std::cout << "|    ALU " << number << "    |" << std::endl;
+    std::cout << " ------------- " << std::endl;
+    std::cout << "Input A: " << in_a << std::endl;
+    std::cout << "Input B: " << in_b << std::endl;
+    std::cout << "Control Code: " << control << std::endl;
+    std::cout << "Result: " << result << std::endl;
+    std::cout << "Zero Flag: " << zero_flag << std::endl;
 }
 
 //set the output variable to the sum of A + B

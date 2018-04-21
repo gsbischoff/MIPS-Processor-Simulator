@@ -17,9 +17,9 @@ CPU::CPU(std::vector<u32> inst, std::map<u32, u32> data_m, std::vector<u32> reg)
 
     reg_file = Register(reg);
 
-    alu1 = ALU();
-    alu2 = ALU();
-    alu3 = ALU();
+    alu1 = ALU(1);
+    alu2 = ALU(2);
+    alu3 = ALU(3);
 
     multiplex1 = Multiplex(1);
     multiplex2 = Multiplex(2);
@@ -65,12 +65,21 @@ void CPU::print_out(){
 
 }
 
-void CPU::execute(int PC)
+int CPU::execute(int exit)
 {
+    //std::cout << std::hex << "PC: " << PC << std::endl;
+
     //get instruction from memory
     u32 instruction = 0;
     s32 temp = PC-0x400000;
     temp = temp >> 2;
+
+    //if there is no instruction left
+    if(temp >= exit)
+    {
+        return 0;
+    }
+
     instruction = instruction_memory[temp];
 
     //increment PC
@@ -84,15 +93,18 @@ void CPU::execute(int PC)
     //Then shift opcode right 26 bits
     int opcode = instruction & MASK_31_26;
     opcode = (opcode >> 26) & 0x3f;
-    std::cout << "OPCODE: " << opcode << std::endl;
+    //std::cout << "OPCODE: " << opcode << std::endl;
     //set Control UNit datapath lines
     control_unit.set_datapath(opcode);
-
+    //std::cout << "Instruction: " << instruction << std::endl;
     //** Properly grab bits of instruction **/
     int r1 = instruction & MASK_25_21;              //Instruction [25-21] for register 1
     r1 = r1 >> 21;
     int r2 = instruction & MASK_20_16;              //Instruction [20-16] for register 2
     r2 = r2 >> 16;
+
+    //std::cout << "Register 1: " << r1 << std::endl;
+    //std::cout << "Register 2: " << r2 << std::endl;
 
     int mux1_b = instruction & MASK_15_11;          //Instruction [20-16] for B input of mux1
     mux1_b = mux1_b >> 11;
@@ -100,7 +112,6 @@ void CPU::execute(int PC)
     int func_field = instruction & MASK_5_0;        //integer representation of the instruction's function field..  for ALU control Unit ****
 
     int inst_25_0 = instruction & MASK_25_0;        //Instruction [25-0] needed for jumps
-    inst_25_0 = inst_25_0 << 2;
 
     int PC_4_31_28 = alu3.result & MASK_31_28;        //get high order 4 bits from ALU 3 result
 
@@ -115,9 +126,9 @@ void CPU::execute(int PC)
     alu_control_unit.ALU_op_in = control_unit.ALUOp0 | (control_unit.ALUOp1 << 1);
     alu_control_unit.func_field_in = func_field;
     alu_control_unit.set_control_out();
-    std::cout << "ALU OP IN: " << alu_control_unit.ALU_op_in << std::endl;
-    std::cout << "ALU CONTROL UNIT OUTPUT: " << alu_control_unit.control_out << std::endl;
-    std::cout << "FUNC FIELS: " << alu_control_unit.func_field_in << std::endl;
+    //std::cout << "ALU OP IN: " << alu_control_unit.ALU_op_in << std::endl;
+    //std::cout << "ALU CONTROL UNIT OUTPUT: " << alu_control_unit.control_out << std::endl;
+    //std::cout << "FUNC FIELS: " << alu_control_unit.func_field_in << std::endl;
     //set up multiplex1
     //std::cout << "THIS IS THE CONTROL UNIT SELCTOR:::" << control_unit.RegDst<<std::endl;
     multiplex1.set_selector(control_unit.RegDst);
@@ -149,12 +160,16 @@ void CPU::execute(int PC)
     //std::cout << "ALU B:" << alu1.in_b << std::endl;
     alu1.execute();
     //std::cout << "RESULT: " << std::hex << alu1.result << std::endl;
+    //std::cout << "Zero Flag: " << alu1.zero_flag << std::endl;
 
     //set up ALU 2
     alu2.control = 2;
     alu2.in_a = alu3.result;
+    //std::cout << "ALU 2 in_a: " << alu2.in_a << std::endl;
     alu2.in_b = inst_15_0_s_e << 2;
+    //std::cout << std::hex << "ALU 2 in_b: " << alu2.in_b << std::endl;
     alu2.execute();
+    //std::cout << "ALU 2 output: " << alu2.result << std::endl;
 
     //set up Mulitplexor 5
     multiplex5.in_a = alu3.result;
@@ -179,32 +194,42 @@ void CPU::execute(int PC)
         data_memory.address = alu1.result;
         data_memory.write_data = reg_file.reg2;
         data_memory.execute();
-        //std::cout << "read data expected 63322818::::" << data_memory.read_data << std::endl;
     }
 
     //set up multiplex3
-    //std::cout << "MEMTO REG: " << control_unit.MemToReg << std::endl;
     multiplex3.set_selector(control_unit.MemToReg);
     multiplex3.in_a = alu1.result;                  //gets main ALU result
     multiplex3.in_b = data_memory.read_data;        //gets Data Memory Read-Data
     multiplex3.set_output();
-    //std::cout << "Expected: 63322818 ::::" << data_memory.data[0x10000004+24] << std::endl;
-    //std::cout << "MUX 3 output: " << multiplex3.output << std::endl;
 
     //handle Write Back if Necassary
     reg_file.write_data = multiplex3.output;
+    //std::cout << "WRITE DATA expected 18: " << reg_file.write_data << std::endl;
+    //std::cout << "write control line expected 1: " << reg_file.control_write << std::endl;
     if(reg_file.control_write == 1)
+    {
+        //std::cout << "here" << std::endl;
         reg_file.write();
+    }
+
+    //std::cout << "reg_file write register expected 5: " << reg_file.write_reg << std::endl;
+    //std::cout << std::hex << "register 5 after WRIte: " << reg_file.registers[5] << std::endl;
+
 
     //increment PC
     PC = multiplex4.output;
 
+    //reset zero flag
+    alu1.zero_flag = 0;
+
+    return 1;
+
 
 }
 
-s32 CPU::sign_extend(int a)
+s32 CPU::sign_extend(s16 a)
 {
-    s32 sign_extended = a;
+    s32 sign_extended = ((s32)a);
     return sign_extended;
 }
 
