@@ -132,7 +132,7 @@ u32 handle_IType(char *fields)
 
 		// The offset (immediate) value in ADDI can be expressed either
 		// in hexadecimal or decimal, strtol with 0 to determine which
-		imm_n = strtol(imm, NULL, 0);
+		imm_n = (u16) strtol(imm, NULL, 0);
 	}
 	else	// $rt, imm($rs) -> $rt
 	{
@@ -146,7 +146,7 @@ u32 handle_IType(char *fields)
 
 		// The offset field in LW, and SW instructions is represented in
 		// decimal, and may be either positive or negative
-		imm_n = strtol(imm, NULL, 10);
+		imm_n = (u16) strtol(imm, NULL, 10);// && 0xFFFF;
 	}
 
 	return (rs_n << 21)
@@ -269,6 +269,17 @@ u32 Parser::translate_to_machine(std::string line)
 			return(0);
 	}
 
+	if(op == BEQ)
+	{
+		//printf("Branch!\n");
+		Formated instr = { .u = instruction };
+		//printf("op: %x, rs: %x, rt: %x, imm: %x\n", instr.opcode, instr.rs, instr.rt, instr.imm);
+		u32 t = instr.rs;
+		instr.rs = instr.rt;
+		instr.rt = t;
+
+		//printf("op: %x, rs: %x, rt: %x, imm: %x\n", instr.opcode, instr.rs, instr.rt, instr.imm);
+	}
 	free(buf_s);
 
 	return instruction;
