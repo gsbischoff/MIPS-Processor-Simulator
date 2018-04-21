@@ -68,7 +68,7 @@ void CPU::print_out(){
 int CPU::execute(int exit)
 {
     std::cout << std::hex << "PC: " << PC << std::endl;
-    std::cout << std::hex << "register 5: " << reg_file.registers[5] << std::endl;
+
     //get instruction from memory
     u32 instruction = 0;
     s32 temp = PC-0x400000;
@@ -96,15 +96,15 @@ int CPU::execute(int exit)
     //std::cout << "OPCODE: " << opcode << std::endl;
     //set Control UNit datapath lines
     control_unit.set_datapath(opcode);
-    std::cout << "Instruction: " << instruction << std::endl;
+    //std::cout << "Instruction: " << instruction << std::endl;
     //** Properly grab bits of instruction **/
     int r1 = instruction & MASK_25_21;              //Instruction [25-21] for register 1
     r1 = r1 >> 21;
     int r2 = instruction & MASK_20_16;              //Instruction [20-16] for register 2
     r2 = r2 >> 16;
 
-    std::cout << "Register 1: " << r1 << std::endl;
-    std::cout << "Register 2: " << r2 << std::endl;
+    //std::cout << "Register 1: " << r1 << std::endl;
+    //std::cout << "Register 2: " << r2 << std::endl;
 
     int mux1_b = instruction & MASK_15_11;          //Instruction [20-16] for B input of mux1
     mux1_b = mux1_b >> 11;
@@ -133,11 +133,11 @@ int CPU::execute(int exit)
     //std::cout << "THIS IS THE CONTROL UNIT SELCTOR:::" << control_unit.RegDst<<std::endl;
     multiplex1.set_selector(control_unit.RegDst);
     multiplex1.in_a = r2;
-    std::cout << "THIS IS MUX1 A:::" << multiplex1.in_a <<std::endl;
+    //std::cout << "THIS IS MUX1 A:::" << multiplex1.in_a <<std::endl;
     multiplex1.in_b = mux1_b;        //this atctually gets Instruction [15-11]
-    std::cout << "THIS IS MUX1 B:::" << multiplex1.in_b <<std::endl;
+    //std::cout << "THIS IS MUX1 B:::" << multiplex1.in_b <<std::endl;
     multiplex1.set_output();
-    std::cout << "THIS IS MUX1 output:::" << multiplex1.output <<std::endl;
+    //std::cout << "THIS IS MUX1 output:::" << multiplex1.output <<std::endl;
 
     //set up Register file
     reg_file.reg1 = reg_file.registers.at(r1);         //read data 1
@@ -152,15 +152,15 @@ int CPU::execute(int exit)
     multiplex2.set_output();
 
     //set up ALU
-    std::cout << "ALU CONTROL LINE: " << alu_control_unit.control_out << std::endl;
+    //std::cout << "ALU CONTROL LINE: " << alu_control_unit.control_out << std::endl;
     alu1.control = alu_control_unit.control_out;
     alu1.in_a = reg_file.reg1;
-    std::cout << "ALU A:" << alu1.in_a << std::endl;
+    //std::cout << "ALU A:" << alu1.in_a << std::endl;
     alu1.in_b = multiplex2.output;
-    std::cout << "ALU B:" << alu1.in_b << std::endl;
+    //std::cout << "ALU B:" << alu1.in_b << std::endl;
     alu1.execute();
-    std::cout << "RESULT: " << std::hex << alu1.result << std::endl;
-    std::cout << "Zero Flag: " << alu1.zero_flag << std::endl;
+    //std::cout << "RESULT: " << std::hex << alu1.result << std::endl;
+    //std::cout << "Zero Flag: " << alu1.zero_flag << std::endl;
 
     //set up ALU 2
     alu2.control = 2;
@@ -204,16 +204,16 @@ int CPU::execute(int exit)
 
     //handle Write Back if Necassary
     reg_file.write_data = multiplex3.output;
-    std::cout << "WRITE DATA expected 18: " << reg_file.write_data << std::endl;
-    std::cout << "write control line expected 1: " << reg_file.control_write << std::endl;
+    //std::cout << "WRITE DATA expected 18: " << reg_file.write_data << std::endl;
+    //std::cout << "write control line expected 1: " << reg_file.control_write << std::endl;
     if(reg_file.control_write == 1)
     {
-        std::cout << "here" << std::endl;
+        //std::cout << "here" << std::endl;
         reg_file.write();
     }
 
-    std::cout << "reg_file write register expected 5: " << reg_file.write_reg << std::endl;
-    std::cout << std::hex << "register 5 after WRIte: " << reg_file.registers[5] << std::endl;
+    //std::cout << "reg_file write register expected 5: " << reg_file.write_reg << std::endl;
+    //std::cout << std::hex << "register 5 after WRIte: " << reg_file.registers[5] << std::endl;
 
 
     //increment PC
