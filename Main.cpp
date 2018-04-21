@@ -20,22 +20,8 @@ int main(int argc, char* argv[])
 
     //CPU object instantiated. takes the return values of our ** read file methods ** (TODO Implement these)
     CPU cpu = CPU(p.instruction_memory, p.memory_module, p.register_file);
-    /*
-    std::cout << std::hex << "INSTRUCTION STRAIGHT OUTTA PARS: " << p.translate_to_machine("slt $1, $2, $3") << std::endl;
-    std::cout << std::hex << cpu.instruction_memory[0] << std::endl;
-    cpu.execute(cpu.PC);
-    cpu.print_out();
-    */
 
-   /* std::cout << "instruction mem size: " << p.instruction_mem_size << std::endl;
-    std::cout << std::hex << " PCCCC1:  " << cpu.PC << std::endl;
-    cpu.execute(p.instruction_mem_size);
-    std::cout << std::hex << " PCCCC2:  " << cpu.PC << std::endl;
-    cpu.execute(p.instruction_mem_size);
-    std::cout << std::hex << " PCCCC3:  " << cpu.PC << std::endl;
-    cpu.execute(p.instruction_mem_size);
-    std::cout << std::hex << " PCCCC4:  " << cpu.PC << std::endl;
-*/
+    //execute based on mode specified in input file
     if(output_mode == "batch")
     {
         while(cpu.execute(p.instruction_mem_size))
@@ -60,6 +46,7 @@ int main(int argc, char* argv[])
         }
     }
 
+    //write to file if specified in input file
 	if(write_to_file == "true")	// 100% pwoper booleans
 	{
 		std::ofstream outfile;
@@ -81,21 +68,6 @@ int main(int argc, char* argv[])
     		outfile.close();
         }
 	}
-
-
-
-
-    /*test that we got the config files
-    std::cout << "Input File: " << program_input << std::endl;
-    std::cout << "Memory Contents File: " << memory_contents_input << std::endl;
-    std::cout << "Register File: " << register_file_input << std::endl;
-    std::cout << "Output Mode: " << output_mode << std::endl;
-    std::cout << "Debug Mode: " << debug_mode << std::endl;
-    std::cout << "Print Memory Contents: " << print_memory_contents << std::endl;
-    std::cout << "Output File: " << output_file << std::endl;
-    std::cout << "Write to File: " << write_to_file << std::endl;
-
-    */
 
 }
 

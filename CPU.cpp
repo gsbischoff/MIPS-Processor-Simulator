@@ -67,7 +67,6 @@ void CPU::print_out(){
 
 int CPU::execute(int exit)
 {
-    std::cout <<std::hex<< "PC: " << PC << std::endl;
     //get instruction from memory
     u32 instruction = 0;
     s32 temp = PC-0x400000;
@@ -108,18 +107,15 @@ int CPU::execute(int exit)
     int func_field = instruction & MASK_5_0;        //integer representation of the instruction's function field..  for ALU control Unit ****
 
     int inst_25_0 = instruction & MASK_25_0;        //Instruction [25-0] needed for jumps
-    //inst_25_0 = inst_25_0 << 2;
 
     int PC_4_31_28 = alu3.result & MASK_31_28;        //get high order 4 bits from ALU 3 result
 
     int inst_15_0 = instruction & MASK_15_0;        //Instruction [15-0] needed for sign extend
     s32 inst_15_0_s_e = sign_extend(inst_15_0);     //sign extended version
-    std::cout << std::hex << "SIGN EXTENDED: " << inst_15_0_s_e << std::endl;
+
     //shift left inst_25_0 and concatenate PC + 4 [31-28] to front
     inst_25_0 = inst_25_0 << 2;
     int jump_address = PC_4_31_28 | inst_25_0;
-
-    //std::cout << "Jump address:  " << std::hex << jump_address << std::endl;
 
     //set alu control unit lines
     alu_control_unit.ALU_op_in = control_unit.ALUOp0 | (control_unit.ALUOp1 << 1);
@@ -202,7 +198,6 @@ int CPU::execute(int exit)
     if(reg_file.control_write == 1)
         reg_file.write();
 
-    //std::cout << "Multiplex 4 output (on assignment): " << multiplex4.output << std::endl;
     //increment PC
     PC = multiplex4.output;
 
