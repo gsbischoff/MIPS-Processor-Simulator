@@ -7,12 +7,12 @@
 #include "stdHeader.h"
 #include "Parser.h"
 
-CPU::CPU(std::vector<u32> inst, std::map<u32, u32> data_m, std::vector<u32> reg)
+CPU::CPU(std::vector<u32> inst, std::map<u32, u32> data_m, std::vector<u32> reg, std::vector<std::string> str)
 {
     PC = 0x400000;
 
     instruction_memory = inst;
-
+    string_instructions = str;
     data_memory = DataMemory(data_m);
 
     reg_file = Register(reg);
@@ -67,8 +67,6 @@ void CPU::print_out(){
 
 int CPU::execute(int exit)
 {
-    //std::cout << std::hex << "PC: " << PC << std::endl;
-
     // Get the instruction from memory at PC (turn int oarray index)
     u32 instruction = 0;
     s32 temp = PC - 0x400000;
@@ -80,7 +78,7 @@ int CPU::execute(int exit)
         return(0);
 
     instruction = instruction_memory[temp];
-	std::cout << string_instructions[temp] << std::endl;
+	std::cout << "Instruction: " << string_instructions[temp] << std::endl;
 	printf("PC:\t\t%08x\n", PC);
 
     //increment PC
@@ -88,7 +86,7 @@ int CPU::execute(int exit)
     alu3.in_b = 4;
     alu3.control = 2;
     alu3.execute();
-	
+
 	alu3.print_out();
 
 

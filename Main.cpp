@@ -19,7 +19,7 @@ int main(int argc, char* argv[])
     std::string write_to_file = p.write_to_file;
 
     //CPU object instantiated. takes the return values of our ** read file methods ** (TODO Implement these)
-    CPU cpu = CPU(p.instruction_memory, p.memory_module, p.register_file);
+    CPU cpu = CPU(p.instruction_memory, p.memory_module, p.register_file, p.string_instructions);
 
     //execute based on mode specified in input file
     if(output_mode == "batch")
