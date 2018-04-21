@@ -42,7 +42,11 @@ int main(int argc, char* argv[])
             ;   // nop
 
         if(debug_mode == "true") cpu.print_out(); //print everything out
-        if(print_memory_contents == "true") cpu.data_memory.print_out(); //print data memory
+        if(print_memory_contents == "true")
+        {
+            cpu.data_memory.print_out(); //print data memory
+            cpu.reg_file.print_out(); //print out register file
+        }
     }
     else
     {
@@ -62,20 +66,20 @@ int main(int argc, char* argv[])
 
 		outfile.open(output_file.c_str());
 
-		if(!outfile.is_open())
-			return;
-			
-		for(auto iter = cpu.data_memory.data.begin(); iter != cpu.data_memory.data.end(); ++iter)
-		{
-			outfile << "0x" << std::hex << iter->first << ":" << iter->second << std::endl;
-		}
+		if(outfile.is_open())
+        {
+    		for(auto iter = cpu.data_memory.data.begin(); iter != cpu.data_memory.data.end(); ++iter)
+    		{
+    			outfile << "0x" << std::hex << iter->first << ":" << iter->second << std::endl;
+    		}
 
-		for(int i=0; i < 32; i++)
-		{
-			outfile << i;
-			outfile << ":0x" << std::hex << cpu.reg_file.registers[i] << std::endl;
-		}
-		outfile.close();
+    		for(int i=0; i < 32; i++)
+    		{
+    			outfile << i;
+    			outfile << ":0x" << std::hex << cpu.reg_file.registers[i] << std::endl;
+    		}
+    		outfile.close();
+        }
 	}
 
 

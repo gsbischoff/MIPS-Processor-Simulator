@@ -11,8 +11,10 @@ class ALU
         int in_a;
         int in_b;
         int control;
+        int number;
 
         ALU();
+        ALU(int n);
         ~ALU();
 
         void execute();             //looks at control line and decides whether to add, subtract, AND, OR, or SLT based on the input lines.

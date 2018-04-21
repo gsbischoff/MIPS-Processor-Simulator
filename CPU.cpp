@@ -17,9 +17,9 @@ CPU::CPU(std::vector<u32> inst, std::map<u32, u32> data_m, std::vector<u32> reg)
 
     reg_file = Register(reg);
 
-    alu1 = ALU();
-    alu2 = ALU();
-    alu3 = ALU();
+    alu1 = ALU(1);
+    alu2 = ALU(2);
+    alu3 = ALU(3);
 
     multiplex1 = Multiplex(1);
     multiplex2 = Multiplex(2);
@@ -67,6 +67,7 @@ void CPU::print_out(){
 
 int CPU::execute(int exit)
 {
+    std::cout <<std::hex<< "PC: " << PC << std::endl;
     //get instruction from memory
     u32 instruction = 0;
     s32 temp = PC-0x400000;
@@ -113,12 +114,12 @@ int CPU::execute(int exit)
 
     int inst_15_0 = instruction & MASK_15_0;        //Instruction [15-0] needed for sign extend
     s32 inst_15_0_s_e = sign_extend(inst_15_0);     //sign extended version
-
+    std::cout << std::hex << "SIGN EXTENDED: " << inst_15_0_s_e << std::endl;
     //shift left inst_25_0 and concatenate PC + 4 [31-28] to front
     inst_25_0 = inst_25_0 << 2;
     int jump_address = PC_4_31_28 | inst_25_0;
 
-    std::cout << "Jump address:  " << std::hex << jump_address << std::endl;
+    //std::cout << "Jump address:  " << std::hex << jump_address << std::endl;
 
     //set alu control unit lines
     alu_control_unit.ALU_op_in = control_unit.ALUOp0 | (control_unit.ALUOp1 << 1);
@@ -176,11 +177,10 @@ int CPU::execute(int exit)
 
     //set up multiplex 4
     multiplex4.in_a = multiplex5.output;
-    std::cout << " MUX 4 IN_A: " << multiplex4.in_a << std::endl;
     multiplex4.in_b = jump_address;
     multiplex4.set_selector(control_unit.Jump);
     multiplex4.set_output();
-    std::cout << "Multiplex 4 output: " << multiplex4.output << std::endl;
+
     //set up data memory
     if(opcode == 35 || opcode == 43)         //if this is LW or SW
     {
@@ -189,24 +189,20 @@ int CPU::execute(int exit)
         data_memory.address = alu1.result;
         data_memory.write_data = reg_file.reg2;
         data_memory.execute();
-        //std::cout << "read data expected 63322818::::" << data_memory.read_data << std::endl;
     }
 
     //set up multiplex3
-    //std::cout << "MEMTO REG: " << control_unit.MemToReg << std::endl;
     multiplex3.set_selector(control_unit.MemToReg);
     multiplex3.in_a = alu1.result;                  //gets main ALU result
     multiplex3.in_b = data_memory.read_data;        //gets Data Memory Read-Data
     multiplex3.set_output();
-    //std::cout << "Expected: 63322818 ::::" << data_memory.data[0x10000004+24] << std::endl;
-    //std::cout << "MUX 3 output: " << multiplex3.output << std::endl;
 
     //handle Write Back if Necassary
     reg_file.write_data = multiplex3.output;
     if(reg_file.control_write == 1)
         reg_file.write();
 
-    std::cout << "Multiplex 4 output (on assignment): " << multiplex4.output << std::endl;
+    //std::cout << "Multiplex 4 output (on assignment): " << multiplex4.output << std::endl;
     //increment PC
     PC = multiplex4.output;
 
