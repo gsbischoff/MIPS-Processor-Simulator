@@ -67,7 +67,7 @@ void CPU::print_out(){
 
 int CPU::execute(int exit)
 {
-    std::cout << std::hex << "PC: " << PC << std::endl;
+    //std::cout << std::hex << "PC: " << PC << std::endl;
 
     //get instruction from memory
     u32 instruction = 0;
