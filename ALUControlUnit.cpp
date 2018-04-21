@@ -41,6 +41,8 @@ void ALUControlUnit::print_out()
   std::cout << "| ALUControlUnit |" << std::endl;
   std::cout << " ----------------" << std::endl;
   std::cout << "Output: " << control_out << std::endl;
+  printf("Output in hex: 0x%08x\n", control_out);
+
   std::cout << "Function Field: " << func_field_in << std::endl;
   std::cout << "ALU Operation Line: " << ALU_op_in << std::endl;
 

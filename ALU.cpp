@@ -26,6 +26,7 @@ void ALU::print_out()
     std::cout << "Input B: " << in_b << std::endl;
     std::cout << "Control Code: " << control << std::endl;
     std::cout << "Result: " << result << std::endl;
+    printf("Result in hex: 0x%08x\n", result);
     std::cout << "Zero Flag: " << zero_flag << std::endl;
 }
 

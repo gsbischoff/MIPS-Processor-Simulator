@@ -32,5 +32,6 @@ void Multiplex::print_out()
   std::cout << "Input B: " << in_b << std::endl;
   std::cout << "Selector: " << selector_bit << std::endl;
   std::cout << "Output: " << output << std::endl;
+  printf("Output in hex: 0x%08x\n", output);
 
 }

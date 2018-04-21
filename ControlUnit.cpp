@@ -107,14 +107,14 @@ void ControlUnit::print_out()
   std::cout << " -------------- " << std::endl;
   std::cout << "| Control Unit |" << std::endl;
   std::cout << " -------------- " << std::endl;
-  std::cout << "RegDst: " << RegDst << std::endl;
-  std::cout << "ALUSrc: " << ALUSrc << std::endl;
-  std::cout << "MemToReg: " << MemToReg << std::endl;
-  std::cout << "RegWrite: " << RegWrite << std::endl;
-  std::cout << "MemRead: " << MemRead << std::endl;
-  std::cout << "MemWrite: " << MemWrite << std::endl;
-  std::cout << "Branch: " << Branch << std::endl;
-  std::cout << "ALUOp1: " << ALUOp1 << std::endl;
-  std::cout << "ALUOp0: " << ALUOp0 << std::endl;
-  std::cout << "Jump: " << Jump << std::endl;
+  printf("Output RegDst in hex: 0x%08x\n", RegDst);
+  printf("Output ALUSrc in hex: 0x%08x\n", ALUSrc);
+  printf("Output MemToReg in hex: 0x%08x\n", MemToReg);
+  printf("Output RegWrite in hex: 0x%08x\n", RegWrite);
+  printf("Output Memread in hex: 0x%08x\n", Memread);
+  printf("Output Memwrite in hex: 0x%08x\n", Memwrite);
+  printf("Output Branch in hex: 0x%08x\n", Branch);
+  printf("Output ALUOp1 in hex: 0x%08x\n", ALUOp1);
+  printf("Output ALUOp0 in hex: 0x%08x\n", ALUOp0);
+  printf("Output Jump in hex: 0x%08x\n", Jump);
 }

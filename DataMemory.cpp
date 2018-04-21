@@ -17,6 +17,7 @@ void DataMemory::print_out()
   std::cout << "Address: " << address << std::endl;
   std::cout << "Read Data: " << read_data << std::endl;
   std::cout << "Write Data: " << write_data << std::endl;
+  printf("Write Data in hex: 0x%08x\n", write_data);
   std::cout << "Control Line - MemRead: " << control_read << std::endl;
   std::cout << "Control Line - MemWrite: " << control_write << std::endl;
   std::cout << "Memory Contents..." << std::endl;
