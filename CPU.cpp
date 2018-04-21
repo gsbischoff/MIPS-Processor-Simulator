@@ -133,11 +133,11 @@ int CPU::execute(int exit)
     //std::cout << "THIS IS THE CONTROL UNIT SELCTOR:::" << control_unit.RegDst<<std::endl;
     multiplex1.set_selector(control_unit.RegDst);
     multiplex1.in_a = r2;
-    //std::cout << "THIS IS MUX1 A:::" << multiplex1.in_a <<std::endl;
+    std::cout << "THIS IS MUX1 A:::" << multiplex1.in_a <<std::endl;
     multiplex1.in_b = mux1_b;        //this atctually gets Instruction [15-11]
-    //std::cout << "THIS IS MUX1 B:::" << multiplex1.in_b <<std::endl;
+    std::cout << "THIS IS MUX1 B:::" << multiplex1.in_b <<std::endl;
     multiplex1.set_output();
-    //std::cout << "THIS IS MUX1 output:::" << multiplex1.output <<std::endl;
+    std::cout << "THIS IS MUX1 output:::" << multiplex1.output <<std::endl;
 
     //set up Register file
     reg_file.reg1 = reg_file.registers.at(r1);         //read data 1
@@ -204,8 +204,17 @@ int CPU::execute(int exit)
 
     //handle Write Back if Necassary
     reg_file.write_data = multiplex3.output;
+    std::cout << "WRITE DATA expected 18: " << reg_file.write_data << std::endl;
+    std::cout << "write control line expected 1: " << reg_file.control_write << std::endl;
     if(reg_file.control_write == 1)
+    {
+        std::cout << "here" << std::endl;
         reg_file.write();
+    }
+
+    std::cout << "reg_file write register expected 5: " << reg_file.write_reg << std::endl;
+    std::cout << std::hex << "register 5 after WRIte: " << reg_file.registers[5] << std::endl;
+
 
     //increment PC
     PC = multiplex4.output;
