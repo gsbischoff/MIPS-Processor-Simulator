@@ -219,6 +219,9 @@ int CPU::execute(int exit)
     //increment PC
     PC = multiplex4.output;
 
+    //reset zero flag
+    alu1.zero_flag = 0;
+
     return 1;
 
 
