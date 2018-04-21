@@ -69,24 +69,28 @@ int CPU::execute(int exit)
 {
     //std::cout << std::hex << "PC: " << PC << std::endl;
 
-    //get instruction from memory
+    // Get the instruction from memory at PC (turn int oarray index)
     u32 instruction = 0;
-    s32 temp = PC-0x400000;
+    s32 temp = PC - 0x400000;
     temp = temp >> 2;
 
-    //if there is no instruction left
+
+    // If there is no instruction left, end execution
     if(temp >= exit)
-    {
-        return 0;
-    }
+        return(0);
 
     instruction = instruction_memory[temp];
+	std::cout << instruction_string[temp] << std::endl;
+	printf("PC:\t\t%08x\n", PC);
 
     //increment PC
     alu3.in_a = PC;
     alu3.in_b = 4;
     alu3.control = 2;
     alu3.execute();
+	
+	alu3.print_out();
+
 
 
     //EXTRACT THE OPCODE TO THEN SET DATA PATH. The control unit only needs opcode (bits 31-26) to properly set entire datapath.
@@ -102,6 +106,11 @@ int CPU::execute(int exit)
     r1 = r1 >> 21;
     int r2 = instruction & MASK_20_16;              //Instruction [20-16] for register 2
     r2 = r2 >> 16;
+
+/*	Formated instr = { .u = instruction };
+	control_unit.set_datapath(instr.opcode);
+	r1 = instr.rs;
+	r2 = instr.rt;*/
 
     //std::cout << "Register 1: " << r1 << std::endl;
     //std::cout << "Register 2: " << r2 << std::endl;
