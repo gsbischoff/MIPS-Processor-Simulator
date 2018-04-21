@@ -30,11 +30,11 @@ void ALU::print_out()
     std::cout << "Zero Flag: " << zero_flag << std::endl;*/
 
 	printf("---- ALU %d ----\n", number);
-	printf("Input A:\t\t%8x\n", alu3.in_a);
-	printf("Input B:\t\t%8x\n", alu3.in_b);
-	printf("Control code:\t\t%8x\n", alu3.in_b);
-	printf("Result:\t\t%8x\n\n", alu3.result);
-	printf("Zero flag:\t\t%8x\n", alu3.in_b);
+	printf("Input A:\t\t%8x\n", in_a);
+	printf("Input B:\t\t%8x\n", in_b);
+	printf("Control code:\t\t%8x\n", in_b);
+	printf("Result:\t\t%8x\n\n", result);
+	printf("Zero flag:\t\t%8x\n", in_b);
 }
 
 //set the output variable to the sum of A + B

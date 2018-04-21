@@ -111,8 +111,8 @@ void ControlUnit::print_out()
   printf("Output ALUSrc in hex: 0x%08x\n", ALUSrc);
   printf("Output MemToReg in hex: 0x%08x\n", MemToReg);
   printf("Output RegWrite in hex: 0x%08x\n", RegWrite);
-  printf("Output Memread in hex: 0x%08x\n", Memread);
-  printf("Output Memwrite in hex: 0x%08x\n", Memwrite);
+  printf("Output Memread in hex: 0x%08x\n", MemRead);
+  printf("Output Memwrite in hex: 0x%08x\n", MemWrite);
   printf("Output Branch in hex: 0x%08x\n", Branch);
   printf("Output ALUOp1 in hex: 0x%08x\n", ALUOp1);
   printf("Output ALUOp0 in hex: 0x%08x\n", ALUOp0);
