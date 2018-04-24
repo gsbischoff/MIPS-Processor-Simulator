@@ -2,17 +2,23 @@
 #include <string>
 #include <iostream>
 
-ControlUnit::ControlUnit()
-{
+/////////////////////////////////
+//Control Unit default constructor
+/////////////////////////////////
+ControlUnit::ControlUnit() {}
 
-}
+/////////////////////////////////
+//Control Unit default destructor
+/////////////////////////////////
+ControlUnit::~ControlUnit() {}
 
-ControlUnit::~ControlUnit()
-{
-
-}
-
-void ControlUnit::set_datapath(int opcode)
+////////////////////////////////
+//
+//  Sets the datapath for the instruction based on the input opcode.
+//  Control lines are member variables of ControlUnit.
+//
+////////////////////////////////
+void ControlUnit::set_datapath()
 {
   //if it is an R-Type
   if(opcode == 0)
@@ -98,23 +104,28 @@ void ControlUnit::set_datapath(int opcode)
     ALUOp0 = 1;
     Jump = 0;
   }
-
-
 }
 
+///////////////////////////////////
+//
+//  Print out all the control lines
+//  and the opcode.
+//
+//////////////////////////////////
 void ControlUnit::print_out()
 {
   std::cout << " -------------- " << std::endl;
   std::cout << "| Control Unit |" << std::endl;
   std::cout << " -------------- " << std::endl;
-  printf("Output RegDst in hex: 0x%x\n", RegDst);
-  printf("Output ALUSrc in hex: 0x%x\n", ALUSrc);
-  printf("Output MemToReg in hex: 0x%x\n", MemToReg);
-  printf("Output RegWrite in hex: 0x%x\n", RegWrite);
-  printf("Output Memread in hex: 0x%x\n", MemRead);
-  printf("Output Memwrite in hex: 0x%x\n", MemWrite);
-  printf("Output Branch in hex: 0x%x\n", Branch);
-  printf("Output ALUOp1 in hex: 0x%x\n", ALUOp1);
-  printf("Output ALUOp0 in hex: 0x%x\n", ALUOp0);
-  printf("Output Jump in hex: 0x%x\n\n", Jump);
+  printf("Opcode: 0x%x\n", opcode);
+  printf("RegDst: 0x%x\n", RegDst);
+  printf("ALUSrc: 0x%x\n", ALUSrc);
+  printf("MemToReg: 0x%x\n", MemToReg);
+  printf("RegWrite: 0x%x\n", RegWrite);
+  printf("Memread: 0x%x\n", MemRead);
+  printf("Memwrite: 0x%x\n", MemWrite);
+  printf("Branch: 0x%x\n", Branch);
+  printf("ALUOp1: 0x%x\n", ALUOp1);
+  printf("ALUOp0: 0x%x\n", ALUOp0);
+  printf("Jump: 0x%x\n\n", Jump);
 }

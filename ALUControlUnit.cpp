@@ -1,16 +1,26 @@
 #include "ALUControlUnit.h"
 #include <iostream>
 
-ALUControlUnit::ALUControlUnit()
-{
+//////////////////////////////////////
+//
+//  ALUControlUnit default constructor
+//
+//////////////////////////////////////
+ALUControlUnit::ALUControlUnit() {}
 
-}
+//////////////////////////////////////
+//
+//  ALUControlUnit default destructor
+//
+//////////////////////////////////////
+ALUControlUnit::~ALUControlUnit() {}
 
-ALUControlUnit::~ALUControlUnit()
-{
-
-}
-
+//////////////////////////////////////
+//
+//  Set the control output based on the
+//  opcode.
+//
+//////////////////////////////////////
 void ALUControlUnit::set_control_out()
 {
     if(ALU_op_in == 0) //ALUOp = 00
@@ -35,6 +45,12 @@ void ALUControlUnit::set_control_out()
             control_out = 7;    //set on less than, 0111
     }
 }
+
+////////////////////////////////////
+//
+//  Print out all the control lines.
+//
+///////////////////////////////////
 void ALUControlUnit::print_out()
 {
   std::cout << " ----------------" << std::endl;
@@ -43,6 +59,4 @@ void ALUControlUnit::print_out()
   printf("Output: 0x%x\n", control_out);
   std::cout << std::hex << "Function Field: 0x" << func_field_in << std::endl;
   std::cout << std::hex << "ALU Operation Line: 0x" << ALU_op_in << std::endl << std::endl;
-
-
 }

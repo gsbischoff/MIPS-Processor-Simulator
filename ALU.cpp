@@ -24,9 +24,12 @@ ALU::ALU() {}
 
 ALU::~ALU() {}
 
+// -----
+//  ALU::print_out
+//	  Prints out the input lines and output
+//		lines to an ALU instance in hex
 void ALU::print_out()
 {
-    //print out everything
     std::cout << " ------------- " << std::endl;
     std::cout << "|    ALU " << number << "    |" << std::endl;
     std::cout << " ------------- " << std::endl;
@@ -38,27 +41,25 @@ void ALU::print_out()
     printf("Control code: 0x%x\n", in_b);
     printf("Result: 0x%x\n", result);
     printf("Zero flag: 0x%x\n\n", in_b);
-
-
 }
 
 
 //////////////////////////////////////////////////////////
 //Depending on the value of the control code, will perform specificed operations
 //////////////////////////////////////////////////////////
+
 void ALU::execute()
 {
     if(control == 0)
     {
-        //AND
+        // Bitwise AND operation
         result = in_a & in_b;
     }
     else if(control == 1)
     {
-        //OR
+        // Bitwise OR
         result = in_a | in_b;
     }
-
     else if(control == 2)  
     {
         //ADD
@@ -66,18 +67,16 @@ void ALU::execute()
         if (result == 0)
             zero_flag = true;
     }
-    else if(control == 6)  
+    else if(control == 6)
     {
-        //SUBTRACT
+		// SUBTRACTION, set the zero flag if 0
         result = in_a - in_b;
         if(result == 0)
             zero_flag = true;
     }
     else
     {
-        //SET ON LESS THAN
+        // SET ON LESS THAN
         result = in_a < in_b;
     }
-
-
 }

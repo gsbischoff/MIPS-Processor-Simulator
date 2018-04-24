@@ -2,13 +2,18 @@
 #include "Parser.h"
 #include "stdHeader.h"
 
+// -----
+//  MIPS Processor Simulator
+//	  Simulates a a 5-stage, nonpipelined, MIPS processor. Can
+//	  read and write the contents of data and instruction
+//			memory as well as a register file input
 int main(int argc, char* argv[])
 {
-    //parser object
-    //read config file...the Parser object will have instance variables that are populated.
+    // Creates a Parser object
+    // Reads the config file...the Parser object will have instance variables that are populated.
     Parser p = Parser(argv[1]);
 
-    //retrieving the config file input given by Parser object
+    // Retrieving the config file input given by Parser object
     std::string program_input = p.program_input;
     std::string memory_contents_input = p.memory_contents_input;
     std::string register_file_input = p.register_file_input;
@@ -18,25 +23,29 @@ int main(int argc, char* argv[])
     std::string output_file = p.output_file;
     std::string write_to_file = p.write_to_file;
 
-    //CPU object instantiated. takes the return values of our ** read file methods ** (TODO Implement these)
+    // CPU object instantiated. takes the return values of our ** read file methods ** (TODO Implement these)
     CPU cpu = CPU(p.instruction_memory, p.memory_module, p.register_file, p.string_instructions);
 
-    //execute based on mode specified in input file
+    // Execute based on mode specified in input file
     if(output_mode == "batch")
     {
+		// Batch mode
+		//	Executes all instructions and prints memory contents at the end
         while(cpu.execute(p.instruction_mem_size))
             ;   // nop
 
-        if(debug_mode == "true") cpu.print_out(); //print everything out
+        if(debug_mode == "true") cpu.print_out(); // Print everything out
         if(print_memory_contents == "true")
         {
-            cpu.data_memory.print_out(); //print data memory
-            cpu.reg_file.print_out(); //print out register file
+            cpu.data_memory.print_out();	// Print data memory
+            cpu.reg_file.print_out();		// Print out register file
         }
         cpu.print_out();
     }
     else
     {
+		// Single-step mode
+		//	Executes instructions one-by-one, printing memory contents at each step
         std::cout << "Press a key to begin execution:" << std::endl;
         std::cin.get();
         while(cpu.execute(p.instruction_mem_size))
@@ -48,7 +57,7 @@ int main(int argc, char* argv[])
         cpu.print_out();
     }
 
-    //write to file if specified in input file
+    // Write to file if specified in input file
 	if(write_to_file == "true")	// 100% pwoper booleans
 	{
 		std::ofstream outfile;
@@ -62,6 +71,7 @@ int main(int argc, char* argv[])
     			outfile << "0x" << std::hex << iter->first << ":" << iter->second << std::endl;
     		}
 
+			outfile << std::endl;
     		for(int i=0; i < 32; i++)
     		{
     			outfile << i;
@@ -70,6 +80,5 @@ int main(int argc, char* argv[])
     		outfile.close();
         }
 	}
-
 }
 
