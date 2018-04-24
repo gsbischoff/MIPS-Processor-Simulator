@@ -2,6 +2,10 @@
 #include "ALU.h"
 #include "stdHeader.h"
 
+// -----
+//  ALU::ALU
+//	  Constructs an instance of an ALU and
+//		initialized its control lines
 ALU::ALU(int n)
 {
     zero_flag = false;
@@ -16,9 +20,12 @@ ALU::ALU() {}
 
 ALU::~ALU() {}
 
+// -----
+//  ALU::print_out
+//	  Prints out the input lines and output
+//		lines to an ALU instance in hex
 void ALU::print_out()
 {
-    //print out everything
     std::cout << " ------------- " << std::endl;
     std::cout << "|    ALU " << number << "    |" << std::endl;
     std::cout << " ------------- " << std::endl;
@@ -27,41 +34,42 @@ void ALU::print_out()
     printf("Control code: 0x%x\n", in_b);
     printf("Result: 0x%x\n", result);
     printf("Zero flag: 0x%x\n\n", in_b);
-
-
 }
 
-//set the output variable to the sum of A + B
+// -----
+//  ALU::execute
+//	  Sets the output line, result, to the result of the arithmetic
+//		operation based on the control line value
 void ALU::execute()
 {
     if(control == 0)
     {
-        //AND
+        // Bitwise AND operation
         result = in_a & in_b;
     }
     else if(control == 1)
     {
-        //OR
+        // Bitwise OR
         result = in_a | in_b;
     }
 
-    else if(control == 2)  //add
+    else if(control == 2)
     {
+		// Arithmetic add
         result = in_a + in_b;
         if (result == 0)
             zero_flag = true;
     }
-    else if(control == 6)  //subtract
+    else if(control == 6)
     {
+		// Subtraction, set the zero flag if 0
         result = in_a - in_b;
         if(result == 0)
             zero_flag = true;
     }
     else
     {
-        //SET ON LESS THAN
+        // SET ON LESS THAN
         result = in_a < in_b;
     }
-
-
 }
