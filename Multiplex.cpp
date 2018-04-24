@@ -28,10 +28,9 @@ void Multiplex::print_out()
   std::cout << " ------------- " << std::endl;
   std::cout << "| Multiplex " << number << " |" << std::endl;
   std::cout << " ------------- " << std::endl;
-  std::cout << "Input A: " << in_a << std::endl;
-  std::cout << "Input B: " << in_b << std::endl;
-  std::cout << "Selector: " << selector_bit << std::endl;
-  std::cout << "Output: " << output << std::endl;
-  printf("Output in hex: 0x%08x\n", output);
+  std::cout << "Input A: 0x" << in_a << std::endl;
+  std::cout << "Input B: 0x" << in_b << std::endl;
+  std::cout << "Selector: 0x" << selector_bit << std::endl;
+  printf("Output: 0x%x\n\n", output);
 
 }

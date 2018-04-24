@@ -63,6 +63,8 @@ void CPU::print_out(){
     //print data memory
     data_memory.print_out();
 
+    std::cout << "\n\n";
+
 }
 
 int CPU::execute(int exit)
@@ -79,17 +81,13 @@ int CPU::execute(int exit)
 
     instruction = instruction_memory[temp];
 	std::cout << "Instruction: " << string_instructions[temp] << std::endl;
-	printf("PC:\t\t%08x\n", PC);
+	printf("PC: %08x\n", PC);
 
     //increment PC
     alu3.in_a = PC;
     alu3.in_b = 4;
     alu3.control = 2;
     alu3.execute();
-
-	//alu3.print_out();
-	//printf("First!\n");
-
 
     //EXTRACT THE OPCODE TO THEN SET DATA PATH. The control unit only needs opcode (bits 31-26) to properly set entire datapath.
     //Then shift opcode right 26 bits
