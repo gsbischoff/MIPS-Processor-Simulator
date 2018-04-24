@@ -87,8 +87,8 @@ int CPU::execute(int exit)
     alu3.control = 2;
     alu3.execute();
 
-	alu3.print_out();
-
+	//alu3.print_out();
+	//printf("First!\n");
 
 
     //EXTRACT THE OPCODE TO THEN SET DATA PATH. The control unit only needs opcode (bits 31-26) to properly set entire datapath.
@@ -222,7 +222,6 @@ int CPU::execute(int exit)
 
     //std::cout << "reg_file write register expected 5: " << reg_file.write_reg << std::endl;
     //std::cout << std::hex << "register 5 after WRIte: " << reg_file.registers[5] << std::endl;
-
 
     //increment PC
     PC = multiplex4.output;
