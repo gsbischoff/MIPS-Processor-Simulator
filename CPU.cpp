@@ -87,8 +87,8 @@ int CPU::execute(int exit)
     alu3.control = 2;
     alu3.execute();
 
-	alu3.print_out();
-
+	//alu3.print_out();
+	//printf("First!\n");
 
 
     //EXTRACT THE OPCODE TO THEN SET DATA PATH. The control unit only needs opcode (bits 31-26) to properly set entire datapath.
@@ -120,9 +120,10 @@ int CPU::execute(int exit)
 
     int inst_25_0 = instruction & MASK_25_0;        //Instruction [25-0] needed for jumps
 
+	// need unsigned??
     int PC_4_31_28 = alu3.result & MASK_31_28;        //get high order 4 bits from ALU 3 result
 
-    int inst_15_0 = instruction & MASK_15_0;        //Instruction [15-0] needed for sign extend
+    s16 inst_15_0 = instruction & MASK_15_0;        //Instruction [15-0] needed for sign extend
     s32 inst_15_0_s_e = sign_extend(inst_15_0);     //sign extended version
 
     //shift left inst_25_0 and concatenate PC + 4 [31-28] to front
@@ -221,7 +222,6 @@ int CPU::execute(int exit)
 
     //std::cout << "reg_file write register expected 5: " << reg_file.write_reg << std::endl;
     //std::cout << std::hex << "register 5 after WRIte: " << reg_file.registers[5] << std::endl;
-
 
     //increment PC
     PC = multiplex4.output;
