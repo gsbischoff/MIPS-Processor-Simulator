@@ -4,7 +4,7 @@
 #			equivalently the largest power of 2 >= to arg n
 
 
-	addi	$8, $0, 500# Move in the argument of the routine
+	addi	$8, $0, 4# Move in the argument of the routine
 	addi	$9, $0, 0	# The value we're calculating, we will add to it
 
 # -----
