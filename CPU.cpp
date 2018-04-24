@@ -113,12 +113,13 @@ int CPU::execute(int exit)
 	//			opcode right 26 bits.
     int opcode = instruction & MASK_31_26;
     opcode = (opcode >> 26) & 0x3f;
+    control_unit.opcode = opcode;
 
-    // Set the Control Unit's datapath lines
-    control_unit.set_datapath(opcode);
-
-    // Grab the bits from the instruction
-    int r1 = instruction & MASK_25_21;	//Instruction [25-21] for register 1
+    // Set Control Unit's datapath lines
+    control_unit.set_datapath();
+	
+    // Grab the bits of the instruction
+    int r1 = instruction & MASK_25_21;              //Instruction [25-21] for register 1
     r1 = r1 >> 21;
     int r2 = instruction & MASK_20_16;	//Instruction [20-16] for register 2
     r2 = r2 >> 16;
