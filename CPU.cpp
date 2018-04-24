@@ -120,9 +120,10 @@ int CPU::execute(int exit)
 
     int inst_25_0 = instruction & MASK_25_0;        //Instruction [25-0] needed for jumps
 
+	// need unsigned??
     int PC_4_31_28 = alu3.result & MASK_31_28;        //get high order 4 bits from ALU 3 result
 
-    int inst_15_0 = instruction & MASK_15_0;        //Instruction [15-0] needed for sign extend
+    s16 inst_15_0 = instruction & MASK_15_0;        //Instruction [15-0] needed for sign extend
     s32 inst_15_0_s_e = sign_extend(inst_15_0);     //sign extended version
 
     //shift left inst_25_0 and concatenate PC + 4 [31-28] to front
