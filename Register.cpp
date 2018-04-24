@@ -1,6 +1,11 @@
 #include "Register.h"
 #include "stdHeader.h"
 
+//////////////////////////////////////
+//
+//  Constructor for the Register file.
+//
+//////////////////////////////////////
 Register::Register(std::vector<u32> reg)
 {
   reg1 = 0;
@@ -11,19 +16,31 @@ Register::Register(std::vector<u32> reg)
   control_write = 0;
 }
 
+//////////////////////////////////////
+//  Destructor for the Register file.
+//////////////////////////////////////
 Register::~Register() {}
+
+//////////////////////////////////////
+//  Destructor for the Register file.
+//////////////////////////////////////
 Register::Register() {}
 
-
-
+//////////////////////////////////////
+//  Write back method for the data
+// memory block.
+//////////////////////////////////////
 void Register::write()
 {
   registers[write_reg] = write_data;
 }
 
-
-
-
+///////////////////////////////////
+//
+//  Print out all the control lines
+//  and the opcode.
+//
+//////////////////////////////////
 void Register::print_out()
 {
   std::cout << " --------------- " << std::endl;
