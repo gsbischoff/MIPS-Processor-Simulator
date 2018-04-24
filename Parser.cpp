@@ -1,7 +1,5 @@
 #include "Parser.h"
 
-using namespace std;
-
 // -----
 //  Parser
 //	  Constructs a Parser instance based on a specific input file
@@ -335,7 +333,7 @@ std::string stripLine(std::string line)
 //		containing <register:value> pairs.
 void Parser::read_register_file()
 {
-	ifstream input;
+	std::ifstream input;
 
 	input.open(register_file_input.c_str());
 
@@ -396,7 +394,7 @@ void Parser::read_register_file()
 //		file containing <address:value> pairs.
 void Parser::read_memory_contents()
 {
-	ifstream input;
+	std::ifstream input;
 
 	input.open(memory_contents_input.c_str());
 
@@ -452,7 +450,7 @@ void Parser::read_memory_contents()
 //		and stores them in the member vector field.
 void Parser::read_program()
 {
-	ifstream input;
+	std::ifstream input;
 
 	input.open(program_input.c_str());
 
@@ -497,7 +495,7 @@ void Parser::read_program()
 //		filename - string name of the input config file
 void Parser::read_config_file(std::string filename)
 {
-	ifstream input;
+	std::ifstream input;
 
 	input.open(filename.c_str());
 

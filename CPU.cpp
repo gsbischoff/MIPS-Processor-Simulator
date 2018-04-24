@@ -76,7 +76,7 @@ void CPU::print_out()
     std::cout << " -------------------- " << std::endl;
     std::cout << "| Instruction Memory |" << std::endl;
     std::cout << " -------------------- " << std::endl;
-    for(int i = 0; i < instruction_memory.size(); ++i)
+    for(unsigned int i = 0; i < instruction_memory.size(); ++i)
         printf("0x%08x: %s\n", (i * 4) + 0x400000, string_instructions[i].c_str());
 
     std::cout << "\n\n";
@@ -117,7 +117,7 @@ int CPU::execute(int exit)
 
     // Set Control Unit's datapath lines
     control_unit.set_datapath();
-	
+
     // Grab the bits of the instruction
     int r1 = instruction & MASK_25_21;              //Instruction [25-21] for register 1
     r1 = r1 >> 21;
@@ -153,11 +153,10 @@ int CPU::execute(int exit)
     alu_control_unit.set_control_out();
 
     // Set up multiplex1
-    //std::cout << "THIS IS THE CONTROL UNIT SELCTOR:::" << control_unit.RegDst<<std::endl;
     multiplex1.set_selector(control_unit.RegDst);
     multiplex1.in_a = r2;
 	
-    multiplex1.in_b = mux1_b;        //this atctually gets Instruction [15-11]
+    multiplex1.in_b = mux1_b;        // This gets the Write Register [15-11]
 	
     multiplex1.set_output();
 
@@ -169,8 +168,8 @@ int CPU::execute(int exit)
 
     // Set up multiplex2
     multiplex2.set_selector(control_unit.ALUSrc);
-    multiplex2.in_a = reg_file.reg2;                    // Gets Read data 2 from register file
-    multiplex2.in_b = inst_15_0_s_e;                    // Gets Sign Extended Instruction [15-0]
+    multiplex2.in_a = reg_file.reg2;		// Gets Read data 2 from register file
+    multiplex2.in_b = inst_15_0_s_e;		// Gets Sign Extended Instruction [15-0]
     multiplex2.set_output();
 
     // Set up ALU
