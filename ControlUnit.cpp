@@ -2,17 +2,23 @@
 #include <string>
 #include <iostream>
 
-ControlUnit::ControlUnit()
-{
+/////////////////////////////////
+//Control Unit default constructor
+/////////////////////////////////
+ControlUnit::ControlUnit() {}
 
-}
+/////////////////////////////////
+//Control Unit default destructor
+/////////////////////////////////
+ControlUnit::~ControlUnit() {}
 
-ControlUnit::~ControlUnit()
-{
-
-}
-
-void ControlUnit::set_datapath(int opcode)
+////////////////////////////////
+//
+//  Sets the datapath for the instruction based on the input opcode.
+//  Control lines are member variables of ControlUnit.
+//
+////////////////////////////////
+void ControlUnit::set_datapath()
 {
   //if it is an R-Type
   if(opcode == 0)
@@ -98,15 +104,20 @@ void ControlUnit::set_datapath(int opcode)
     ALUOp0 = 1;
     Jump = 0;
   }
-
-
 }
 
+///////////////////////////////////
+//
+//  Print out all the control lines
+//  and the opcode.
+//
+//////////////////////////////////
 void ControlUnit::print_out()
 {
   std::cout << " -------------- " << std::endl;
   std::cout << "| Control Unit |" << std::endl;
   std::cout << " -------------- " << std::endl;
+  printf("Opcode: 0x%x\n", opcode);
   printf("RegDst: 0x%x\n", RegDst);
   printf("ALUSrc: 0x%x\n", ALUSrc);
   printf("MemToReg: 0x%x\n", MemToReg);

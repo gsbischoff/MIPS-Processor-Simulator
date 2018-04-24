@@ -102,9 +102,10 @@ int CPU::execute(int exit)
     //Then shift opcode right 26 bits
     int opcode = instruction & MASK_31_26;
     opcode = (opcode >> 26) & 0x3f;
+    control_unit.opcode = opcode;
     //std::cout << "OPCODE: " << opcode << std::endl;
     //set Control UNit datapath lines
-    control_unit.set_datapath(opcode);
+    control_unit.set_datapath();
     //std::cout << "Instruction: " << instruction << std::endl;
     //** Properly grab bits of instruction **/
     int r1 = instruction & MASK_25_21;              //Instruction [25-21] for register 1
