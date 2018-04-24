@@ -315,6 +315,11 @@ std::string stripLine(std::string line)
 		end--;
 	}
 
+	// Replace tabs with spaces to make parsing easier
+	for(unsigned int i = 0; i < strlen(buf); ++i)
+		if(buf[i] == '\t')
+			buf[i] = ' ';
+
 	// Store the line
 	std::string temp = buf;
 
