@@ -3,9 +3,9 @@
 #  		This subroutine will return the highest set bit of input n in a0
 #			equivalently the largest power of 2 >= to arg n
 
-
-	addi	$8, $0, 4# Move in the argument of the routine
+	addi	$8, $0, 5 # Move in the argument of the routine
 	addi	$9, $0, 0	# The value we're calculating, we will add to it
+
 
 # -----
 #  We will now loop and shift right logical until we reach 1, counting

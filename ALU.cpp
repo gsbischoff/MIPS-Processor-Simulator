@@ -18,23 +18,17 @@ ALU::~ALU() {}
 
 void ALU::print_out()
 {
-/*    //print out everything
+    //print out everything
     std::cout << " ------------- " << std::endl;
     std::cout << "|    ALU " << number << "    |" << std::endl;
     std::cout << " ------------- " << std::endl;
-    std::cout << "Input A: " << in_a << std::endl;
-    std::cout << "Input B: " << in_b << std::endl;
-    std::cout << "Control Code: " << control << std::endl;
-    std::cout << "Result: " << result << std::endl;
-    printf("Result in hex: 0x%08x\n", result);
-    std::cout << "Zero Flag: " << zero_flag << std::endl;*/
+    printf("Input A: 0x%x\n", in_a);
+    printf("Input B: 0x%x\n", in_b);
+    printf("Control code: 0x%x\n", in_b);
+    printf("Result: 0x%x\n", result);
+    printf("Zero flag: 0x%x\n\n", in_b);
 
-	printf("---- ALU %d ----\n", number);
-	printf("Input A:\t\t%8x\n", in_a);
-	printf("Input B:\t\t%8x\n", in_b);
-	printf("Control code:\t\t%8x\n", in_b);
-	printf("Result:\t\t%8x\n\n", result);
-	printf("Zero flag:\t\t%8x\n", in_b);
+
 }
 
 //set the output variable to the sum of A + B

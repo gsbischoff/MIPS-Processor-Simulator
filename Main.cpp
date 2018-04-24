@@ -33,6 +33,7 @@ int main(int argc, char* argv[])
             cpu.data_memory.print_out(); //print data memory
             cpu.reg_file.print_out(); //print out register file
         }
+        cpu.print_out();
     }
     else
     {
@@ -44,6 +45,7 @@ int main(int argc, char* argv[])
             std::cout << "Press enter to continue." << std::endl;
             std::cin.get();
         }
+        cpu.print_out();
     }
 
     //write to file if specified in input file

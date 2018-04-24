@@ -26,9 +26,9 @@ void Register::write()
 
 void Register::print_out()
 {
-  std::cout << " -------------- " << std::endl;
+  std::cout << " --------------- " << std::endl;
   std::cout << "| Register File |" << std::endl;
-  std::cout << " -------------- " << std::endl;
+  std::cout << " --------------- " << std::endl;
   std::cout << "Register 1: " << reg1 << std::endl;
   std::cout << "Register 2: " << reg2 << std::endl;
   std::cout << "Write Register: " << write_reg << std::endl;
@@ -38,5 +38,7 @@ void Register::print_out()
   {
     printf("%d: 0x%08x\n", i, registers.at(i));
   }
+
+  std::cout << std::endl;
 
 }
