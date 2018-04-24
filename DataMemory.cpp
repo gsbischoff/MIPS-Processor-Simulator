@@ -14,18 +14,17 @@ void DataMemory::print_out()
   std::cout << " ------------- " << std::endl;
   std::cout << "| Data Memory |" << std::endl;
   std::cout << " ------------- " << std::endl;
-  std::cout << "Address: " << address << std::endl;
-  std::cout << "Read Data: " << read_data << std::endl;
-  std::cout << "Write Data: " << write_data << std::endl;
-  printf("Write Data in hex: 0x%08x\n", write_data);
-  std::cout << "Control Line - MemRead: " << control_read << std::endl;
-  std::cout << "Control Line - MemWrite: " << control_write << std::endl;
+  std::cout << "Address: 0x" << std::hex << address << std::endl;
+  std::cout << "Read Data: 0x" << std::hex << read_data << std::endl;
+  printf("Write Data: 0x%08x\n", write_data);
+  std::cout << "Control Line - MemRead: 0x" << std::hex << control_read << std::endl;
+  std::cout << "Control Line - MemWrite: 0x" << std::hex << control_write << std::endl;
   std::cout << "Memory Contents..." << std::endl;
   for(auto iter = data.begin(); iter != data.end(); ++iter)
   {
     std::cout << "0x" << std::hex << iter->first << ":" << iter->second << std::endl;
   }
-
+  std::cout << std::endl;
 }
 
 void DataMemory::execute()

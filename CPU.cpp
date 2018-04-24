@@ -63,6 +63,14 @@ void CPU::print_out(){
     //print data memory
     data_memory.print_out();
 
+    //print instruction memory
+    std::cout << " -------------------- " << std::endl;
+    std::cout << "| Instruction Memory |" << std::endl;
+    std::cout << " -------------------- " << std::endl;
+    for(int i = 0; i < instruction_memory.size(); ++i)
+        printf("0x%08x: %s\n", (i * 4) + 0x400000, string_instructions[i].c_str());
+
+
     std::cout << "\n\n";
 
 }
@@ -80,8 +88,9 @@ int CPU::execute(int exit)
         return(0);
 
     instruction = instruction_memory[temp];
+    printf("PC: %08x\t", PC);
 	std::cout << "Instruction: " << string_instructions[temp] << std::endl;
-	printf("PC: %08x\n", PC);
+
 
     //increment PC
     alu3.in_a = PC;
