@@ -158,7 +158,7 @@ u32 handle_IType(char *fields)
 u32 handle_JType(char *fields)
 {
 	// Fill last 26 bits with value
-	return 0x03FFFFFF & strtoul(fields, NULL, 16);
+	return 0x03FFFFFF & (strtoul(fields, NULL, 16) >> 2);
 }
 
 // -----

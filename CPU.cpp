@@ -98,7 +98,7 @@ int CPU::execute(int exit)
         return(0);
 
     instruction = instruction_memory[temp];
-    printf("PC: %08x\t", PC);
+    printf("PC: 0x%08x\t", PC);
 	std::cout << "Instruction: " << string_instructions[temp] << std::endl;
 
     // Increment PC
